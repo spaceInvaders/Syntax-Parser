@@ -41,7 +41,7 @@ namespace Syntax_Pars
                 }
             }
         }
-        public void TrimLateralBrackets()
+        public void TrimBrackets()
         {
             if (phrase[0] == '(' && phrase[phrase.Length - 1] == ')')
             {
@@ -60,7 +60,7 @@ namespace Syntax_Pars
         }
         public void CheckOnOPerations()
         {
-            TrimLateralBrackets();
+            TrimBrackets();
             for (int i = 0; i < phrase.Length; i++)
             {
                 if (phrase[i] == '+' || phrase[i] == '-' || phrase[i] == '/' || phrase[i] == '*')
@@ -84,7 +84,7 @@ namespace Syntax_Pars
         }
         public void SplitToNodes()
         {
-            TrimLateralBrackets();
+            TrimBrackets();
 
             int[] marker = new int[phrase.Length];
             if (phrase[0] != '(')
