@@ -4,7 +4,6 @@ namespace Syntax_Pars
 {
     class Node
     {
-        double result;
         Node left;
         Node right;
         private string phrase;
@@ -41,7 +40,7 @@ namespace Syntax_Pars
                 }
             }
         }
-        public void TrimBrackets()
+        public void TrimLateralBrackets()
         {
             if (phrase[0] == '(' && phrase[phrase.Length - 1] == ')')
             {
@@ -58,33 +57,27 @@ namespace Syntax_Pars
                 }
             }
         }
-        public void CheckOnOPerations()
+        public void Execute()
         {
-            TrimBrackets();
+            TrimLateralBrackets();
             for (int i = 0; i < phrase.Length; i++)
             {
                 if (phrase[i] == '+' || phrase[i] == '-' || phrase[i] == '/' || phrase[i] == '*')
                 {
                     SplitToNodes();
+                    Console.WriteLine(Calculate());
                 }
                 else if (i == phrase.Length - 1)
                 {
-                    result = Convert.ToDouble(phrase);
+                    Console.WriteLine(Convert.ToDouble(phrase));
                 }
             }
         }
-        public void DisplayResult()
-        {
-            Console.WriteLine(result);
-        }
-        public void Execute()
-        {
-            CheckOnOPerations();
-            DisplayResult();
-        }
+
+
         public void SplitToNodes()
         {
-            TrimBrackets();
+            TrimLateralBrackets();
 
             int[] marker = new int[phrase.Length];
             if (phrase[0] != '(')
@@ -132,13 +125,6 @@ namespace Syntax_Pars
                         sign = new String(new char[] { phrase[i] });
                         break;
                     }
-                    else if (phrase[i] == '*' || phrase[i] == '/')
-                    {
-                        right = phrase.Substring(i + 1);
-                        left = phrase.Substring(0, i);
-                        sign = new String(new char[] { phrase[i] });
-                        break;
-                    }
                 }
             }
             this.left = new Node() { Phrase = left };
@@ -153,14 +139,13 @@ namespace Syntax_Pars
             }
             for (int i = 0; i < this.right.phrase.Length; i++)
             {
-                if (this.right.phrase[i] == '+' || this.left.phrase[i] == '-' || this.left.phrase[i] == '/' || this.left.phrase[i] == '*')
+                if (this.right.phrase[i] == '+' || this.right.phrase[i] == '-' || this.right.phrase[i] == '/' || this.right.phrase[i] == '*')
                 {
                     this.right.SplitToNodes();
                 }
             }
-            Calculate();
         }
-        public void Calculate()
+        public double Calculate()
         {
             if (left?.phrase == "-" || left?.phrase == "+" || left?.phrase == "*" || left?.phrase == "/")
             {
@@ -173,24 +158,19 @@ namespace Syntax_Pars
             switch (phrase)
             {
                 case "+":
-                    result = Convert.ToDouble(left.phrase) + Convert.ToDouble(right.phrase);
-                    phrase = Convert.ToString(result);
-                    break;
+                    return Convert.ToDouble(left.phrase) + Convert.ToDouble(right.phrase);
+
                 case "-":
-                    result = Convert.ToDouble(left.phrase) - Convert.ToDouble(right.phrase);
-                    phrase = Convert.ToString(result);
-                    break;
+                    return Convert.ToDouble(left.phrase) - Convert.ToDouble(right.phrase);
+
                 case "*":
-                    result = Convert.ToDouble(left.phrase) * Convert.ToDouble(right.phrase);
-                    phrase = Convert.ToString(result);
-                    break;
+                    return Convert.ToDouble(left.phrase) * Convert.ToDouble(right.phrase);
+
                 case "/":
-                    result = Convert.ToDouble(left.phrase) / Convert.ToDouble(right.phrase);
-                    phrase = Convert.ToString(result);
-                    break;
+                    return Convert.ToDouble(left.phrase) / Convert.ToDouble(right.phrase);
+
                 default:
-                    result = Convert.ToDouble(phrase);
-                    break;
+                    return Convert.ToDouble(phrase);
             }
         }
     }
