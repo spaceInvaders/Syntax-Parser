@@ -40,26 +40,17 @@ namespace Syntax_Pars
                 }
             }
         }
-        public void TrimLateralBrackets()
+        public void TrimBrackets()
         {
             if (phrase[0] == '(' && phrase[phrase.Length - 1] == ')')
             {
-                for (int i = 1; i < phrase.Length - 1; i++)
-                {
-                    if (phrase[i] == ')' || phrase[i] == '(')
-                    {
-                        break;
-                    }
-                    else if (i == phrase.Length - 2)
-                    {
-                        phrase = phrase.Substring(1, phrase.Length - 2);
-                    }
-                }
+                phrase = phrase.Substring(1, phrase.Length - 2);
+                // Need to code outstanding methot for marking brackets level, if 0 - true, if >0 - false
             }
         }
         public void Execute()
         {
-            TrimLateralBrackets();
+            TrimBrackets();
             for (int i = 0; i < phrase.Length; i++)
             {
                 if (phrase[i] == '+' || phrase[i] == '-' || phrase[i] == '/' || phrase[i] == '*')
@@ -77,7 +68,7 @@ namespace Syntax_Pars
 
         public void SplitToNodes()
         {
-            TrimLateralBrackets();
+            TrimBrackets();
 
             int[] marker = new int[phrase.Length];
             if (phrase[0] != '(')
