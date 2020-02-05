@@ -22,10 +22,9 @@ namespace Syntax_Pars
         {
             string input = Console.ReadLine();
             input = input.Replace(" ", "");
-            char[] elements = input.ToCharArray();
-            for (int i = 0; i < elements.Length; i++)
+            for (int i = 0; i < input.Length; i++)
             {
-                char c = elements[i];
+                char c = input[i];
                 if ((c != '0') && (c != '1') && (c != '2') && (c != '3') && (c != '4') && (c != '5')
                    && (c != '6') && (c != '7') && (c != '8') && (c != '9') && (c != '0') && (c != '+')
                    && (c != '-') && (c != '*') && (c != '/') && (c != '(') && (c != ')') && (c != '.'))
@@ -33,23 +32,63 @@ namespace Syntax_Pars
                     Console.WriteLine("Invalid input");
                     break;
                 }
-                else if (i == elements.Length - 1)
+                else if (i == input.Length - 1)
                 {
                     Phrase = input;
                     Console.WriteLine("Input is ok");
                 }
             }
         }
+        public int[] BracketsLevel()
+        {
+            int[] marker = new int[phrase.Length];
+            if (phrase[0] == '(')
+            {
+                marker[0] = 1;
+            }
+            for (int i = 1; i < phrase.Length; i++)
+            {
+                if (phrase[i] == '(')
+                {
+                    marker[i] = marker[i - 1] + 1;
+                }
+                else if (phrase[i] == ')')
+                {
+                    marker[i] = marker[i - 1] - 1;
+                }
+                else
+                {
+                    marker[i] = marker[i - 1];
+                }
+            }
+            return marker;
+        }
+
         public void TrimBrackets()
         {
             if (phrase[0] == '(' && phrase[phrase.Length - 1] == ')')
             {
-                phrase = phrase.Substring(1, phrase.Length - 2);
-                // Need to code outstanding methot for marking brackets level, if 0 - true, if >0 - false
+                int[] marker = BracketsLevel();
+                for (int i = 1; i < phrase.Length - 1; i++)
+                {
+                    if (marker[i] == 0)
+                    {
+                        return;
+                    }
+                    else if (i == phrase.Length - 2)
+                    {
+                        phrase = phrase.Substring(1, phrase.Length - 2);
+                    }
+                }
+            }
+            if (phrase[0] == '(' && phrase[phrase.Length - 1] == ')')
+            {
+                TrimBrackets();
             }
         }
         public void Execute()
         {
+            CheckInput();
             TrimBrackets();
             for (int i = 0; i < phrase.Length; i++)
             {
@@ -64,36 +103,12 @@ namespace Syntax_Pars
                 }
             }
         }
-
-
         public void SplitToNodes()
         {
             TrimBrackets();
 
-            int[] marker = new int[phrase.Length];
-            if (phrase[0] != '(')
-            {
-                marker[0] = 0;
-            }
-            else if (phrase[0] == '(')
-            {
-                marker[0] = 1;
-            }
-            for (int i = 1; i < phrase.Length; i++)
-            {
-                if (phrase[i] == '(')
-                {
-                    marker[i] += marker[i - 1] + 1;
-                }
-                else if (phrase[i] == ')')
-                {
-                    marker[i] = marker[i - 1] - 1;
-                }
-                else
-                {
-                    marker[i] = marker[i - 1];
-                }
-            }
+            int[] marker = BracketsLevel();
+            
             string right = null;
             string left = null;
             string sign = null;
@@ -136,7 +151,7 @@ namespace Syntax_Pars
                 }
             }
         }
-        public double Calculate()
+        public decimal Calculate()
         {
             if (left?.phrase == "-" || left?.phrase == "+" || left?.phrase == "*" || left?.phrase == "/")
             {
@@ -149,19 +164,19 @@ namespace Syntax_Pars
             switch (phrase)
             {
                 case "+":
-                    return Convert.ToDouble(left.phrase) + Convert.ToDouble(right.phrase);
+                    return Convert.ToDecimal(left.phrase) + Convert.ToDecimal(right.phrase);
 
                 case "-":
-                    return Convert.ToDouble(left.phrase) - Convert.ToDouble(right.phrase);
+                    return Convert.ToDecimal(left.phrase) - Convert.ToDecimal(right.phrase);
 
                 case "*":
-                    return Convert.ToDouble(left.phrase) * Convert.ToDouble(right.phrase);
+                    return Convert.ToDecimal(left.phrase) * Convert.ToDecimal(right.phrase);
 
                 case "/":
-                    return Convert.ToDouble(left.phrase) / Convert.ToDouble(right.phrase);
+                    return Convert.ToDecimal(left.phrase) / Convert.ToDecimal(right.phrase);
 
                 default:
-                    return Convert.ToDouble(phrase);
+                    return Convert.ToDecimal(phrase);
             }
         }
     }
@@ -171,7 +186,6 @@ namespace Syntax_Pars
         {
             Console.WriteLine("Enter your phrase for calculation: ");
             Node tree = new Node();
-            tree.CheckInput();
             tree.Execute();
         }
     }
