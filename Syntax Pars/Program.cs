@@ -2,23 +2,21 @@
 
 namespace Syntax_Pars
 {
+    enum Essence
+    {
+        Add,
+        Subtract,
+        Multiply,
+        Divide,
+        Number
+    }
     class Node
     {
         Node left;
         Node right;
-        private string phrase;
-        public string Phrase
-        {
-            get
-            {
-                return phrase;
-            }
-            set
-            {
-                phrase = value;
-            }
-        }
-        public void CheckInput()
+        Essence eseence;
+        public string Phrase { get; set; }
+        public void Pars()
         {
             string input = Console.ReadLine();
             input = input.Replace(" ", "");
@@ -41,18 +39,18 @@ namespace Syntax_Pars
         }
         public int[] BracketsLevel()
         {
-            int[] marker = new int[phrase.Length];
-            if (phrase[0] == '(')
+            int[] marker = new int[Phrase.Length];
+            if (Phrase[0] == '(')
             {
                 marker[0] = 1;
             }
-            for (int i = 1; i < phrase.Length; i++)
+            for (int i = 1; i < Phrase.Length; i++)
             {
-                if (phrase[i] == '(')
+                if (Phrase[i] == '(')
                 {
                     marker[i] = marker[i - 1] + 1;
                 }
-                else if (phrase[i] == ')')
+                else if (Phrase[i] == ')')
                 {
                     marker[i] = marker[i - 1] - 1;
                 }
@@ -63,113 +61,112 @@ namespace Syntax_Pars
             }
             return marker;
         }
-
         public void TrimBrackets()
         {
-            if (phrase[0] == '(' && phrase[phrase.Length - 1] == ')')
+            if (Phrase[0] == '(' && Phrase[Phrase.Length - 1] == ')')
             {
                 int[] marker = BracketsLevel();
-                for (int i = 1; i < phrase.Length - 1; i++)
+                for (int i = 1; i < Phrase.Length - 1; i++)
                 {
                     if (marker[i] == 0)
                     {
                         return;
                     }
-                    else if (i == phrase.Length - 2)
+                    else if (i == Phrase.Length - 2)
                     {
-                        phrase = phrase.Substring(1, phrase.Length - 2);
+                        Phrase = Phrase.Substring(1, Phrase.Length - 2);
                     }
                 }
             }
-            if (phrase[0] == '(' && phrase[phrase.Length - 1] == ')')
+            if (Phrase[0] == '(' && Phrase[Phrase.Length - 1] == ')')
             {
                 TrimBrackets();
             }
         }
         public void Execute()
         {
-            CheckInput();
+            Pars();
             TrimBrackets();
-            for (int i = 0; i < phrase.Length; i++)
+            for (int i = 0; i < Phrase.Length; i++)
             {
-                if (phrase[i] == '+' || phrase[i] == '-' || phrase[i] == '/' || phrase[i] == '*')
+                if (Phrase[i] == '+' || Phrase[i] == '-' || Phrase[i] == '/' || Phrase[i] == '*')
                 {
                     SplitToNodes();
                     Console.WriteLine(Count());
                 }
-                else if (i == phrase.Length - 1)
+                else if (i == Phrase.Length - 1)
                 {
-                    Console.WriteLine(Convert.ToDouble(phrase));
+                    Console.WriteLine(Convert.ToDouble(Phrase));
                 }
             }
         }
         public void SplitToNodes()
         {
             TrimBrackets();
-
             int[] marker = BracketsLevel();
-            
-            string right = null;
-            string left = null;
-            string sign = null;
-
-            for (int i = phrase.Length - 1; i >= 0; i--)
+            for (int i = Phrase.Length - 1; i > -1; i--)
             {
-                if (marker[i] == 0)
+                if (marker[i] == 0 && (Phrase[i] == '+' || Phrase[i] == '-' || Phrase[i] == '*' || Phrase[i] == '/'))
                 {
-                    if (phrase[i] == '+' || phrase[i] == '-')
+                    left = new Node() { Phrase = Phrase.Substring(0, i) };
+                    right = new Node() { Phrase = Phrase.Substring(i + 1) };
+                    if (Phrase[i] == '+')
                     {
-                        right = phrase.Substring(i + 1);
-                        left = phrase.Substring(0, i);
-                        sign = new String(new char[] { phrase[i] });
+                        eseence = Essence.Add;
                         break;
                     }
-                    else if (phrase[i] == '*' || phrase[i] == '/')
+                    else if (Phrase[i] == '-')
                     {
-                        right = phrase.Substring(i + 1);
-                        left = phrase.Substring(0, i);
-                        sign = new String(new char[] { phrase[i] });
+                        eseence = Essence.Subtract;
+                        break;
+                    }
+                    else if (Phrase[i] == '*')
+                    {
+                        eseence = Essence.Multiply;
+                        break;
+                    }
+                    else if (Phrase[i] == '/')
+                    {
+                        eseence = Essence.Divide;
                         break;
                     }
                 }
-            }
-            this.left = new Node() { Phrase = left };
-            this.right = new Node() { Phrase = right };
-            this.Phrase = sign;
-            for (int i = 0; i < this.left.phrase.Length; i++)
-            {
-                if (this.left.phrase[i] == '+' || this.left.phrase[i] == '-' || this.left.phrase[i] == '/' || this.left.phrase[i] == '*')
+                else if (i == 0)
                 {
-                    this.left.SplitToNodes();
+                    eseence = Essence.Number;
                 }
             }
-            for (int i = 0; i < this.right.phrase.Length; i++)
+            for (int i = 0; i < left.Phrase.Length; i++)
             {
-                if (this.right.phrase[i] == '+' || this.right.phrase[i] == '-' || this.right.phrase[i] == '/' || this.right.phrase[i] == '*')
+                if (left.Phrase[i] == '+' || left.Phrase[i] == '-' || left.Phrase[i] == '/' || left.Phrase[i] == '*')
                 {
-                    this.right.SplitToNodes();
+                    left.SplitToNodes();
+                }
+            }
+            for (int i = 0; i < right.Phrase.Length; i++)
+            {
+                if (right.Phrase[i] == '+' || right.Phrase[i] == '-' || right.Phrase[i] == '/' || right.Phrase[i] == '*')
+                {
+                    right.SplitToNodes();
                 }
             }
         }
         public decimal Count()
         {
-            switch (phrase)
+            switch (eseence)
             {
-                case "+":
+                case Essence.Add:
                     return left.Count() + right.Count();
-
-                case "-":
+                case Essence.Subtract:
                     return left.Count() - right.Count();
-
-                case "*":
+                case Essence.Multiply:
                     return left.Count() * right.Count();
-
-                case "/":
+                case Essence.Divide:
                     return left.Count() / right.Count();
-
-                default:
+                case Essence.Number:
                     TrimBrackets();
-                    return Convert.ToDecimal(phrase);
+                    return Convert.ToDecimal(eseence);
+                default: return 0;
             }
         }
     }
