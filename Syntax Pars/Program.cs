@@ -95,7 +95,7 @@ namespace Syntax_Pars
                 if (phrase[i] == '+' || phrase[i] == '-' || phrase[i] == '/' || phrase[i] == '*')
                 {
                     SplitToNodes();
-                    Console.WriteLine(Calculate());
+                    Console.WriteLine(Count());
                 }
                 else if (i == phrase.Length - 1)
                 {
@@ -113,7 +113,7 @@ namespace Syntax_Pars
             string left = null;
             string sign = null;
 
-            for (int i = 0; i < phrase.Length; i++)
+            for (int i = phrase.Length - 1; i >= 0; i--)
             {
                 if (marker[i] == 0)
                 {
@@ -151,31 +151,32 @@ namespace Syntax_Pars
                 }
             }
         }
-        public decimal Calculate()
+        public decimal Count()
         {
             if (left?.phrase == "-" || left?.phrase == "+" || left?.phrase == "*" || left?.phrase == "/")
             {
-                left.Calculate();
+                left.Count();
             }
             if (right?.phrase == "-" || right?.phrase == "+" || right?.phrase == "*" || right?.phrase == "/")
             {
-                right.Calculate();
+                right.Count();
             }
             switch (phrase)
             {
                 case "+":
-                    return Convert.ToDecimal(left.phrase) + Convert.ToDecimal(right.phrase);
+                    return left.Count() + right.Count();
 
                 case "-":
-                    return Convert.ToDecimal(left.phrase) - Convert.ToDecimal(right.phrase);
+                    return left.Count() - right.Count();
 
                 case "*":
-                    return Convert.ToDecimal(left.phrase) * Convert.ToDecimal(right.phrase);
+                    return left.Count() * right.Count();
 
                 case "/":
-                    return Convert.ToDecimal(left.phrase) / Convert.ToDecimal(right.phrase);
+                    return left.Count() / right.Count();
 
                 default:
+                    TrimBrackets();
                     return Convert.ToDecimal(phrase);
             }
         }
