@@ -153,14 +153,6 @@ namespace Syntax_Pars
         }
         public decimal Count()
         {
-            if (left?.phrase == "-" || left?.phrase == "+" || left?.phrase == "*" || left?.phrase == "/")
-            {
-                left.Count();
-            }
-            if (right?.phrase == "-" || right?.phrase == "+" || right?.phrase == "*" || right?.phrase == "/")
-            {
-                right.Count();
-            }
             switch (phrase)
             {
                 case "+":
