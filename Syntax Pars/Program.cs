@@ -2,24 +2,67 @@
 
 namespace Syntax_Pars
 {
-    enum Essence
+    enum Operation
     {
+        Number,
         Add,
         Subtract,
         Multiply,
         Divide,
-        Number
     }
-    class Node
+    struct CalculationNode
     {
-        Node left;
-        Node right;
-        Essence eseence;
-        public string Phrase { get; set; }
-        public void Pars()
+        public Operation Operation { get; set; }
+        public decimal Number { get; set; }
+    }
+    class Node<T>
+    {
+        public Node<T> left;
+        public Node<T> right;
+        public CalculationNode info;
+        internal decimal Calculate(Node<CalculationNode> node)
         {
-            string input = Console.ReadLine();
+            return node.info.Operation switch
+            {
+                Operation.Add => node.Calculate(node.left) + node.Calculate(node.right),
+                Operation.Subtract => node.Calculate(node.left) - node.Calculate(node.right),
+                Operation.Multiply => node.Calculate(node.left) * node.Calculate(node.right),
+                Operation.Divide => node.Calculate(node.left) / node.Calculate(node.right),
+                Operation.Number => Convert.ToDecimal(node.info.Number),
+                _ => 0,
+            };
+        }
+    }
+    public static class StringExtension
+    {
+        internal static Node<CalculationNode> GrowNodeTree(this string input)
+        {
+            bool inputIsGood = CheckInput(input: input);
+            Node<CalculationNode> node = null;
+            if (inputIsGood)
+            {
+                TrimBrackets(input: input);
+                for (int i = 0; i < input.Length; i++)
+                {
+                    if (input[i] == '+' || input[i] == '-' || input[i] == '/' || input[i] == '*')
+                    {
+                        node = SplitToNodes(input: input);
+                        break;
+                    }
+                    else if (i == input.Length - 1)
+                    {
+                        node = new Node<CalculationNode>();
+                        node.info.Operation = Operation.Number;
+                        node.info.Number = Convert.ToDecimal(input);
+                    }
+                }
+            }
+            return node;
+        }
+        static bool CheckInput(string input)
+        {
             input = input.Replace(" ", "");
+            bool a = false;
             for (int i = 0; i < input.Length; i++)
             {
                 char c = input[i];
@@ -28,29 +71,31 @@ namespace Syntax_Pars
                    && (c != '-') && (c != '*') && (c != '/') && (c != '(') && (c != ')') && (c != ','))
                 {
                     Console.WriteLine("Invalid input");
+                    a = false;
                     break;
                 }
                 else if (i == input.Length - 1)
                 {
-                    Phrase = input;
                     Console.WriteLine("Input is ok");
+                    a = true;
                 }
             }
+            return a;
         }
-        public int[] BracketsLevel()
+        static int[] BracketsLevel(string input)
         {
-            int[] marker = new int[Phrase.Length];
-            if (Phrase[0] == '(')
+            int[] marker = new int[input.Length];
+            if (input[0] == '(')
             {
                 marker[0] = 1;
             }
-            for (int i = 1; i < Phrase.Length; i++)
+            for (int i = 1; i < input.Length; i++)
             {
-                if (Phrase[i] == '(')
+                if (input[i] == '(')
                 {
                     marker[i] = marker[i - 1] + 1;
                 }
-                else if (Phrase[i] == ')')
+                else if (input[i] == ')')
                 {
                     marker[i] = marker[i - 1] - 1;
                 }
@@ -61,113 +106,107 @@ namespace Syntax_Pars
             }
             return marker;
         }
-        public void TrimBrackets()
+
+        static string TrimBrackets(string input)
         {
-            if (Phrase[0] == '(' && Phrase[Phrase.Length - 1] == ')')
+            if (input[0] == '(' && input[input.Length - 1] == ')')
             {
-                int[] marker = BracketsLevel();
-                for (int i = 1; i < Phrase.Length - 1; i++)
+                int[] marker = BracketsLevel(input: input);
+                for (int i = 1; i < input.Length - 1; i++)
                 {
                     if (marker[i] == 0)
                     {
-                        return;
+                        return input;
                     }
-                    else if (i == Phrase.Length - 2)
+                    else if (i == input.Length - 2)
                     {
-                        Phrase = Phrase.Substring(1, Phrase.Length - 2);
+                        input = input.Substring(1, input.Length - 2);
                     }
                 }
             }
-            if (Phrase[0] == '(' && Phrase[Phrase.Length - 1] == ')')
+            if (input[0] == '(' && input[input.Length - 1] == ')')
             {
-                TrimBrackets();
+                TrimBrackets(input: input);
             }
+            return input;
         }
-        public void Execute()
+        static Node<CalculationNode> SplitToNodes(this string input)
         {
-            Pars();
-            TrimBrackets();
-            for (int i = 0; i < Phrase.Length; i++)
+            input = TrimBrackets(input: input);
+
+            int[] marker = BracketsLevel(input: input);
+
+            string right = null;
+            string left = null;
+            char operation = '\0';
+
+            for (int i = input.Length - 1; i >= 0; i--)
             {
-                if (Phrase[i] == '+' || Phrase[i] == '-' || Phrase[i] == '/' || Phrase[i] == '*')
+                if (marker[i] == 0 && (input[i] == '+' || input[i] == '-'))
                 {
-                    SplitToNodes();
-                    Console.WriteLine(Count());
-                }
-                else if (i == Phrase.Length - 1)
-                {
-                    Console.WriteLine(Convert.ToDouble(Phrase));
-                }
-            }
-        }
-        public void SplitToNodes()
-        {
-            TrimBrackets();
-            int[] marker = BracketsLevel();
-            for (int i = Phrase.Length - 1; i > -1; i--)
-            {
-                if (marker[i] == 0 && (Phrase[i] == '+' || Phrase[i] == '-' || Phrase[i] == '*' || Phrase[i] == '/'))
-                {
-                    left = new Node() { Phrase = Phrase.Substring(0, i) };
-                    right = new Node() { Phrase = Phrase.Substring(i + 1) };
-                    if (Phrase[i] == '+')
-                    {
-                        eseence = Essence.Add;
-                        break;
-                    }
-                    else if (Phrase[i] == '-')
-                    {
-                        eseence = Essence.Subtract;
-                        break;
-                    }
-                    else if (Phrase[i] == '*')
-                    {
-                        eseence = Essence.Multiply;
-                        break;
-                    }
-                    else if (Phrase[i] == '/')
-                    {
-                        eseence = Essence.Divide;
-                        break;
-                    }
+                    right = input.Substring(i + 1);
+                    left = input.Substring(0, i);
+                    operation = input[i];
+                    break;
                 }
                 else if (i == 0)
                 {
-                    eseence = Essence.Number;
+                    for (int j = input.Length - 1; j >= 0; j--)
+                    {
+                        if (marker[j] == 0 && (input[j] == '*' || input[j] == '/'))
+                        {
+                            right = input.Substring(j + 1);
+                            left = input.Substring(0, j);
+                            operation = input[j];
+                        }
+                    }
                 }
             }
-            for (int i = 0; i < left.Phrase.Length; i++)
+            Node<CalculationNode> node = new Node<CalculationNode>();
+            switch (operation)
             {
-                if (left.Phrase[i] == '+' || left.Phrase[i] == '-' || left.Phrase[i] == '/' || left.Phrase[i] == '*')
+                case '+':
+                    node.info.Operation = Operation.Add;
+                    break;
+                case '-':
+                    node.info.Operation = Operation.Subtract;
+                    break;
+                case '/':
+                    node.info.Operation = Operation.Divide;
+                    break;
+                case '*':
+                    node.info.Operation = Operation.Multiply;
+                    break;
+            }
+            for (int i = 0; i < left.Length; i++)
+            {
+                if (left[i] == '+' || left[i] == '-' || left[i] == '/' || left[i] == '*')
                 {
-                    left.SplitToNodes();
+                    node.left = left.SplitToNodes();
+                    break;
                 }
-            }
-            for (int i = 0; i < right.Phrase.Length; i++)
-            {
-                if (right.Phrase[i] == '+' || right.Phrase[i] == '-' || right.Phrase[i] == '/' || right.Phrase[i] == '*')
+                else if (i == left.Length - 1)
                 {
-                    right.SplitToNodes();
+                    node.left = new Node<CalculationNode>();
+                    left = TrimBrackets(input: left);
+                    node.left.info.Number = Convert.ToDecimal(left);
                 }
             }
-        }
-        public decimal Count()
-        {
-            switch (eseence)
+            for (int i = 0; i < right.Length; i++)
             {
-                case Essence.Add:
-                    return left.Count() + right.Count();
-                case Essence.Subtract:
-                    return left.Count() - right.Count();
-                case Essence.Multiply:
-                    return left.Count() * right.Count();
-                case Essence.Divide:
-                    return left.Count() / right.Count();
-                case Essence.Number:
-                    TrimBrackets();
-                    return Convert.ToDecimal(eseence);
-                default: return 0;
+                if (right[i] == '+' || right[i] == '-' || right[i] == '/' || right[i] == '*')
+                {
+                    node.right = right.SplitToNodes();
+                    break;
+                }
+                else if (i == right.Length - 1)
+                {
+                    node.right = new Node<CalculationNode>();
+                    right = TrimBrackets(input: right);
+                    node.right.info.Number = Convert.ToDecimal(right);
+                }
             }
+            return node;
         }
     }
     class Program
@@ -175,8 +214,10 @@ namespace Syntax_Pars
         static void Main(string[] args)
         {
             Console.WriteLine("Enter your phrase for calculation: ");
-            Node tree = new Node();
-            tree.Execute();
+            string a = Console.ReadLine();
+            Node<CalculationNode> myNode = a.GrowNodeTree();
+            decimal result = myNode.Calculate(myNode);
+            Console.WriteLine(result);
         }
     }
 }
