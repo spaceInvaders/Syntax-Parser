@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Syntax_Pars
 {
@@ -80,7 +78,7 @@ namespace Syntax_Pars
             return marker;
         }
 
-        static string TrimBrackets(string input)
+        public static string TrimBrackets(string input)
         {
             if (input[0] == '(' && input[input.Length - 1] == ')')
             {
@@ -99,7 +97,7 @@ namespace Syntax_Pars
             }
             if (input[0] == '(' && input[input.Length - 1] == ')')
             {
-                TrimBrackets(input: input);
+                input = TrimBrackets(input: input);
             }
             return input;
         }
