@@ -29,7 +29,7 @@ namespace Syntax_Pars
             return node;
         }
 
-        static bool CheckInput(string input)
+        public static bool CheckInput(string input)
         {
             input = input.Replace(" ", "");
             bool inputIsGood = false;
@@ -53,7 +53,7 @@ namespace Syntax_Pars
             return inputIsGood;
         }
 
-        static int[] BracketsLevel(string input)
+        public static int[] BracketsLevel(string input)
         {
             int[] marker = new int[input.Length];
             if (input[0] == '(')
