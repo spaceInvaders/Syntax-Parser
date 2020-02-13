@@ -8,9 +8,20 @@ namespace Syntax_Pars
         {
             Console.WriteLine("Enter your phrase for calculation: ");
             string input = Console.ReadLine();
-            Node<CalculationNode> myNode = input.GrowNodeTree();
-            decimal result = myNode.Calculate();
-            Console.WriteLine(result);
+            if (String.IsNullOrEmpty(input))
+            {
+                Console.WriteLine("pointer should move to the next string");
+                #warning: Put event here;
+            }
+            else
+            {
+                Node<CalculationNode> myNode = input.GrowNodeTree();
+                if (myNode != null)
+                {
+                    decimal result = myNode.Calculate();
+                    Console.WriteLine(result);
+                }
+            }
         }
     }
 }

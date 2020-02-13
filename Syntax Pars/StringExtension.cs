@@ -6,51 +6,47 @@ namespace Syntax_Pars
     {
         internal static Node<CalculationNode> GrowNodeTree(this string input)
         {
-            bool inputIsGood = CheckInput(input: input);
+            string editedInput = CheckInput(input: input);
             Node<CalculationNode> node = null;
-            if (inputIsGood)
+            if (editedInput != null)
             {
-                TrimBrackets(input: input);
-                for (int index = 0; index < input.Length; index++)
+                TrimBrackets(input: editedInput);
+                
+                if (editedInput.Contains('+') || editedInput.Contains('-') || editedInput.Contains('/') || editedInput.Contains('*'))
                 {
-                    if (input[index] == '+' || input[index] == '-' || input[index] == '/' || input[index] == '*')
-                    {
-                        node = SplitToNodes(input: input);
-                        break;
-                    }
-                    else if (index == input.Length - 1)
-                    {
-                        node = new Node<CalculationNode>();
-                        node.info.Operation = Operation.Number;
-                        node.info.Number = Convert.ToDecimal(input);
-                    }
+                    node = SplitToNodes(input: editedInput);
+                }
+                else
+                {
+                    node = new Node<CalculationNode>();
+                    node.info.Operation = Operation.Number;
+                    node.info.Number = Convert.ToDecimal(editedInput);
                 }
             }
             return node;
         }
 
-        public static bool CheckInput(string input)
+        public static string CheckInput(string input)
         {
-            input = input.Replace(" ", "");
-            bool inputIsGood = false;
-            for (int index = 0; index < input.Length; index++)
+            string editedInput = input.Replace(".", ",");
+            editedInput = editedInput.Replace(" ", "");
+            for (int index = 0; index < editedInput.Length; index++)
             {
-                char myChar = input[index];
+                char myChar = editedInput[index];
                 if ((myChar != '0') && (myChar != '1') && (myChar != '2') && (myChar != '3') && (myChar != '4') && (myChar != '5')
                    && (myChar != '6') && (myChar != '7') && (myChar != '8') && (myChar != '9') && (myChar != '0') && (myChar != '+')
                    && (myChar != '-') && (myChar != '*') && (myChar != '/') && (myChar != '(') && (myChar != ')') && (myChar != ','))
                 {
                     Console.WriteLine("Invalid input");
-                    inputIsGood = false;
+                    editedInput = null;
                     break;
                 }
                 else if (index == input.Length - 1)
                 {
                     Console.WriteLine("Input is ok");
-                    inputIsGood = true;
                 }
             }
-            return inputIsGood;
+            return editedInput;
         }
 
         public static int[] BracketsLevel(string input)
@@ -102,7 +98,7 @@ namespace Syntax_Pars
             return input;
         }
 
-        static Node<CalculationNode> SplitToNodes(this string input)
+        internal static Node<CalculationNode> SplitToNodes(this string input)
         {
             input = TrimBrackets(input: input);
             int[] marker = BracketsLevel(input: input);
@@ -147,33 +143,25 @@ namespace Syntax_Pars
                     node.info.Operation = Operation.Multiply;
                     break;
             }
-            for (int index = 0; index < left.Length; index++)
+            if (left.Contains('+') || left.Contains('-') || left.Contains('/') || left.Contains('*'))
             {
-                if (left[index] == '+' || left[index] == '-' || left[index] == '/' || left[index] == '*')
-                {
-                    node.left = left.SplitToNodes();
-                    break;
-                }
-                else if (index == left.Length - 1)
-                {
-                    node.left = new Node<CalculationNode>();
-                    left = TrimBrackets(input: left);
-                    node.left.info.Number = Convert.ToDecimal(left);
-                }
+                node.Left = left.SplitToNodes();
             }
-            for (int index = 0; index < right.Length; index++)
+            else
             {
-                if (right[index] == '+' || right[index] == '-' || right[index] == '/' || right[index] == '*')
-                {
-                    node.right = right.SplitToNodes();
-                    break;
-                }
-                else if (index == right.Length - 1)
-                {
-                    node.right = new Node<CalculationNode>();
-                    right = TrimBrackets(input: right);
-                    node.right.info.Number = Convert.ToDecimal(right);
-                }
+                node.Left = new Node<CalculationNode>();
+                left = TrimBrackets(input: left);
+                node.Left.info.Number = Convert.ToDecimal(left);
+            }
+            if (right.Contains('+') || right.Contains('-') || right.Contains('/') || right.Contains('*'))
+            {
+                node.Right = right.SplitToNodes();
+            }
+            else
+            {
+                node.Right = new Node<CalculationNode>();
+                right = TrimBrackets(input: right);
+                node.Right.info.Number = Convert.ToDecimal(right);
             }
             return node;
         }

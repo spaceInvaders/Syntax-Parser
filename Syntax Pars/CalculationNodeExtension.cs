@@ -10,12 +10,12 @@ namespace Syntax_Pars
         {
             return node.info.Operation switch
             {
-                Operation.Add => node.left.Calculate() + node.right.Calculate(),
-                Operation.Subtract => node.left.Calculate() - node.right.Calculate(),
-                Operation.Multiply => node.left.Calculate() * node.right.Calculate(),
-                Operation.Divide => node.left.Calculate() / node.right.Calculate(),
+                Operation.Add => node.Left.Calculate() + node.Right.Calculate(),
+                Operation.Subtract => node.Left.Calculate() - node.Right.Calculate(),
+                Operation.Multiply => node.Left.Calculate() * node.Right.Calculate(),
+                Operation.Divide => node.Left.Calculate() / node.Right.Calculate(),
                 Operation.Number => Convert.ToDecimal(node.info.Number),
-                _ => throw new Exception("Calculation failed"),
+                _ => throw new ArgumentException("Calculation failed"),
             };
         }
     }

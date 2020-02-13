@@ -6,8 +6,8 @@ namespace Syntax_Pars
 {
     class Node<T>
     {
-        public Node<T> left;
-        public Node<T> right;
+        public Node<T> Left { get; set; }
+        public Node<T> Right { get; set; }
         public CalculationNode info;
     }
 

@@ -9,17 +9,17 @@ namespace Syntax_Pars_Tests
         [TestMethod]
         public void CheckInputTest()
         {
-            string test = "0 + 1234   -  5,67/89*0";
-            bool expected = true;
-            bool actual = StringExtension.CheckInput(test);
+            string test = "0 + 1.234   -  5.67/89*0";
+            string expected = "0+1,234-5,67/89*0";
+            string actual = StringExtension.CheckInput(test);
             Assert.AreEqual(expected, actual);
         }
         [TestMethod]
         public void CheckInputTest1()
         {
             string test = "ab0+1234-5,67/89*0";
-            bool expected = false;
-            bool actual = StringExtension.CheckInput(test);
+            string expected = null;
+            string actual = StringExtension.CheckInput(test);
             Assert.AreEqual(expected, actual);
         }
         [TestMethod]
@@ -90,14 +90,6 @@ namespace Syntax_Pars_Tests
         public void TrimBracketsTest3()
         {
             string test = "(((7+5)+(3-4)))";
-            string expected = "(7+5)+(3-4)";
-            string actual = StringExtension.TrimBrackets(test);
-            Assert.AreEqual(expected, actual);
-        }
-        [TestMethod]
-        public void SplitToNodesTest()
-        {
-            string test = "";
             string expected = "(7+5)+(3-4)";
             string actual = StringExtension.TrimBrackets(test);
             Assert.AreEqual(expected, actual);
