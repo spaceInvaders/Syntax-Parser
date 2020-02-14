@@ -11,10 +11,9 @@ namespace Syntax_Pars
             if (editedInput != null)
             {
                 TrimBrackets(input: editedInput);
-                
                 if (editedInput.Contains('+') || editedInput.Contains('-') || editedInput.Contains('/') || editedInput.Contains('*'))
                 {
-                    node = SplitToNodes(input: editedInput);
+                    node = editedInput.SplitToNodes();
                 }
                 else
                 {
@@ -30,6 +29,7 @@ namespace Syntax_Pars
         {
             string editedInput = input.Replace(".", ",");
             editedInput = editedInput.Replace(" ", "");
+            editedInput = editedInput.CheckOnMinus();
             for (int index = 0; index < editedInput.Length; index++)
             {
                 char myChar = editedInput[index];
@@ -47,6 +47,20 @@ namespace Syntax_Pars
                 }
             }
             return editedInput;
+        }
+
+        public static string CheckOnMinus(this string input)
+        {
+            if (input[0] == '-' || input[0] == '+')
+            {
+                input = "0" + input;
+            }
+            for (int index = 1; index < input.Length; index++)
+            {
+                if ((input[index] == '-' || input[index] == '+') && input[index - 1] == '(')
+                    input = input.Insert(index, "0");
+            }
+            return input;
         }
 
         public static int[] BracketsLevel(string input)

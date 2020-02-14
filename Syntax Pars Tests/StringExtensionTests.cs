@@ -7,6 +7,22 @@ namespace Syntax_Pars_Tests
     public class StringExtensionTests
     {
         [TestMethod]
+        public void CheckOnMinusTest()
+        {
+            string test = "-(6)";
+            string expected = "0-(6)";
+            string actual = StringExtension.CheckOnMinus(test);
+            Assert.AreEqual(expected, actual);
+        }
+        [TestMethod]
+        public void CheckOnMinusTest1()
+        {
+            string test = "(-6)-(+7)";
+            string expected = "(0-6)-(0+7)";
+            string actual = StringExtension.CheckOnMinus(test);
+            Assert.AreEqual(expected, actual);
+        }
+        [TestMethod]
         public void CheckInputTest()
         {
             string test = "0 + 1.234   -  5.67/89*0";
