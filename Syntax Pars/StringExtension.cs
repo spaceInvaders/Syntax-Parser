@@ -17,6 +17,7 @@ namespace Syntax_Pars
                 }
                 else
                 {
+                    editedInput = TrimBrackets(input: editedInput);
                     node = new Node<CalculationNode>();
                     node.info.Operation = Operation.Number;
                     node.info.Number = Convert.ToDecimal(editedInput);
@@ -30,21 +31,29 @@ namespace Syntax_Pars
             string editedInput = input.Replace(".", ",");
             editedInput = editedInput.Replace(" ", "");
             editedInput = editedInput.CheckOnMinus();
-            for (int index = 0; index < editedInput.Length; index++)
+            editedInput = editedInput.CheckOnBrackets();
+            if (editedInput != null)
             {
-                char myChar = editedInput[index];
-                if ((myChar != '0') && (myChar != '1') && (myChar != '2') && (myChar != '3') && (myChar != '4') && (myChar != '5')
-                   && (myChar != '6') && (myChar != '7') && (myChar != '8') && (myChar != '9') && (myChar != '0') && (myChar != '+')
-                   && (myChar != '-') && (myChar != '*') && (myChar != '/') && (myChar != '(') && (myChar != ')') && (myChar != ','))
+                for (int index = 0; index < editedInput.Length; index++)
                 {
-                    Console.WriteLine("Invalid input");
-                    editedInput = null;
-                    break;
+                    char myChar = editedInput[index];
+                    if ((myChar != '0') && (myChar != '1') && (myChar != '2') && (myChar != '3') && (myChar != '4') && (myChar != '5')
+                       && (myChar != '6') && (myChar != '7') && (myChar != '8') && (myChar != '9') && (myChar != '0') && (myChar != '+')
+                       && (myChar != '-') && (myChar != '*') && (myChar != '/') && (myChar != '(') && (myChar != ')') && (myChar != ','))
+                    {
+                        Console.WriteLine("Invalid input");
+                        editedInput = null;
+                        break;
+                    }
+                    else if (index == input.Length - 1)
+                    {
+                        Console.WriteLine("Input is ok");
+                    }
                 }
-                else if (index == input.Length - 1)
-                {
-                    Console.WriteLine("Input is ok");
-                }
+            }
+            else
+            {
+                Console.WriteLine("Invalid input");
             }
             return editedInput;
         }
@@ -63,12 +72,61 @@ namespace Syntax_Pars
             return input;
         }
 
+        public static string CheckOnBrackets(this string input)
+        {
+            int[] marker = BracketsLevel(input: input);
+            if (marker[marker.Length - 1] != 0)
+            {
+                input = null;
+            }
+            else
+            {
+                for (int index = 0; index < input.Length; index++)
+                {
+                    switch (input[index])
+                    {
+                        case '(':
+                            if (index > 0)
+                            {
+                                if (input[index - 1] != '(' && input[index - 1] != '+' && input[index - 1] != '-' && input[index - 1] != '*' && input[index - 1] != '/')
+                                {
+                                    return null;
+                                }
+                            }
+                            if (input[index + 1] == ')' || input[index + 1] == ',' || input[index + 1] == '*' || input[index + 1] == '/')
+                            {
+                                return null;
+                            }
+                            break;
+                        case ')':
+                            if (input[index - 1] == '(' || input[index - 1] == ',' || input[index - 1] == '+' || input[index - 1] == '-' || input[index - 1] == '*' || input[index - 1] == '/')
+                            {
+                                return null;
+                            }
+                            if (index != input.Length - 1)
+                            {
+                                if (input[index + 1] != '+' && input[index + 1] != '-' && input[index + 1] != '*' && input[index + 1] != '/' && input[index + 1] != ')')
+                                {
+                                    return null;
+                                }
+                            }
+                            break;
+                    }
+                }
+            }
+            return input;
+        }
+
         public static int[] BracketsLevel(string input)
         {
             int[] marker = new int[input.Length];
             if (input[0] == '(')
             {
                 marker[0] = 1;
+            }
+            if (input[0] == ')')
+            {
+                marker[0] = -1;
             }
             for (int index = 1; index < input.Length; index++)
             {

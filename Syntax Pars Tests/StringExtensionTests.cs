@@ -7,7 +7,87 @@ namespace Syntax_Pars_Tests
     public class StringExtensionTests
     {
         [TestMethod]
-        public void CheckOnMinusTest()
+        public void CheckOnBracketsTest1()
+        {
+            string test = "(+6)";
+            string expected = "(+6)";
+            string actual = StringExtension.CheckOnBrackets(test);
+            Assert.AreEqual(expected, actual);
+        }
+        [TestMethod]
+        public void CheckOnBracketsTest2()
+        {
+            string test = "(*6)";
+            string expected = null;
+            string actual = StringExtension.CheckOnBrackets(test);
+            Assert.AreEqual(expected, actual);
+        }
+        [TestMethod]
+        public void CheckOnBracketsTest3()
+        {
+            string test = "()";
+            string expected = null;
+            string actual = StringExtension.CheckOnBrackets(test);
+            Assert.AreEqual(expected, actual);
+        }
+        [TestMethod]
+        public void CheckOnBracketsTest4()
+        {
+            string test = ",(2+4)";
+            string expected = null;
+            string actual = StringExtension.CheckOnBrackets(test);
+            Assert.AreEqual(expected, actual);
+        }
+        [TestMethod]
+        public void CheckOnBracketsTest5()
+        {
+            string test = ")(2+4)";
+            string expected = null;
+            string actual = StringExtension.CheckOnBrackets(test);
+            Assert.AreEqual(expected, actual);
+        }
+        [TestMethod]
+        public void CheckOnBracketsTest6()
+        {
+            string test = "((2)+4)";
+            string expected = "((2)+4)";
+            string actual = StringExtension.CheckOnBrackets(test);
+            Assert.AreEqual(expected, actual);
+        }
+        [TestMethod]
+        public void CheckOnBracketsTest7()
+        {
+            string test = "-((2)+4)";
+            string expected = "-((2)+4)";
+            string actual = StringExtension.CheckOnBrackets(test);
+            Assert.AreEqual(expected, actual);
+        }
+        [TestMethod]
+        public void CheckOnBracketsTest8()
+        {
+            string test = "-((2)+4),";
+            string expected = null;
+            string actual = StringExtension.CheckOnBrackets(test);
+            Assert.AreEqual(expected, actual);
+        }
+        [TestMethod]
+        public void CheckOnBracketsTest9()
+        {
+            string test = "(9+0)(2-4)";
+            string expected = null;
+            string actual = StringExtension.CheckOnBrackets(test);
+            Assert.AreEqual(expected, actual);
+        }
+        [TestMethod]
+        public void CheckOnBracketsTest10()
+        {
+            string test = "(9+0)+(2-4)(";
+            string expected = null;
+            string actual = StringExtension.CheckOnBrackets(test);
+            Assert.AreEqual(expected, actual);
+        }
+        [TestMethod]
+        public void CheckOnMinusTest1()
         {
             string test = "-(6)";
             string expected = "0-(6)";
@@ -15,7 +95,7 @@ namespace Syntax_Pars_Tests
             Assert.AreEqual(expected, actual);
         }
         [TestMethod]
-        public void CheckOnMinusTest1()
+        public void CheckOnMinusTest2()
         {
             string test = "(-6)-(+7)";
             string expected = "(0-6)-(0+7)";
@@ -23,7 +103,7 @@ namespace Syntax_Pars_Tests
             Assert.AreEqual(expected, actual);
         }
         [TestMethod]
-        public void CheckInputTest()
+        public void CheckInputTest1()
         {
             string test = "0 + 1.234   -  5.67/89*0";
             string expected = "0+1,234-5,67/89*0";
@@ -31,7 +111,7 @@ namespace Syntax_Pars_Tests
             Assert.AreEqual(expected, actual);
         }
         [TestMethod]
-        public void CheckInputTest1()
+        public void CheckInputTest2()
         {
             string test = "ab0+1234-5,67/89*0";
             string expected = null;
@@ -39,7 +119,7 @@ namespace Syntax_Pars_Tests
             Assert.AreEqual(expected, actual);
         }
         [TestMethod]
-        public void BracketsLevelTest()
+        public void BracketsLevelTest1()
         {
             string test = "((2*4)-7)";
             int[] expected = new int[9] { 1, 2, 2, 2, 2, 1, 1, 1, 0 };
@@ -47,7 +127,7 @@ namespace Syntax_Pars_Tests
             CollectionAssert.AreEqual(expected, actual);
         }
         [TestMethod]
-        public void BracketsLevelTest1()
+        public void BracketsLevelTest2()
         {
             string test = "(2/2)+(3*3)";
             int[] expected = new int[11] { 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0 };
@@ -55,7 +135,7 @@ namespace Syntax_Pars_Tests
             CollectionAssert.AreEqual(expected, actual);
         }
         [TestMethod]
-        public void BracketsLevelTest2()
+        public void BracketsLevelTest3()
         {
             string test = "()";
             int[] expected = new int[2] { 1, 0 };
@@ -63,7 +143,7 @@ namespace Syntax_Pars_Tests
             CollectionAssert.AreEqual(expected, actual);
         }
         [TestMethod]
-        public void TrimBracketsTest()
+        public void TrimBracketsTest1()
         {
             string test = "(7+5)";
             string expected = "7+5";
@@ -71,7 +151,7 @@ namespace Syntax_Pars_Tests
             Assert.AreEqual(expected, actual);
         }
         [TestMethod]
-        public void TrimBracketsTest1()
+        public void TrimBracketsTest2()
         {
             string test = "((7+5))";
             string expected = "7+5";
@@ -79,7 +159,7 @@ namespace Syntax_Pars_Tests
             Assert.AreEqual(expected, actual);
         }
         [TestMethod]
-        public void TrimBracketsTest2()
+        public void TrimBracketsTest3()
         {
             string test = "(7+5)+(3-4)";
             string expected = "(7+5)+(3-4)";
@@ -95,7 +175,7 @@ namespace Syntax_Pars_Tests
             Assert.AreEqual(expected, actual);
         }
         [TestMethod]
-        public void TrimBracketsTest5()
+        public void TrimBracketsTest6()
         {
             string test = "7+5)";
             string expected = "7+5)";
@@ -103,7 +183,7 @@ namespace Syntax_Pars_Tests
             Assert.AreEqual(expected, actual);
         }
         [TestMethod]
-        public void TrimBracketsTest3()
+        public void TrimBracketsTest7()
         {
             string test = "(((7+5)+(3-4)))";
             string expected = "(7+5)+(3-4)";
