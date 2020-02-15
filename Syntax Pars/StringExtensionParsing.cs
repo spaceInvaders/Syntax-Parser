@@ -120,18 +120,6 @@ namespace Syntax_Pars
             return input;
         }
 
-        public static string CheckOnZeros(this string input)
-        {
-            for (int index = 0; index < input.Length - 1; index++)
-            {
-                if (input[index] == '0' && input[index + 1] == '0')
-                {
-                    return null;
-                }
-            }
-            return input;
-        }
-
         public static string CheckOnComma(this string input)
         {
             input = TrimBrackets(input: input);

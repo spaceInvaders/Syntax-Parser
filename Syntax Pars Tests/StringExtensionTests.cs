@@ -246,13 +246,5 @@ namespace Syntax_Pars_Tests
             string actual = StringExtensionBase.CheckOnFigures(test);
             Assert.AreEqual(expected, actual);
         }
-        [TestMethod]
-        public void CheckOnZerosTest()
-        {
-            string test = "001";
-            string expected = null;
-            string actual = StringExtensionBase.CheckOnZeros(test);
-            Assert.AreEqual(expected, actual);
-        }
     }
 }
