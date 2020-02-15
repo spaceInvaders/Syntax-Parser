@@ -98,23 +98,35 @@ namespace Syntax_Pars
 
         public static string CheckOnOperations(this string input)
         {
-            for(int index = 1; index < input.Length; index++)
+            if (input == "+" || input == "-" ||
+                input == "*" || input == "/")
             {
-                if (input[index] == '+' || input[index] == '-' ||
-                    input[index] == '*' || input[index] == '/')
+                return null;
+            }
+            else
+            {
+                for (int index = 1; index < input.Length; index++)
                 {
-                    if (input[index - 1] == '+' || input[index - 1] == '-' ||
-                        input[index - 1] == '*' || input[index - 1] == '/' ||
-                        input[index - 1] == ',')
+                    if (input[index] == '+' || input[index] == '-' ||
+                        input[index] == '*' || input[index] == '/')
                     {
-                        return null;
+                        if (index == input.Length - 1)
+                        {
+                            return null;
+                        }
+                        else if (input[index - 1] == '+' || input[index - 1] == '-' ||
+                                 input[index - 1] == '*' || input[index - 1] == '/' ||
+                                 input[index - 1] == ',')
+                             {
+                                 return null;
+                             }
+                        else if (input[index + 1] == '+' || input[index + 1] == '-' ||
+                                 input[index + 1] == '*' || input[index + 1] == '/' ||
+                                 input[index + 1] == ',')
+                             {
+                                 return null;
+                             }
                     }
-                    else if (input[index + 1] == '+' || input[index + 1] == '-' ||
-                             input[index + 1] == '*' || input[index + 1] == '/' ||
-                             input[index + 1] == ',')   
-                         {
-                             return null;
-                         }
                 }
             }
             return input;

@@ -31,11 +31,12 @@ namespace Syntax_Pars
         {
             string editedInput = input.Replace(".", ",");
             editedInput = editedInput.Replace(" ", "");
-            editedInput = editedInput.CheckOnMinus();
             editedInput = editedInput.CheckOnBrackets();
             editedInput = editedInput?.CheckOnComma();
             editedInput = editedInput?.CheckOnFigures();
             editedInput = editedInput?.CheckOnOperations();
+            editedInput = editedInput?.CheckOnMinus();
+
             if (editedInput != null)
             {
                 Console.WriteLine("Input is ok");

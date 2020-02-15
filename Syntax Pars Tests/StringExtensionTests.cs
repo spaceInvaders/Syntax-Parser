@@ -23,6 +23,22 @@ namespace Syntax_Pars_Tests
             Assert.AreEqual(expected, actual);
         }
         [TestMethod]
+        public void CheckOnOperationsTest3()
+        {
+            string test = "+";
+            string expected = null;
+            string actual = StringExtensionBase.CheckOnOperations(test);
+            Assert.AreEqual(expected, actual);
+        }
+        [TestMethod]
+        public void CheckOnOperationsTest4()
+        {
+            string test = "7+";
+            string expected = null;
+            string actual = StringExtensionBase.CheckOnOperations(test);
+            Assert.AreEqual(expected, actual);
+        }
+        [TestMethod]
         public void CheckOnCommaTest1()
         {
             string test = "9,7";
