@@ -7,11 +7,35 @@ namespace Syntax_Pars_Tests
     public class StringExtensionTests
     {
         [TestMethod]
-        public void CheckOnBracketsTest1()
+        public void CheckOnCommaTest1()
         {
-            string test = "(+6)";
-            string expected = "(+6)";
-            string actual = StringExtension.CheckOnBrackets(test);
+            string test = "9,7";
+            string expected = "9,7";
+            string actual = StringExtensionBase.CheckOnComma(test);
+            Assert.AreEqual(expected, actual);
+        }
+        [TestMethod]
+        public void CheckOnCommaTest2()
+        {
+            string test = "9,7087,0";
+            string expected = null;
+            string actual = StringExtensionBase.CheckOnComma(test);
+            Assert.AreEqual(expected, actual);
+        }
+        [TestMethod]
+        public void CheckOnCommaTest3()
+        {
+            string test = "9,70+87,0";
+            string expected = "9,70+87,0";
+            string actual = StringExtensionBase.CheckOnComma(test);
+            Assert.AreEqual(expected, actual);
+        }
+        [TestMethod]
+        public void CheckOnCommaTest4()
+        {
+            string test = "(9,7087,)";
+            string expected = null;
+            string actual = StringExtensionBase.CheckOnComma(test);
             Assert.AreEqual(expected, actual);
         }
         [TestMethod]
@@ -19,7 +43,7 @@ namespace Syntax_Pars_Tests
         {
             string test = "(*6)";
             string expected = null;
-            string actual = StringExtension.CheckOnBrackets(test);
+            string actual = StringExtensionBase.CheckOnBrackets(test);
             Assert.AreEqual(expected, actual);
         }
         [TestMethod]
@@ -27,7 +51,7 @@ namespace Syntax_Pars_Tests
         {
             string test = "()";
             string expected = null;
-            string actual = StringExtension.CheckOnBrackets(test);
+            string actual = StringExtensionBase.CheckOnBrackets(test);
             Assert.AreEqual(expected, actual);
         }
         [TestMethod]
@@ -35,7 +59,7 @@ namespace Syntax_Pars_Tests
         {
             string test = ",(2+4)";
             string expected = null;
-            string actual = StringExtension.CheckOnBrackets(test);
+            string actual = StringExtensionBase.CheckOnBrackets(test);
             Assert.AreEqual(expected, actual);
         }
         [TestMethod]
@@ -43,7 +67,7 @@ namespace Syntax_Pars_Tests
         {
             string test = ")(2+4)";
             string expected = null;
-            string actual = StringExtension.CheckOnBrackets(test);
+            string actual = StringExtensionBase.CheckOnBrackets(test);
             Assert.AreEqual(expected, actual);
         }
         [TestMethod]
@@ -51,7 +75,7 @@ namespace Syntax_Pars_Tests
         {
             string test = "((2)+4)";
             string expected = "((2)+4)";
-            string actual = StringExtension.CheckOnBrackets(test);
+            string actual = StringExtensionBase.CheckOnBrackets(test);
             Assert.AreEqual(expected, actual);
         }
         [TestMethod]
@@ -59,7 +83,7 @@ namespace Syntax_Pars_Tests
         {
             string test = "-((2)+4)";
             string expected = "-((2)+4)";
-            string actual = StringExtension.CheckOnBrackets(test);
+            string actual = StringExtensionBase.CheckOnBrackets(test);
             Assert.AreEqual(expected, actual);
         }
         [TestMethod]
@@ -67,7 +91,7 @@ namespace Syntax_Pars_Tests
         {
             string test = "-((2)+4),";
             string expected = null;
-            string actual = StringExtension.CheckOnBrackets(test);
+            string actual = StringExtensionBase.CheckOnBrackets(test);
             Assert.AreEqual(expected, actual);
         }
         [TestMethod]
@@ -75,7 +99,7 @@ namespace Syntax_Pars_Tests
         {
             string test = "(9+0)(2-4)";
             string expected = null;
-            string actual = StringExtension.CheckOnBrackets(test);
+            string actual = StringExtensionBase.CheckOnBrackets(test);
             Assert.AreEqual(expected, actual);
         }
         [TestMethod]
@@ -83,7 +107,7 @@ namespace Syntax_Pars_Tests
         {
             string test = "(9+0)+(2-4)(";
             string expected = null;
-            string actual = StringExtension.CheckOnBrackets(test);
+            string actual = StringExtensionBase.CheckOnBrackets(test);
             Assert.AreEqual(expected, actual);
         }
         [TestMethod]
@@ -91,7 +115,7 @@ namespace Syntax_Pars_Tests
         {
             string test = "-(6)";
             string expected = "0-(6)";
-            string actual = StringExtension.CheckOnMinus(test);
+            string actual = StringExtensionBase.CheckOnMinus(test);
             Assert.AreEqual(expected, actual);
         }
         [TestMethod]
@@ -99,7 +123,7 @@ namespace Syntax_Pars_Tests
         {
             string test = "(-6)-(+7)";
             string expected = "(0-6)-(0+7)";
-            string actual = StringExtension.CheckOnMinus(test);
+            string actual = StringExtensionBase.CheckOnMinus(test);
             Assert.AreEqual(expected, actual);
         }
         [TestMethod]
@@ -107,7 +131,7 @@ namespace Syntax_Pars_Tests
         {
             string test = "0 + 1.234   -  5.67/89*0";
             string expected = "0+1,234-5,67/89*0";
-            string actual = StringExtension.CheckInput(test);
+            string actual = StringExtensionBase.CheckInput(test);
             Assert.AreEqual(expected, actual);
         }
         [TestMethod]
@@ -115,7 +139,7 @@ namespace Syntax_Pars_Tests
         {
             string test = "ab0+1234-5,67/89*0";
             string expected = null;
-            string actual = StringExtension.CheckInput(test);
+            string actual = StringExtensionBase.CheckInput(test);
             Assert.AreEqual(expected, actual);
         }
         [TestMethod]
@@ -123,7 +147,7 @@ namespace Syntax_Pars_Tests
         {
             string test = "((2*4)-7)";
             int[] expected = new int[9] { 1, 2, 2, 2, 2, 1, 1, 1, 0 };
-            int[] actual = StringExtension.BracketsLevel(test);
+            int[] actual = StringExtensionBase.BracketsLevel(test);
             CollectionAssert.AreEqual(expected, actual);
         }
         [TestMethod]
@@ -131,7 +155,7 @@ namespace Syntax_Pars_Tests
         {
             string test = "(2/2)+(3*3)";
             int[] expected = new int[11] { 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0 };
-            int[] actual = StringExtension.BracketsLevel(test);
+            int[] actual = StringExtensionBase.BracketsLevel(test);
             CollectionAssert.AreEqual(expected, actual);
         }
         [TestMethod]
@@ -139,7 +163,7 @@ namespace Syntax_Pars_Tests
         {
             string test = "()";
             int[] expected = new int[2] { 1, 0 };
-            int[] actual = StringExtension.BracketsLevel(test);
+            int[] actual = StringExtensionBase.BracketsLevel(test);
             CollectionAssert.AreEqual(expected, actual);
         }
         [TestMethod]
@@ -147,7 +171,7 @@ namespace Syntax_Pars_Tests
         {
             string test = "(7+5)";
             string expected = "7+5";
-            string actual = StringExtension.TrimBrackets(test);
+            string actual = StringExtensionBase.TrimBrackets(test);
             Assert.AreEqual(expected, actual);
         }
         [TestMethod]
@@ -155,7 +179,7 @@ namespace Syntax_Pars_Tests
         {
             string test = "((7+5))";
             string expected = "7+5";
-            string actual = StringExtension.TrimBrackets(test);
+            string actual = StringExtensionBase.TrimBrackets(test);
             Assert.AreEqual(expected, actual);
         }
         [TestMethod]
@@ -163,7 +187,7 @@ namespace Syntax_Pars_Tests
         {
             string test = "(7+5)+(3-4)";
             string expected = "(7+5)+(3-4)";
-            string actual = StringExtension.TrimBrackets(test);
+            string actual = StringExtensionBase.TrimBrackets(test);
             Assert.AreEqual(expected, actual);
         }
         [TestMethod]
@@ -171,7 +195,7 @@ namespace Syntax_Pars_Tests
         {
             string test = "(7+5";
             string expected = "(7+5";
-            string actual = StringExtension.TrimBrackets(test);
+            string actual = StringExtensionBase.TrimBrackets(test);
             Assert.AreEqual(expected, actual);
         }
         [TestMethod]
@@ -179,7 +203,7 @@ namespace Syntax_Pars_Tests
         {
             string test = "7+5)";
             string expected = "7+5)";
-            string actual = StringExtension.TrimBrackets(test);
+            string actual = StringExtensionBase.TrimBrackets(test);
             Assert.AreEqual(expected, actual);
         }
         [TestMethod]
@@ -187,7 +211,23 @@ namespace Syntax_Pars_Tests
         {
             string test = "(((7+5)+(3-4)))";
             string expected = "(7+5)+(3-4)";
-            string actual = StringExtension.TrimBrackets(test);
+            string actual = StringExtensionBase.TrimBrackets(test);
+            Assert.AreEqual(expected, actual);
+        }
+        [TestMethod]
+        public void CheckOnFiguresTest1()
+        {
+            string test = "sgs";
+            string expected = null;
+            string actual = StringExtensionBase.CheckOnFigures(test);
+            Assert.AreEqual(expected, actual);
+        }
+        [TestMethod]
+        public void CheckOnFiguresTest2()
+        {
+            string test = "(90-0)";
+            string expected = "(90-0)";
+            string actual = StringExtensionBase.CheckOnFigures(test);
             Assert.AreEqual(expected, actual);
         }
     }

@@ -6,6 +6,7 @@ namespace Syntax_Pars
     {
         static void Main(string[] args)
         {
+            
             Console.WriteLine("Enter your phrase for calculation: ");
             string input = Console.ReadLine();
             if (String.IsNullOrEmpty(input))
