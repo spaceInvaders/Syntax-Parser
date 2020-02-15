@@ -7,6 +7,22 @@ namespace Syntax_Pars_Tests
     public class StringExtensionTests
     {
         [TestMethod]
+        public void CheckOnOperationsTest1()
+        {
+            string test = "++9";
+            string expected = null;
+            string actual = StringExtensionBase.CheckOnOperations(test);
+            Assert.AreEqual(expected, actual);
+        }
+        [TestMethod]
+        public void CheckOnOperationsTest2()
+        {
+            string test = "9-*0";
+            string expected = null;
+            string actual = StringExtensionBase.CheckOnOperations(test);
+            Assert.AreEqual(expected, actual);
+        }
+        [TestMethod]
         public void CheckOnCommaTest1()
         {
             string test = "9,7";
@@ -228,6 +244,14 @@ namespace Syntax_Pars_Tests
             string test = "(90-0)";
             string expected = "(90-0)";
             string actual = StringExtensionBase.CheckOnFigures(test);
+            Assert.AreEqual(expected, actual);
+        }
+        [TestMethod]
+        public void CheckOnZerosTest()
+        {
+            string test = "001";
+            string expected = null;
+            string actual = StringExtensionBase.CheckOnZeros(test);
             Assert.AreEqual(expected, actual);
         }
     }

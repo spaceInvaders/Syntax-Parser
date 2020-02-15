@@ -34,6 +34,8 @@ namespace Syntax_Pars
             editedInput = editedInput.CheckOnBrackets();
             editedInput = editedInput?.CheckOnComma();
             editedInput = editedInput?.CheckOnFigures();
+            editedInput = editedInput?.CheckOnOperations();
+            editedInput = editedInput?.CheckOnZeros();
             if (editedInput != null)
             {
                 Console.WriteLine("Input is ok");
