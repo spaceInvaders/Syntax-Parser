@@ -11,7 +11,8 @@ namespace Syntax_Pars
             if (editedInput != null)
             {
                 TrimBrackets(input: editedInput);
-                if (editedInput.Contains('+') || editedInput.Contains('-') || editedInput.Contains('/') || editedInput.Contains('*'))
+                if (editedInput.Contains('+') || editedInput.Contains('-') ||
+                    editedInput.Contains('/') || editedInput.Contains('*'))
                 {
                     node = editedInput.SplitToNodes();
                 }
@@ -56,7 +57,8 @@ namespace Syntax_Pars
             char operation = '\0';
             for (int index = input.Length - 1; index >= 0; index--)
             {
-                if (marker[index] == 0 && (input[index] == '+' || input[index] == '-'))
+                if (marker[index] == 0 && input[index] == '+' ||
+                    marker[index] == 0 && input[index] == '-')
                 {
                     right = input.Substring(index + 1);
                     left = input.Substring(0, index);
@@ -67,7 +69,8 @@ namespace Syntax_Pars
                 {
                     for (int currentIndex = input.Length - 1; currentIndex >= 0; currentIndex--)
                     {
-                        if (marker[currentIndex] == 0 && (input[currentIndex] == '*' || input[currentIndex] == '/'))
+                        if (marker[currentIndex] == 0 && input[currentIndex] == '*' ||
+                            marker[currentIndex] == 0 && input[currentIndex] == '/')
                         {
                             right = input.Substring(currentIndex + 1);
                             left = input.Substring(0, currentIndex);
@@ -92,7 +95,8 @@ namespace Syntax_Pars
                     node.info.Operation = Operation.Multiply;
                     break;
             }
-            if (left.Contains('+') || left.Contains('-') || left.Contains('/') || left.Contains('*'))
+            if (left.Contains('+') || left.Contains('-') ||
+                left.Contains('/') || left.Contains('*'))
             {
                 node.Left = left.SplitToNodes();
             }
@@ -102,7 +106,8 @@ namespace Syntax_Pars
                 left = TrimBrackets(input: left);
                 node.Left.info.Number = Convert.ToDecimal(left);
             }
-            if (right.Contains('+') || right.Contains('-') || right.Contains('/') || right.Contains('*'))
+            if (right.Contains('+') || right.Contains('-') ||
+                right.Contains('/') || right.Contains('*'))
             {
                 node.Right = right.SplitToNodes();
             }

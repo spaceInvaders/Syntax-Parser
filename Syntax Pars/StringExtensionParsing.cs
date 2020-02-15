@@ -14,8 +14,11 @@ namespace Syntax_Pars
             }
             for (int index = 1; index < input.Length; index++)
             {
-                if ((input[index] == '-' || input[index] == '+') && input[index - 1] == '(')
+                if ((input[index] == '-' && input[index - 1] == '(') ||
+                    (input[index] == '+' && input[index - 1] == '('))
+                {
                     input = input.Insert(index, "0");
+                }
             }
             return input;
         }
@@ -36,24 +39,31 @@ namespace Syntax_Pars
                         case '(':
                             if (index > 0)
                             {
-                                if (input[index - 1] != '(' && input[index - 1] != '+' && input[index - 1] != '-' && input[index - 1] != '*' && input[index - 1] != '/')
+                                if (input[index - 1] != '(' && input[index - 1] != '+' &&
+                                    input[index - 1] != '-' && input[index - 1] != '*' &&
+                                    input[index - 1] != '/')
                                 {
                                     return null;
                                 }
                             }
-                            if (input[index + 1] == ')' || input[index + 1] == ',' || input[index + 1] == '*' || input[index + 1] == '/')
+                            if (input[index + 1] == ')' || input[index + 1] == ',' ||
+                                input[index + 1] == '*' || input[index + 1] == '/')
                             {
                                 return null;
                             }
                             break;
                         case ')':
-                            if (input[index - 1] == '(' || input[index - 1] == ',' || input[index - 1] == '+' || input[index - 1] == '-' || input[index - 1] == '*' || input[index - 1] == '/')
+                            if (input[index - 1] == '(' || input[index - 1] == ',' ||
+                                input[index - 1] == '+' || input[index - 1] == '-' ||
+                                input[index - 1] == '*' || input[index - 1] == '/')
                             {
                                 return null;
                             }
                             if (index != input.Length - 1)
                             {
-                                if (input[index + 1] != '+' && input[index + 1] != '-' && input[index + 1] != '*' && input[index + 1] != '/' && input[index + 1] != ')')
+                                if (input[index + 1] != '+' && input[index + 1] != '-' &&
+                                    input[index + 1] != '*' && input[index + 1] != '/' &&
+                                    input[index + 1] != ')')
                                 {
                                     return null;
                                 }
@@ -70,9 +80,15 @@ namespace Syntax_Pars
             for (int index = 0; index < input.Length; index++)
             {
                 char myChar = input[index];
-                if ((myChar != '0') && (myChar != '1') && (myChar != '2') && (myChar != '3') && (myChar != '4') && (myChar != '5')
-                   && (myChar != '6') && (myChar != '7') && (myChar != '8') && (myChar != '9') && (myChar != '0') && (myChar != '+')
-                   && (myChar != '-') && (myChar != '*') && (myChar != '/') && (myChar != '(') && (myChar != ')') && (myChar != ','))
+                if ((myChar != '0') && (myChar != '1') &&
+                    (myChar != '2') && (myChar != '3') && 
+                    (myChar != '4') && (myChar != '5') &&
+                    (myChar != '6') && (myChar != '7') &&
+                    (myChar != '8') && (myChar != '9') &&
+                    (myChar != '+') && (myChar != '-') &&
+                    (myChar != '*') && (myChar != '/') &&
+                    (myChar != '(') && (myChar != ')') &&
+                    (myChar != ','))
                 {
                     return null;
                 }
@@ -84,16 +100,21 @@ namespace Syntax_Pars
         {
             for(int index = 1; index < input.Length; index++)
             {
-                if (input[index] == '+' || input[index] == '-' || input[index] == '*' || input[index] == '/')
+                if (input[index] == '+' || input[index] == '-' ||
+                    input[index] == '*' || input[index] == '/')
                 {
-                    if (input[index - 1] == '+' || input[index - 1] == '-' || input[index - 1] == '*' || input[index - 1] == '/' || input[index - 1] == ',')
+                    if (input[index - 1] == '+' || input[index - 1] == '-' ||
+                        input[index - 1] == '*' || input[index - 1] == '/' ||
+                        input[index - 1] == ',')
                     {
                         return null;
                     }
-                    else if (input[index + 1] == '+' || input[index + 1] == '-' || input[index + 1] == '*' || input[index + 1] == '/' || input[index + 1] == ',')
-                    {
-                        return null;
-                    }
+                    else if (input[index + 1] == '+' || input[index + 1] == '-' ||
+                             input[index + 1] == '*' || input[index + 1] == '/' ||
+                             input[index + 1] == ',')   
+                         {
+                             return null;
+                         }
                 }
             }
             return input;
@@ -101,7 +122,7 @@ namespace Syntax_Pars
 
         public static string CheckOnZeros(this string input)
         {
-            for (int index = 0; index < input.Length; index++)
+            for (int index = 0; index < input.Length - 1; index++)
             {
                 if (input[index] == '0' && input[index + 1] == '0')
                 {
@@ -124,7 +145,9 @@ namespace Syntax_Pars
                     }
                     else
                     {
-                        if (input[index - 1] == '(' || input[index - 1] == ')' || input[index - 1] == '+' || input[index - 1] == '-' || input[index - 1] == '*' || input[index - 1] == '/')
+                        if (input[index - 1] == '(' || input[index - 1] == ')' ||
+                            input[index - 1] == '+' || input[index - 1] == '-' ||
+                            input[index - 1] == '*' || input[index - 1] == '/')
                         {
                             return null;
                         }
@@ -135,7 +158,8 @@ namespace Syntax_Pars
                         {
                             for (int newIndex = index + 1; newIndex < currentIndex; newIndex++)
                             {
-                                if (input[newIndex] == '+' || input[newIndex] == '-' || input[newIndex] == '*' || input[newIndex] == '/')
+                                if (input[newIndex] == '+' || input[newIndex] == '-' ||
+                                    input[newIndex] == '*' || input[newIndex] == '/')
                                 {
                                     break;
                                 }
