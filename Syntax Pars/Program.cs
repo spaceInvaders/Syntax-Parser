@@ -20,7 +20,10 @@ namespace Syntax_Pars
                 if (myNode != null)
                 {
                     decimal result = myNode.Calculate();
-                    Console.WriteLine(result);
+                    if (CalculationNodeExtension.CalculationIsAllowed)
+                    {
+                        Console.WriteLine(result);
+                    }
                 }
             }
         }

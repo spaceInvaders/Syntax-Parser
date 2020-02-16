@@ -36,7 +36,6 @@ namespace Syntax_Pars
             editedInput = editedInput?.CheckOnFigures();
             editedInput = editedInput?.CheckOnOperations();
             editedInput = editedInput?.CheckOnMinus();
-
             if (editedInput != null)
             {
                 Console.WriteLine("Input is ok");
