@@ -19,10 +19,14 @@ namespace Syntax_Pars
                 Node<CalculationNode> myNode = input.GrowNodeTree();
                 if (myNode != null)
                 {
-                    decimal result = myNode.Calculate();
-                    if (CalculationNodeExtension.CalculationIsAllowed)
+                    try
                     {
+                        decimal result = myNode.Calculate();
                         Console.WriteLine(result);
+                    }
+                    catch (DivideByZeroException ex)
+                    {
+                        Console.WriteLine(ex.Message);
                     }
                 }
             }
