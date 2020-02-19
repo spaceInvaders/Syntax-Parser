@@ -10,7 +10,6 @@ namespace Syntax_Pars
             Node<CalculationNode> node = null;
             if (editedInput != null)
             {
-                TrimBrackets(input: editedInput);
                 if (editedInput.Contains('+') || editedInput.Contains('-') ||
                     editedInput.Contains('/') || editedInput.Contains('*'))
                 {
@@ -18,7 +17,6 @@ namespace Syntax_Pars
                 }
                 else
                 {
-                    editedInput = TrimBrackets(input: editedInput);
                     node = new Node<CalculationNode>();
                     node.info.Operation = Operation.Number;
                     node.info.Number = Convert.ToDecimal(editedInput);
@@ -31,18 +29,22 @@ namespace Syntax_Pars
         {
             string editedInput = input.Replace(".", ",");
             editedInput = editedInput.Replace(" ", "");
-            editedInput = editedInput.CheckOnBrackets();
+            if (editedInput == "")
+            {
+                editedInput = null;
+            }
+            editedInput = editedInput?.CheckOnBrackets();
             editedInput = editedInput?.CheckOnComma();
             editedInput = editedInput?.CheckOnFigures();
             editedInput = editedInput?.CheckOnOperations();
             editedInput = editedInput?.CheckOnMinus();
-            if (editedInput != null)
+            if (String.IsNullOrEmpty(editedInput))
             {
-                Console.WriteLine("Input is ok");
+                Console.WriteLine("Invalid input"); 
             }
             else
             {
-                Console.WriteLine("Invalid input");
+                Console.WriteLine("Input is ok");
             }
             return editedInput;
         }

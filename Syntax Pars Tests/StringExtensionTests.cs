@@ -175,6 +175,14 @@ namespace Syntax_Pars_Tests
             Assert.AreEqual(expected, actual);
         }
         [TestMethod]
+        public void CheckInputTest3()
+        {
+            string test = "    ";
+            string expected = null;
+            string actual = StringExtensionBase.CheckInput(test);
+            Assert.AreEqual(expected, actual);
+        }
+        [TestMethod]
         public void BracketsLevelTest1()
         {
             string test = "((2*4)-7)";
