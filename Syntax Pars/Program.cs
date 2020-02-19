@@ -16,7 +16,7 @@ namespace Syntax_Pars
             }
             else
             {
-                Node<CalculationNode> myNode = input.GrowNodeTree();
+                Node<CalculationElement> myNode = input.GrowNodeTree();
                 if (myNode != null)
                 {
                     try
@@ -24,9 +24,13 @@ namespace Syntax_Pars
                         decimal result = myNode.Calculate();
                         Console.WriteLine(result);
                     }
-                    catch (DivideByZeroException ex)
+                    catch (DivideByZeroException)
                     {
-                        Console.WriteLine(ex.Message);
+                        Console.WriteLine("Error: Divide by Zero");
+                    }
+                    catch (Exception)
+                    {
+                        Console.WriteLine("Calculation failed");
                     }
                 }
             }

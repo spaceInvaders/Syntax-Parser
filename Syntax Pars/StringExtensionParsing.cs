@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Syntax_Pars
 {
-    public static partial class StringExtensionBase
+    public static partial class StringExtension
     {
-        public static string CheckOnMinus(this string input)
+        public static string ValidatedUnaryMinusString(this string input)
         {
             if (input[0] == '-' || input[0] == '+')
             {
@@ -25,6 +25,10 @@ namespace Syntax_Pars
 
         public static string CheckOnBrackets(this string input)
         {
+            if (String.IsNullOrEmpty(input))
+            {
+                return null;
+            }
             int[] marker = BracketsLevel(input: input);
             if (marker[marker.Length - 1] != 0)
             {
@@ -77,23 +81,9 @@ namespace Syntax_Pars
 
         public static string CheckOnFigures(this string input)
         {
-            for (int index = 0; index < input.Length; index++)
-            {
-                char myChar = input[index];
-                if ((myChar != '0') && (myChar != '1') &&
-                    (myChar != '2') && (myChar != '3') && 
-                    (myChar != '4') && (myChar != '5') &&
-                    (myChar != '6') && (myChar != '7') &&
-                    (myChar != '8') && (myChar != '9') &&
-                    (myChar != '+') && (myChar != '-') &&
-                    (myChar != '*') && (myChar != '/') &&
-                    (myChar != '(') && (myChar != ')') &&
-                    (myChar != ','))
-                {
-                    return null;
-                }
-            }
-            return input;
+            List<char> datalist = new List<char>();
+            datalist.AddRange(input);
+            return datalist.TrueForAll(character => "0123456789+-*/(),".Contains(character)) ? input : null;
         }
 
         public static string CheckOnOperations(this string input)

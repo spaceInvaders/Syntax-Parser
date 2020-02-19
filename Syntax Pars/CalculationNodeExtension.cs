@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Syntax_Pars
 {
-    public static class CalculationNodeExtension
+    internal static class CalculationNodeExtension
     {
-        internal static decimal Calculate(this Node<CalculationNode> node)
+        internal static decimal Calculate(this Node<CalculationElement> node)
         {
              return node.info.Operation switch
                 {

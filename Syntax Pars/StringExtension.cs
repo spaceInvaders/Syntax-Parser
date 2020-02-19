@@ -2,12 +2,12 @@
 
 namespace Syntax_Pars
 {
-    public static partial class StringExtensionBase
+    public static partial class StringExtension
     {
-        internal static Node<CalculationNode> GrowNodeTree(this string input)
+        internal static Node<CalculationElement> GrowNodeTree(this string input)
         {
             string editedInput = CheckInput(input: input);
-            Node<CalculationNode> node = null;
+            Node<CalculationElement> node = null;
             if (editedInput != null)
             {
                 if (editedInput.Contains('+') || editedInput.Contains('-') ||
@@ -17,7 +17,7 @@ namespace Syntax_Pars
                 }
                 else
                 {
-                    node = new Node<CalculationNode>();
+                    node = new Node<CalculationElement>();
                     node.info.Operation = Operation.Number;
                     node.info.Number = Convert.ToDecimal(editedInput);
                 }
@@ -37,7 +37,7 @@ namespace Syntax_Pars
             editedInput = editedInput?.CheckOnComma();
             editedInput = editedInput?.CheckOnFigures();
             editedInput = editedInput?.CheckOnOperations();
-            editedInput = editedInput?.CheckOnMinus();
+            editedInput = editedInput?.ValidatedUnaryMinusString();
             if (String.IsNullOrEmpty(editedInput))
             {
                 Console.WriteLine("Invalid input"); 
@@ -49,7 +49,7 @@ namespace Syntax_Pars
             return editedInput;
         }
 
-        internal static Node<CalculationNode> SplitToNodes(this string input)
+        internal static Node<CalculationElement> SplitToNodes(this string input)
         {
             input = TrimBrackets(input: input);
             int[] marker = BracketsLevel(input: input);
@@ -80,7 +80,7 @@ namespace Syntax_Pars
                     }
                 }
             }
-            Node<CalculationNode> node = new Node<CalculationNode>();
+            Node<CalculationElement> node = new Node<CalculationElement>();
             switch (operation)
             {
                 case '+':
@@ -103,7 +103,7 @@ namespace Syntax_Pars
             }
             else
             {
-                node.Left = new Node<CalculationNode>();
+                node.Left = new Node<CalculationElement>();
                 left = TrimBrackets(input: left);
                 node.Left.info.Number = Convert.ToDecimal(left);
             }
@@ -114,7 +114,7 @@ namespace Syntax_Pars
             }
             else
             {
-                node.Right = new Node<CalculationNode>();
+                node.Right = new Node<CalculationElement>();
                 right = TrimBrackets(input: right);
                 node.Right.info.Number = Convert.ToDecimal(right);
             }
