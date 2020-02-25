@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace Syntax_Pars
 {
@@ -8,7 +8,7 @@ namespace Syntax_Pars
     {
         public static string ValidatedUnaryMinusString(this string input)
         {
-            if (input[0] == '-' || input[0] == '+')
+            if (input.StartsWith('-') || input.StartsWith('+'))
             {
                 input = "0" + input;
             }
@@ -23,16 +23,12 @@ namespace Syntax_Pars
             return input;
         }
 
-        public static string CheckOnBrackets(this string input)
+        public static void CheckOnBrackets(this string input)
         {
-            if (String.IsNullOrEmpty(input))
-            {
-                return null;
-            }
             int[] marker = BracketsLevel(input: input);
             if (marker[marker.Length - 1] != 0)
             {
-                input = null;
+                throw new ParsingException("x");
             }
             else
             {
@@ -41,138 +37,116 @@ namespace Syntax_Pars
                     switch (input[index])
                     {
                         case '(':
-                            if (index > 0)
+                            if (index > 0 && !"(+-*/".Contains(input[index - 1]))
                             {
-                                if (input[index - 1] != '(' && input[index - 1] != '+' &&
-                                    input[index - 1] != '-' && input[index - 1] != '*' &&
-                                    input[index - 1] != '/')
-                                {
-                                    return null;
-                                }
+                                throw new ParsingException("x");
                             }
-                            if (input[index + 1] == ')' || input[index + 1] == ',' ||
-                                input[index + 1] == '*' || input[index + 1] == '/')
+                            if ("),*/".Contains(input[index - 1]))
                             {
-                                return null;
+                                throw new ParsingException("x");
                             }
                             break;
                         case ')':
-                            if (input[index - 1] == '(' || input[index - 1] == ',' ||
-                                input[index - 1] == '+' || input[index - 1] == '-' ||
-                                input[index - 1] == '*' || input[index - 1] == '/')
+                            if ("(,+-*/".Contains(input[index - 1]))
                             {
-                                return null;
+                                throw new ParsingException("x");
                             }
-                            if (index != input.Length - 1)
+                            if (index != input.Length - 1 && "+-*/)".Contains(input[index + 1]))
                             {
-                                if (input[index + 1] != '+' && input[index + 1] != '-' &&
-                                    input[index + 1] != '*' && input[index + 1] != '/' &&
-                                    input[index + 1] != ')')
-                                {
-                                    return null;
-                                }
+                                    throw new ParsingException("x");
                             }
                             break;
                     }
                 }
             }
-            return input;
         }
 
-        public static string CheckOnFigures(this string input)
+        public static void CheckOnFigures(this string input)
         {
-            List<char> datalist = new List<char>();
-            datalist.AddRange(input);
-            return datalist.TrueForAll(character => "0123456789+-*/(),".Contains(character)) ? input : null;
-        }
-
-        public static string CheckOnOperations(this string input)
-        {
-            if (input == "+" || input == "-" ||
-                input == "*" || input == "/")
+            if (!input.All(character => "0123456789+-*/(),".Contains(character)))
             {
-                return null;
+                var exceptionElements = input.ToCharArray().Except("0123456789+-*/()".ToCharArray());
+                List<char> elements = new List<char>();
+                foreach (char character in exceptionElements)
+                {
+                    elements.Add(character);
+                }
+                string wrongFigures = new string(elements.ToArray());
+                throw new ParsingException($"Wrong figures: {wrongFigures}");
+            }
+        }
+
+        public static void CheckOnOperations(this string input)
+        {
+            if (input.Length == 1 && "+-*/".Contains(input))
+            {
+                throw new ParsingException("x");
             }
             else
             {
                 for (int index = 1; index < input.Length; index++)
                 {
-                    if (input[index] == '+' || input[index] == '-' ||
-                        input[index] == '*' || input[index] == '/')
+                    if ("+-*/".Contains(input[index]))
                     {
                         if (index == input.Length - 1)
                         {
-                            return null;
+                            throw new ParsingException("x");
                         }
-                        else if (input[index - 1] == '+' || input[index - 1] == '-' ||
-                                 input[index - 1] == '*' || input[index - 1] == '/' ||
-                                 input[index - 1] == ',')
-                             {
-                                 return null;
-                             }
-                        else if (input[index + 1] == '+' || input[index + 1] == '-' ||
-                                 input[index + 1] == '*' || input[index + 1] == '/' ||
-                                 input[index + 1] == ',')
-                             {
-                                 return null;
-                             }
+                        else if ("+-*/,".Contains(input[index - 1]))
+                        {
+                            throw new ParsingException("x");
+                        }
+                        else if ("+-*/,".Contains(input[index + 1]))
+                        {
+                            throw new ParsingException("x");
+                        }
                     }
                 }
             }
-            return input;
         }
 
-        public static string CheckOnComma(this string input)
+        public static void CheckOnComma(this string input)
         {
             input = TrimBrackets(input: input);
             for (int index = 0; index < input.Length; index++)
             {
                 if (input[index] == ',')
                 {
-                    if (index == 0 || index == input.Length - 1)
+                    if (index == 0)
                     {
-                        return null;
+                        throw new ParsingException("Comma at the beginning");
                     }
-                    else
+                    else if (index == input.Length - 1)
                     {
-                        if (input[index - 1] == '(' || input[index - 1] == ')' ||
-                            input[index - 1] == '+' || input[index - 1] == '-' ||
-                            input[index - 1] == '*' || input[index - 1] == '/')
-                        {
-                            return null;
-                        }
+                        throw new ParsingException("Comma at the end");
                     }
-                    for (int currentIndex = index + 1; currentIndex < input.Length; currentIndex++)
+                    else if ("(+-*/)".Contains(input[index - 1]))
                     {
-                        if (input[currentIndex] == ',')
+                        throw new ParsingException("Wrong figure before comma");
+                    }
+                    for (int secondIndex = index + 1; secondIndex < input.Length; secondIndex++)
+                    {
+                        if (input[secondIndex] == ',')
                         {
-                            for (int newIndex = index + 1; newIndex < currentIndex; newIndex++)
+                            string editedInput = input.Substring(index + 1, secondIndex - index - 1);
+                            if (!editedInput.Any(character => "+-*/".Contains(character)))
                             {
-                                if (input[newIndex] == '+' || input[newIndex] == '-' ||
-                                    input[newIndex] == '*' || input[newIndex] == '/')
-                                {
-                                    break;
-                                }
-                                else if (newIndex == currentIndex - 1)
-                                {
-                                    return null;
-                                }
+                                throw new ParsingException($"Double comma: {"," + editedInput + ","}");
                             }
                         }
                     }
                 }
             }
-            return input;
         }
 
         public static int[] BracketsLevel(string input)
         {
             int[] marker = new int[input.Length];
-            if (input[0] == '(')
+            if (input.StartsWith('('))
             {
                 marker[0] = 1;
             }
-            if (input[0] == ')')
+            if (input.StartsWith(')'))
             {
                 marker[0] = -1;
             }
@@ -196,7 +170,7 @@ namespace Syntax_Pars
 
         public static string TrimBrackets(string input)
         {
-            if (input[0] == '(' && input[input.Length - 1] == ')')
+            if (input.StartsWith('(') && input.EndsWith(')'))
             {
                 int[] marker = BracketsLevel(input: input);
                 for (int index = 1; index < input.Length - 1; index++)
@@ -211,7 +185,7 @@ namespace Syntax_Pars
                     }
                 }
             }
-            if (input[0] == '(' && input[input.Length - 1] == ')')
+            if (input.StartsWith('(') && input.EndsWith(')'))
             {
                 input = TrimBrackets(input: input);
             }

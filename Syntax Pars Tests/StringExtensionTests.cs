@@ -1,5 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Syntax_Pars;
+using System.Collections.Generic;
 
 namespace Syntax_Pars_Tests
 {
@@ -210,7 +211,7 @@ namespace Syntax_Pars_Tests
         public void TrimBracketsTest1()
         {
             string test = "(7+5)";
-            string expected = "7+5";
+            string expected = "(7+5)";
             string actual = StringExtension.TrimBrackets(test);
             Assert.AreEqual(expected, actual);
         }

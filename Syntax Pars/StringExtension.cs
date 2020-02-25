@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Syntax_Pars
 {
@@ -10,9 +12,8 @@ namespace Syntax_Pars
             Node<CalculationElement> node = null;
             if (editedInput != null)
             {
-                if (editedInput.Contains('+') || editedInput.Contains('-') ||
-                    editedInput.Contains('/') || editedInput.Contains('*'))
-                {
+                if(editedInput.Any(character => "+-*/".Contains(character)))
+                { 
                     node = editedInput.SplitToNodes();
                 }
                 else
@@ -24,6 +25,7 @@ namespace Syntax_Pars
             }
             return node;
         }
+    
 
         public static string CheckInput(string input)
         {
@@ -33,19 +35,11 @@ namespace Syntax_Pars
             {
                 editedInput = null;
             }
-            editedInput = editedInput?.CheckOnBrackets();
-            editedInput = editedInput?.CheckOnComma();
-            editedInput = editedInput?.CheckOnFigures();
-            editedInput = editedInput?.CheckOnOperations();
+            editedInput?.CheckOnBrackets();
+            editedInput?.CheckOnComma();
+            editedInput?.CheckOnFigures();
+            editedInput?.CheckOnOperations();
             editedInput = editedInput?.ValidatedUnaryMinusString();
-            if (String.IsNullOrEmpty(editedInput))
-            {
-                Console.WriteLine("Invalid input"); 
-            }
-            else
-            {
-                Console.WriteLine("Input is ok");
-            }
             return editedInput;
         }
 
@@ -96,8 +90,7 @@ namespace Syntax_Pars
                     node.info.Operation = Operation.Multiply;
                     break;
             }
-            if (left.Contains('+') || left.Contains('-') ||
-                left.Contains('/') || left.Contains('*'))
+            if (left.Any(character => "+-*/".Contains(character)))
             {
                 node.Left = left.SplitToNodes();
             }
@@ -107,8 +100,7 @@ namespace Syntax_Pars
                 left = TrimBrackets(input: left);
                 node.Left.info.Number = Convert.ToDecimal(left);
             }
-            if (right.Contains('+') || right.Contains('-') ||
-                right.Contains('/') || right.Contains('*'))
+            if (right.Any(character => "+-*/".Contains(character)))
             {
                 node.Right = right.SplitToNodes();
             }
