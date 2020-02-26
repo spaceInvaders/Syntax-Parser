@@ -12,10 +12,10 @@ namespace Syntax_Pars
     enum Operation
     {
         Number,
-        Add,
-        Subtract,
-        Multiply,
-        Divide,
+        Addition,
+        Subtraction,
+        Multiplication,
+        Division,
     }
 }
 

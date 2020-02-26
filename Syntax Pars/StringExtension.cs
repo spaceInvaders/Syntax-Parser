@@ -12,7 +12,7 @@ namespace Syntax_Pars
             Node<CalculationElement> node = null;
             if (editedInput != null)
             {
-                if(editedInput.Any(character => "+-*/".Contains(character)))
+                if(editedInput.Any(character => PlusMinMultDiv.Contains(character)))
                 { 
                     node = editedInput.SplitToNodes();
                 }
@@ -33,8 +33,9 @@ namespace Syntax_Pars
             editedInput = editedInput.Replace(" ", "");
             if (editedInput == "")
             {
-                editedInput = null;
+                return null;
             }
+            editedInput = TrimBrackets(input: editedInput);
             editedInput?.CheckOnBrackets();
             editedInput?.CheckOnComma();
             editedInput?.CheckOnFigures();
@@ -52,8 +53,8 @@ namespace Syntax_Pars
             char operation = '\0';
             for (int index = input.Length - 1; index >= 0; index--)
             {
-                if (marker[index] == 0 && input[index] == '+' ||
-                    marker[index] == 0 && input[index] == '-')
+                if (marker[index] == 0 && input[index] == Plus ||
+                    marker[index] == 0 && input[index] == Minus)
                 {
                     right = input.Substring(index + 1);
                     left = input.Substring(0, index);
@@ -64,8 +65,8 @@ namespace Syntax_Pars
                 {
                     for (int currentIndex = input.Length - 1; currentIndex >= 0; currentIndex--)
                     {
-                        if (marker[currentIndex] == 0 && input[currentIndex] == '*' ||
-                            marker[currentIndex] == 0 && input[currentIndex] == '/')
+                        if (marker[currentIndex] == 0 && input[currentIndex] == Multiply ||
+                            marker[currentIndex] == 0 && input[currentIndex] == Divide)
                         {
                             right = input.Substring(currentIndex + 1);
                             left = input.Substring(0, currentIndex);
@@ -77,20 +78,20 @@ namespace Syntax_Pars
             Node<CalculationElement> node = new Node<CalculationElement>();
             switch (operation)
             {
-                case '+':
-                    node.info.Operation = Operation.Add;
+                case Plus:
+                    node.info.Operation = Operation.Addition;
                     break;
-                case '-':
-                    node.info.Operation = Operation.Subtract;
+                case Minus:
+                    node.info.Operation = Operation.Subtraction;
                     break;
-                case '/':
-                    node.info.Operation = Operation.Divide;
+                case Divide:
+                    node.info.Operation = Operation.Division;
                     break;
-                case '*':
-                    node.info.Operation = Operation.Multiply;
+                case Multiply:
+                    node.info.Operation = Operation.Multiplication;
                     break;
             }
-            if (left.Any(character => "+-*/".Contains(character)))
+            if (left.Any(character => PlusMinMultDiv.Contains(character)))
             {
                 node.Left = left.SplitToNodes();
             }
@@ -100,7 +101,7 @@ namespace Syntax_Pars
                 left = TrimBrackets(input: left);
                 node.Left.info.Number = Convert.ToDecimal(left);
             }
-            if (right.Any(character => "+-*/".Contains(character)))
+            if (right.Any(character => PlusMinMultDiv.Contains(character)))
             {
                 node.Right = right.SplitToNodes();
             }
