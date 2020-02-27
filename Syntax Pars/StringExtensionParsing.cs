@@ -51,6 +51,11 @@ namespace Syntax_Pars
 
         public static string CheckOnBrackets(this string input)
         {
+            int[] marker = BracketsLevel(input: input);
+            if (marker.Last() == 0 && input.All(character => "()".Contains(character)))
+            {
+                throw new ParsingException("Empty brackets");
+            }
             for (int index = 0; index < input.Length; index++)
             {
                 switch (input[index])
@@ -58,41 +63,33 @@ namespace Syntax_Pars
                     case OpeningBracket:
                         if (index > 0 && !"(+-*/".Contains(input[index - 1]))
                         {
-                            throw new ParsingException($"Invalid fragment: {input[index - 1]}{input[index]}");
-                        }
-                        else if (index > 0 && "),".Contains(input[index - 1]))
-                        {
-                            throw new ParsingException($"Invalid fragment: {input[index - 1]}{input[index]}");
-                        }
-                        else if (index == 1 && "*/,".Contains(input.First()))
-                        {
-                            throw new ParsingException($"Invalid first element {input.First()}");
+                            throw new ParsingException($"Invalid fragment: '{input[index - 1]}{input[index]}'");
                         }
                         else if (input.Length == 1)
                         {
-                            throw new ParsingException("Just an opening bracket?");
+                            throw new ParsingException($"Just an '{OpeningBracket}'?");
                         }
                         else if (index == input.Length - 1)
                         {
-                            throw new ParsingException("Invalid last element '('");
+                            throw new ParsingException($"Invalid last element {OpeningBracket}");
                         }
                         break;
                     case ClosingBracket:
                         if (index > 0 && "(,+-*/".Contains(input[index - 1]))
                         {
-                            throw new ParsingException($"Invalid fragment: {input[index - 1]}{input[index]}");
+                            throw new ParsingException($"Invalid fragment '{input[index - 1]}{input[index]}'");
                         }
                         else if (index != input.Length - 1 && !"+-*/)".Contains(input[index + 1]))
                         {
-                            throw new ParsingException($"Invalid fragment: {input[index]}{input[index + 1]}");
+                            throw new ParsingException($"Invalid fragment '{input[index]}{input[index + 1]}'");
                         }
                         else if (input.Length == 1)
                         {
-                            throw new ParsingException("Just an closing bracket?");
+                            throw new ParsingException($"Just an '{ClosingBracket}'?");
                         }
                         else if (index == 0)
                         {
-                            throw new ParsingException("Invalid first element ')'");
+                            throw new ParsingException($"Invalid first element {ClosingBracket}");
                         }
                         break;
                 }
@@ -106,6 +103,10 @@ namespace Syntax_Pars
             {
                 throw new ParsingException($"Just a '{input}'?");
             }
+            else if (input.First() == Multiply || input.First() == Divide)
+            {
+                throw new ParsingException($"Invalid first element '{input.First()}'");
+            }
             else
             {
                 for (int index = 1; index < input.Length; index++)
@@ -114,15 +115,15 @@ namespace Syntax_Pars
                     {
                         if (index == input.Length - 1)
                         {
-                            throw new ParsingException($"Invalid last element {input[index]}");
+                            throw new ParsingException($"Invalid last element '{input[index]}'");
                         }
                         else if (PlusMinMultDivCom.Contains(input[index - 1]))
                         {
-                            throw new ParsingException($"Invalid fragment: {input[index - 1]}{input[index]}");
+                            throw new ParsingException($"Invalid fragment '{input[index - 1]}{input[index]}'");
                         }
                         else if (PlusMinMultDivCom.Contains(input[index + 1]))
                         {
-                            throw new ParsingException($"Invalid fragment: {input[index]}{input[index + 1]}");
+                            throw new ParsingException($"Invalid fragment '{input[index]}{input[index + 1]}'");
                         }
                     }
                 }
@@ -149,7 +150,7 @@ namespace Syntax_Pars
                     }
                     else if ("(+-*/)".Contains(input[index - 1]))
                     {
-                        throw new ParsingException("Wrong figure before comma");
+                        throw new ParsingException($"Invalid fragment '{input[index - 1]}{input[index]}'");
                     }
                     for (int secondIndex = index + 1; secondIndex < input.Length; secondIndex++)
                     {
@@ -158,7 +159,7 @@ namespace Syntax_Pars
                             string editedInput = input.Substring(index + 1, secondIndex - index - 1);
                             if (!editedInput.Any(character => PlusMinMultDiv.Contains(character)))
                             {
-                                throw new ParsingException($"Double comma: {Comma + editedInput + Comma}");
+                                throw new ParsingException($"Double comma: '{Comma + editedInput + Comma}'");
                             }
                         }
                     }
@@ -194,11 +195,11 @@ namespace Syntax_Pars
             }
             if (marker.Last() > 0)
             {
-                throw new ParsingException("Missed closing bracket?");
+                throw new ParsingException($"Missed '{ClosingBracket}'");
             }
             else if (marker.Last() < 0)
             {
-                throw new ParsingException("Missed opening bracket?");
+                throw new ParsingException($"Missed '{OpeningBracket}'");
             }
             return marker;
         }
@@ -208,10 +209,6 @@ namespace Syntax_Pars
             if (input.StartsWith(OpeningBracket) && input.EndsWith(ClosingBracket))
             {
                 int[] marker = BracketsLevel(input: input);
-                if (marker.Length == 2)
-                {
-                    throw new ParsingException("Empty brackets");
-                }
                 for (int index = 1; index < input.Length - 1; index++)
                 {
                     if (marker[index] == 0)

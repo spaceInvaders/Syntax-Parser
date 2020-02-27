@@ -8,7 +8,7 @@ namespace Syntax_Pars
         static void Main(string[] args)
         {
             string input = null;
-            while (String.IsNullOrEmpty(input))
+            while (String.IsNullOrWhiteSpace(input))
             {
                 Console.WriteLine("Enter your phrase for calculation: ");
                 input = Console.ReadLine();
@@ -23,13 +23,13 @@ namespace Syntax_Pars
                     Console.WriteLine(result);
                 }
             }
-            catch (DivideByZeroException)
-            {
-                Console.WriteLine("Error: Divide by Zero");
-            }
             catch (ParsingException ex)
             {
                 Console.WriteLine("Error: " + ex.Message);
+            }
+            catch (DivideByZeroException)
+            {
+                Console.WriteLine("Error: Divide by Zero");
             }
             catch (Exception)
             {

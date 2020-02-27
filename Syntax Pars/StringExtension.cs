@@ -10,36 +10,28 @@ namespace Syntax_Pars
         {
             string editedInput = CheckInput(input: input);
             Node<CalculationElement> node = null;
-            if (editedInput != null)
+            if(editedInput.Any(character => PlusMinMultDiv.Contains(character)))
+            { 
+                node = editedInput.SplitToNodes();
+            }
+            else
             {
-                if(editedInput.Any(character => PlusMinMultDiv.Contains(character)))
-                { 
-                    node = editedInput.SplitToNodes();
-                }
-                else
-                {
-                    node = new Node<CalculationElement>();
-                    node.info.Operation = Operation.Number;
-                    node.info.Number = Convert.ToDecimal(editedInput);
-                }
+                node = new Node<CalculationElement>();
+                node.info.Operation = Operation.Number;
+                node.info.Number = Convert.ToDecimal(editedInput);
             }
             return node;
         }
     
-
         public static string CheckInput(string input)
         {
             string editedInput = input.Replace(".", ",");
             editedInput = editedInput.Replace(" ", "");
-            if (editedInput == "")
-            {
-                return null;
-            }
+            editedInput.CheckOnBrackets();
+            editedInput.CheckOnComma();
+            editedInput.CheckOnFigures();
+            editedInput.CheckOnOperations();
             editedInput = TrimBrackets(input: editedInput);
-            editedInput?.CheckOnBrackets();
-            editedInput?.CheckOnComma();
-            editedInput?.CheckOnFigures();
-            editedInput?.CheckOnOperations();
             editedInput = editedInput?.ValidatedUnaryMinusString();
             return editedInput;
         }
