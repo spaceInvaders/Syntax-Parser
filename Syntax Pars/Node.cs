@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-
-namespace Syntax_Pars
+﻿namespace Syntax_Pars
 {
     class Node<T>
     {

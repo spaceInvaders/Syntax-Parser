@@ -1,6 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Syntax_Pars;
-using System;
 
 namespace Syntax_Pars_Tests
 {

@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-
 
 namespace Syntax_Pars
 {
-    public static partial class StringExtension
+    static partial class StringExtension
     {
         internal static Node<CalculationElement> GrowNodeTree(this string input)
         {
@@ -24,7 +22,7 @@ namespace Syntax_Pars
             return node;
         }
     
-        public static string CheckInput(string input)
+        internal static string CheckInput(string input)
         {
             string editedInput = input.Replace(".", ",");
             editedInput = editedInput.Replace(" ", "");

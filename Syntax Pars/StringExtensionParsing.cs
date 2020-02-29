@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace Syntax_Pars
 {
-    public static partial class StringExtension
+    static partial class StringExtension
     {
         const string ValidatedFigures = "0123456789+-*/(),";
         const string PlusMinMultDiv = "+-*/";
@@ -17,7 +16,7 @@ namespace Syntax_Pars
         const char ClosingBracket = ')';
         const char Comma = ',';
 
-        public static void CheckOnFigures(this string input)
+        internal static void CheckOnFigures(this string input)
         {
             if (!input.All(character => ValidatedFigures.Contains(character)))
             {
@@ -32,7 +31,7 @@ namespace Syntax_Pars
             }
         }
 
-        public static string ValidatedUnaryMinusString(this string input)
+        internal static string ValidatedUnaryMinusString(this string input)
         {
             if (input.StartsWith(Minus) || input.StartsWith(Plus))
             {
@@ -49,7 +48,7 @@ namespace Syntax_Pars
             return input;
         }
 
-        public static string CheckOnBrackets(this string input)
+        internal static string CheckOnBrackets(this string input)
         {
             int[] marker = BracketsLevel(input: input);
             if (marker.Last() == 0 && input.All(character => "()".Contains(character)))
@@ -93,7 +92,7 @@ namespace Syntax_Pars
             return input;
         }
 
-        public static void CheckOnOperations(this string input)
+        internal static void CheckOnOperations(this string input)
         {
             if (input.Length == 1 && PlusMinMultDiv.Contains(input))
             {
@@ -126,7 +125,7 @@ namespace Syntax_Pars
             }
         }
 
-        public static void CheckOnComma(this string input)
+        internal static void CheckOnComma(this string input)
         {
             for (int index = 0; index < input.Length; index++)
             {
@@ -163,7 +162,7 @@ namespace Syntax_Pars
             }
         }
 
-        public static int[] BracketsLevel(string input)
+        internal static int[] BracketsLevel(string input)
         {
             int[] marker = new int[input.Length];
             if (input.StartsWith(OpeningBracket))
@@ -200,7 +199,7 @@ namespace Syntax_Pars
             return marker;
         }
 
-        public static string TrimBracketsString(string input)
+        internal static string TrimBracketsString(string input)
         {
             if (input.StartsWith(OpeningBracket) && input.EndsWith(ClosingBracket))
             {

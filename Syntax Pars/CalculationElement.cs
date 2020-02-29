@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Syntax_Pars
+﻿namespace Syntax_Pars
 {
     struct CalculationElement
     {
