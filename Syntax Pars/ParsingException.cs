@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Syntax_Pars
 {
-    class ParsingException : Exception
+    public class ParsingException : Exception
     {
         public ParsingException(string message)
             : base(message)

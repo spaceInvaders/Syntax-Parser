@@ -18,7 +18,6 @@ namespace Syntax_Pars
                 Node<CalculationElement> myNode = input.GrowNodeTree();
                 if (myNode != null)
                 {
-
                     decimal result = myNode.Calculate();
                     Console.WriteLine(result);
                 }

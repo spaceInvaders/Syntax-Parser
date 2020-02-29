@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
+
 namespace Syntax_Pars
 {
     public static partial class StringExtension
@@ -31,14 +32,14 @@ namespace Syntax_Pars
             editedInput.CheckOnComma();
             editedInput.CheckOnFigures();
             editedInput.CheckOnOperations();
-            editedInput = TrimBrackets(input: editedInput);
-            editedInput = editedInput?.ValidatedUnaryMinusString();
+            editedInput = TrimBracketsString(input: editedInput);
+            editedInput = editedInput.ValidatedUnaryMinusString();
             return editedInput;
         }
 
         internal static Node<CalculationElement> SplitToNodes(this string input)
         {
-            input = TrimBrackets(input: input);
+            input = TrimBracketsString(input: input);
             int[] marker = BracketsLevel(input: input);
             string right = null;
             string left = null;
@@ -90,7 +91,7 @@ namespace Syntax_Pars
             else
             {
                 node.Left = new Node<CalculationElement>();
-                left = TrimBrackets(input: left);
+                left = TrimBracketsString(input: left);
                 node.Left.info.Number = Convert.ToDecimal(left);
             }
             if (right.Any(character => PlusMinMultDiv.Contains(character)))
@@ -100,7 +101,7 @@ namespace Syntax_Pars
             else
             {
                 node.Right = new Node<CalculationElement>();
-                right = TrimBrackets(input: right);
+                right = TrimBracketsString(input: right);
                 node.Right.info.Number = Convert.ToDecimal(right);
             }
             return node;

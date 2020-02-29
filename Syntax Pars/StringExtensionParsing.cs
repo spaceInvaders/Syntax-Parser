@@ -65,10 +65,6 @@ namespace Syntax_Pars
                         {
                             throw new ParsingException($"Invalid fragment: '{input[index - 1]}{input[index]}'");
                         }
-                        else if (input.Length == 1)
-                        {
-                            throw new ParsingException($"Just an '{OpeningBracket}'?");
-                        }
                         else if (index == input.Length - 1)
                         {
                             throw new ParsingException($"Invalid last element {OpeningBracket}");
@@ -159,7 +155,7 @@ namespace Syntax_Pars
                             string editedInput = input.Substring(index + 1, secondIndex - index - 1);
                             if (!editedInput.Any(character => PlusMinMultDiv.Contains(character)))
                             {
-                                throw new ParsingException($"Double comma: '{Comma + editedInput + Comma}'");
+                                throw new ParsingException($"Double comma '{Comma + editedInput + Comma}'");
                             }
                         }
                     }
@@ -195,16 +191,16 @@ namespace Syntax_Pars
             }
             if (marker.Last() > 0)
             {
-                throw new ParsingException($"Missed '{ClosingBracket}'");
+                throw new ParsingException($"Missed сlosing bracket/s");
             }
             else if (marker.Last() < 0)
             {
-                throw new ParsingException($"Missed '{OpeningBracket}'");
+                throw new ParsingException($"Missed opening bracket/s");
             }
             return marker;
         }
 
-        public static string TrimBrackets(string input)
+        public static string TrimBracketsString(string input)
         {
             if (input.StartsWith(OpeningBracket) && input.EndsWith(ClosingBracket))
             {
@@ -223,7 +219,7 @@ namespace Syntax_Pars
             }
             if (input.StartsWith(OpeningBracket) && input.EndsWith(ClosingBracket))
             {
-                input = TrimBrackets(input: input);
+                input = TrimBracketsString(input: input);
             }
             return input;
         }

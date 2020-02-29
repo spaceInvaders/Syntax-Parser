@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Syntax_Pars
 {
-    internal static class CalculationNodeExtension
+    static class CalculationNodeExtension
     {
         internal static decimal Calculate(this Node<CalculationElement> node)
         {
