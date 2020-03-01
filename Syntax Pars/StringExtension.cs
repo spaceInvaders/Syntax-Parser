@@ -25,13 +25,14 @@ namespace Syntax_Pars
         internal static string CheckInput(string input)
         {
             string editedInput = input.Replace(".", ",");
-            editedInput = editedInput.Replace(" ", "");
+            editedInput = editedInput.Replace(" ", String.Empty);
             editedInput.CheckOnBrackets();
             editedInput.CheckOnComma();
             editedInput.CheckOnFigures();
             editedInput.CheckOnOperations();
-            editedInput = TrimBracketsString(input: editedInput);
+            editedInput = editedInput.TrimBracketsString();
             editedInput = editedInput.ValidatedUnaryMinusString();
+            editedInput = editedInput.TrimExcessiveZerosString();
             return editedInput;
         }
 
@@ -89,7 +90,7 @@ namespace Syntax_Pars
             else
             {
                 node.Left = new Node<CalculationElement>();
-                left = TrimBracketsString(input: left);
+                left = left.TrimBracketsString();
                 node.Left.info.Number = Convert.ToDecimal(left);
             }
             if (right.Any(character => PlusMinMultDiv.Contains(character)))
@@ -99,7 +100,7 @@ namespace Syntax_Pars
             else
             {
                 node.Right = new Node<CalculationElement>();
-                right = TrimBracketsString(input: right);
+                right = right.TrimBracketsString();
                 node.Right.info.Number = Convert.ToDecimal(right);
             }
             return node;

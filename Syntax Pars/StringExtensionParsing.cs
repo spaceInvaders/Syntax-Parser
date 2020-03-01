@@ -6,8 +6,10 @@ namespace Syntax_Pars
     static partial class StringExtension
     {
         const string ValidatedFigures = "0123456789+-*/(),";
+        const string PlusMinMultDivBrackets = "+-*/)(";
         const string PlusMinMultDiv = "+-*/";
         const string PlusMinMultDivCom = "+-*/,";
+        const char Zero = '0';
         const char Plus = '+';
         const char Minus = '-';
         const char Multiply = '*';
@@ -35,14 +37,14 @@ namespace Syntax_Pars
         {
             if (input.StartsWith(Minus) || input.StartsWith(Plus))
             {
-                input = "0" + input;
+                input = Zero + input;
             }
             for (int index = 1; index < input.Length; index++)
             {
                 if ((input[index] == Minus && input[index - 1] == OpeningBracket) ||
                     (input[index] == Plus && input[index - 1] == OpeningBracket))
                 {
-                    input = input.Insert(index, "0");
+                    input = input.Insert(index, Zero.ToString());
                 }
             }
             return input;
@@ -62,11 +64,15 @@ namespace Syntax_Pars
                     case OpeningBracket:
                         if (index > 0 && !"(+-*/".Contains(input[index - 1]))
                         {
-                            throw new ParsingException($"Invalid fragment: '{input[index - 1]}{input[index]}'");
+                            throw new ParsingException($"Invalid fragment '{input[index - 1]}{input[index]}'");
                         }
                         else if (index == input.Length - 1)
                         {
                             throw new ParsingException($"Invalid last element {OpeningBracket}");
+                        }
+                        else if ("*/,".Contains(input[index + 1]))
+                        {
+                            throw new ParsingException($"Invalid fragment '{input[index]}{input[index + 1]}'");
                         }
                         break;
                     case ClosingBracket:
@@ -77,10 +83,6 @@ namespace Syntax_Pars
                         else if (index != input.Length - 1 && !"+-*/)".Contains(input[index + 1]))
                         {
                             throw new ParsingException($"Invalid fragment '{input[index]}{input[index + 1]}'");
-                        }
-                        else if (input.Length == 1)
-                        {
-                            throw new ParsingException($"Just an '{ClosingBracket}'?");
                         }
                         else if (index == 0)
                         {
@@ -143,7 +145,7 @@ namespace Syntax_Pars
                     {
                         throw new ParsingException("Comma at the end");
                     }
-                    else if ("(+-*/)".Contains(input[index - 1]))
+                    else if (PlusMinMultDivBrackets.Contains(input[index - 1]))
                     {
                         throw new ParsingException($"Invalid fragment '{input[index - 1]}{input[index]}'");
                     }
@@ -160,6 +162,52 @@ namespace Syntax_Pars
                     }
                 }
             }
+        }
+
+        internal static string TrimExcessiveZerosString(this string input)
+        {
+            for (int index = 0; index < input.Length; index++)
+            {
+                if (input[index] == Comma)
+                {
+                    for (int secondIndex = index + 1; secondIndex < input.Length; secondIndex++)
+                    {
+                        if ("+-/*)".Contains(input[secondIndex]))
+                        {
+                            while (input[secondIndex - 1] == Zero && !PlusMinMultDivBrackets.Contains(input[secondIndex - 2]))
+                            {
+                                if (input[secondIndex - 2] == Comma)
+                                {
+                                    input = input.Substring(0, secondIndex - 2) + input.Substring(secondIndex, input.Length - secondIndex);
+                                    return input;
+                                }
+                                input = input.Substring(0, secondIndex - 1) + input.Substring(secondIndex, input.Length - secondIndex);
+                                secondIndex -= 1;
+                            }
+                            return input;
+                        }
+                        else if (secondIndex == input.Length - 1)
+                        {
+                            while (input[secondIndex - 1] == Zero)
+                            {
+                                input = input.Substring(0, secondIndex - 1) + input.Substring(secondIndex, input.Length - secondIndex);
+                                secondIndex -= 1;
+                                if (input[secondIndex - 1] == Comma)
+                                {
+                                    input = input.Substring(0, secondIndex - 1);
+                                    break;
+                                }
+                                else if ("123456789".Contains(input[secondIndex - 1]))
+                                {
+                                    input = input.Substring(0, secondIndex);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return input;
         }
 
         internal static int[] BracketsLevel(string input)
@@ -190,16 +238,16 @@ namespace Syntax_Pars
             }
             if (marker.Last() > 0)
             {
-                throw new ParsingException($"Missed сlosing bracket/s");
+                throw new ParsingException($"Missed {marker.Last()} сlosing bracket/s?");
             }
             else if (marker.Last() < 0)
             {
-                throw new ParsingException($"Missed opening bracket/s");
+                throw new ParsingException($"Missed {marker.Last()*(-1)} opening bracket/s?");
             }
             return marker;
         }
 
-        internal static string TrimBracketsString(string input)
+        internal static string TrimBracketsString(this string input)
         {
             if (input.StartsWith(OpeningBracket) && input.EndsWith(ClosingBracket))
             {
@@ -218,7 +266,7 @@ namespace Syntax_Pars
             }
             if (input.StartsWith(OpeningBracket) && input.EndsWith(ClosingBracket))
             {
-                input = TrimBracketsString(input: input);
+                input = input.TrimBracketsString();
             }
             return input;
         }
