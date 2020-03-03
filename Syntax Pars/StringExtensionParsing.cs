@@ -5,15 +5,16 @@ namespace Syntax_Pars
 {
     static partial class StringExtension
     {
-        const string ValidatedFigures = "0123456789+-*/(),";
-        const string PlusMinMultDivBrackets = "+-*/)(";
-        const string PlusMinMultDiv = "+-*/";
-        const string PlusMinMultDivCom = "+-*/,";
+        const string ValidatedFigures = "0123456789+-*/^(),";
+        const string PlusMinMultDivPowBrackets = "+-*/^)(";
+        const string PlusMinMultDivPow = "+-*/^";
+        const string PlusMinMultDivPowCom = "+-*/^,";
         const char Zero = '0';
         const char Plus = '+';
         const char Minus = '-';
         const char Multiply = '*';
         const char Divide = '/';
+        const char Power = '^';
         const char OpeningBracket = '(';
         const char ClosingBracket = ')';
         const char Comma = ',';
@@ -62,7 +63,7 @@ namespace Syntax_Pars
                 switch (input[index])
                 {
                     case OpeningBracket:
-                        if (index > 0 && !"(+-*/".Contains(input[index - 1]))
+                        if (index > 0 && !"(+-*/^".Contains(input[index - 1]))
                         {
                             throw new ParsingException($"Invalid fragment '{input[index - 1]}{input[index]}'");
                         }
@@ -70,23 +71,19 @@ namespace Syntax_Pars
                         {
                             throw new ParsingException($"Invalid last element {OpeningBracket}");
                         }
-                        else if ("*/,".Contains(input[index + 1]))
+                        else if ("*/,^".Contains(input[index + 1]))
                         {
                             throw new ParsingException($"Invalid fragment '{input[index]}{input[index + 1]}'");
                         }
                         break;
                     case ClosingBracket:
-                        if (index > 0 && "(,+-*/".Contains(input[index - 1]))
+                        if (index > 0 && "(,+-*/^".Contains(input[index - 1]))
                         {
                             throw new ParsingException($"Invalid fragment '{input[index - 1]}{input[index]}'");
                         }
-                        else if (index != input.Length - 1 && !"+-*/)".Contains(input[index + 1]))
+                        else if (index != input.Length - 1 && !"+-*/^)".Contains(input[index + 1]))
                         {
                             throw new ParsingException($"Invalid fragment '{input[index]}{input[index + 1]}'");
-                        }
-                        else if (index == 0)
-                        {
-                            throw new ParsingException($"Invalid first element {ClosingBracket}");
                         }
                         break;
                 }
@@ -96,11 +93,11 @@ namespace Syntax_Pars
 
         internal static void CheckOnOperations(this string input)
         {
-            if (input.Length == 1 && PlusMinMultDiv.Contains(input))
+            if (input.Length == 1 && PlusMinMultDivPow.Contains(input))
             {
                 throw new ParsingException($"Just a '{input}'?");
             }
-            else if (input.First() == Multiply || input.First() == Divide)
+            else if ("*/^".Contains(input.First()))
             {
                 throw new ParsingException($"Invalid first element '{input.First()}'");
             }
@@ -108,17 +105,17 @@ namespace Syntax_Pars
             {
                 for (int index = 1; index < input.Length; index++)
                 {
-                    if (PlusMinMultDiv.Contains(input[index]))
+                    if (PlusMinMultDivPow.Contains(input[index]))
                     {
                         if (index == input.Length - 1)
                         {
                             throw new ParsingException($"Invalid last element '{input[index]}'");
                         }
-                        else if (PlusMinMultDivCom.Contains(input[index - 1]))
+                        else if (PlusMinMultDivPowCom.Contains(input[index - 1]))
                         {
                             throw new ParsingException($"Invalid fragment '{input[index - 1]}{input[index]}'");
                         }
-                        else if (PlusMinMultDivCom.Contains(input[index + 1]))
+                        else if (PlusMinMultDivPowCom.Contains(input[index + 1]))
                         {
                             throw new ParsingException($"Invalid fragment '{input[index]}{input[index + 1]}'");
                         }
@@ -145,7 +142,7 @@ namespace Syntax_Pars
                     {
                         throw new ParsingException("Comma at the end");
                     }
-                    else if (PlusMinMultDivBrackets.Contains(input[index - 1]))
+                    else if (PlusMinMultDivPowBrackets.Contains(input[index - 1]))
                     {
                         throw new ParsingException($"Invalid fragment '{input[index - 1]}{input[index]}'");
                     }
@@ -154,7 +151,7 @@ namespace Syntax_Pars
                         if (input[secondIndex] == Comma)
                         {
                             string editedInput = input.Substring(index + 1, secondIndex - index - 1);
-                            if (!editedInput.Any(character => PlusMinMultDiv.Contains(character)))
+                            if (!editedInput.Any(character => PlusMinMultDivPow.Contains(character)))
                             {
                                 throw new ParsingException($"Double comma '{Comma + editedInput + Comma}'");
                             }
@@ -174,7 +171,7 @@ namespace Syntax_Pars
                     {
                         if ("+-/*)".Contains(input[secondIndex]))
                         {
-                            while (input[secondIndex - 1] == Zero && !PlusMinMultDivBrackets.Contains(input[secondIndex - 2]))
+                            while (input[secondIndex - 1] == Zero && !PlusMinMultDivPowBrackets.Contains(input[secondIndex - 2]))
                             {
                                 if (input[secondIndex - 2] == Comma)
                                 {
@@ -238,11 +235,11 @@ namespace Syntax_Pars
             }
             if (marker.Last() > 0)
             {
-                throw new ParsingException($"Missed {marker.Last()} сlosing bracket/s?");
+                throw new ParsingException($"Missed {marker.Last()} сlosing bracket(s)?");
             }
             else if (marker.Last() < 0)
             {
-                throw new ParsingException($"Missed {marker.Last()*(-1)} opening bracket/s?");
+                throw new ParsingException($"Missed {marker.Last() * (-1)} opening bracket(s)?");
             }
             return marker;
         }
@@ -272,3 +269,4 @@ namespace Syntax_Pars
         }
     }
 }
+

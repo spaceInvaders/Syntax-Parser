@@ -6,15 +6,16 @@ namespace Syntax_Pars
     {
         internal static decimal Calculate(this Node<CalculationElement> node)
         {
-             return node.info.Operation switch
-                {
-                    Operation.Addition => node.Left.Calculate() + node.Right.Calculate(),
-                    Operation.Subtraction => node.Left.Calculate() - node.Right.Calculate(),
-                    Operation.Multiplication => node.Left.Calculate() * node.Right.Calculate(),
-                    Operation.Division => node.Left.Calculate() / node.Right.Calculate(),
-                    Operation.Number => Convert.ToDecimal(node.info.Number),
-                    _ => throw new ArgumentException("Calculation failed"),
-                };
+            return node.info.Operation switch
+            {
+                Operation.Addition => node.Left.Calculate() + node.Right.Calculate(),
+                Operation.Subtraction => node.Left.Calculate() - node.Right.Calculate(),
+                Operation.Multiplication => node.Left.Calculate() * node.Right.Calculate(),
+                Operation.Division => node.Left.Calculate() / node.Right.Calculate(),
+                Operation.ToThePower => (decimal)Math.Pow((double)node.Left.Calculate(), (double)node.Right.Calculate()),
+                Operation.Number => Convert.ToDecimal(node.info.Number),
+                _ => throw new ArgumentException("Calculation failed"),
+            };
         }
     }
 }

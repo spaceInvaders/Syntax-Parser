@@ -12,6 +12,8 @@
         Subtraction,
         Multiplication,
         Division,
+        ToThePower
     }
 }
+
 

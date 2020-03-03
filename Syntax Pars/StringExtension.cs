@@ -9,8 +9,8 @@ namespace Syntax_Pars
         {
             string editedInput = CheckInput(input: input);
             Node<CalculationElement> node = null;
-            if(editedInput.Any(character => PlusMinMultDiv.Contains(character)))
-            { 
+            if (editedInput.Any(character => PlusMinMultDivPow.Contains(character)))
+            {
                 node = editedInput.SplitToNodes();
             }
             else
@@ -21,7 +21,7 @@ namespace Syntax_Pars
             }
             return node;
         }
-    
+
         internal static string CheckInput(string input)
         {
             string editedInput = input.Replace(".", ",");
@@ -43,26 +43,41 @@ namespace Syntax_Pars
             string right = null;
             string left = null;
             char operation = '\0';
-            for (int index = input.Length - 1; index >= 0; index--)
+
+            for (int plusMinusIndex = input.Length - 1; plusMinusIndex >= 0; plusMinusIndex--)
             {
-                if (marker[index] == 0 && input[index] == Plus ||
-                    marker[index] == 0 && input[index] == Minus)
+                if (marker[plusMinusIndex] == 0 && input[plusMinusIndex] == Plus ||
+                    marker[plusMinusIndex] == 0 && input[plusMinusIndex] == Minus)
                 {
-                    right = input.Substring(index + 1);
-                    left = input.Substring(0, index);
-                    operation = input[index];
+                    right = input.Substring(plusMinusIndex + 1);
+                    left = input.Substring(0, plusMinusIndex);
+                    operation = input[plusMinusIndex];
                     break;
                 }
-                else if (index == 0)
+                else if (plusMinusIndex == 0)
                 {
-                    for (int currentIndex = input.Length - 1; currentIndex >= 0; currentIndex--)
+                    for (int multDivIndex = input.Length - 1; multDivIndex >= 0; multDivIndex--)
                     {
-                        if (marker[currentIndex] == 0 && input[currentIndex] == Multiply ||
-                            marker[currentIndex] == 0 && input[currentIndex] == Divide)
+                        if (marker[multDivIndex] == 0 && input[multDivIndex] == Multiply ||
+                            marker[multDivIndex] == 0 && input[multDivIndex] == Divide)
                         {
-                            right = input.Substring(currentIndex + 1);
-                            left = input.Substring(0, currentIndex);
-                            operation = input[currentIndex];
+                            right = input.Substring(multDivIndex + 1);
+                            left = input.Substring(0, multDivIndex);
+                            operation = input[multDivIndex];
+                            break;
+                        }
+                        else if (plusMinusIndex == 0 && multDivIndex == 0)
+                        {
+                            for (int powerIndex = input.Length - 1; powerIndex >= 0; powerIndex--)
+                            {
+                                if (marker[powerIndex] == 0 && input[powerIndex] == Power)
+                                {
+                                    right = input.Substring(powerIndex + 1);
+                                    left = input.Substring(0, powerIndex);
+                                    operation = input[powerIndex];
+                                    break;
+                                }
+                            }
                         }
                     }
                 }
@@ -82,8 +97,11 @@ namespace Syntax_Pars
                 case Multiply:
                     node.info.Operation = Operation.Multiplication;
                     break;
+                case Power:
+                    node.info.Operation = Operation.ToThePower;
+                    break;
             }
-            if (left.Any(character => PlusMinMultDiv.Contains(character)))
+            if (left.Any(character => PlusMinMultDivPow.Contains(character)))
             {
                 node.Left = left.SplitToNodes();
             }
@@ -93,7 +111,7 @@ namespace Syntax_Pars
                 left = left.TrimBracketsString();
                 node.Left.info.Number = Convert.ToDecimal(left);
             }
-            if (right.Any(character => PlusMinMultDiv.Contains(character)))
+            if (right.Any(character => PlusMinMultDivPow.Contains(character)))
             {
                 node.Right = right.SplitToNodes();
             }

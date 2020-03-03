@@ -136,7 +136,7 @@ namespace Syntax_Pars_Tests
             }
             catch (ParsingException exception)
             {
-                StringAssert.Contains(exception.Message, "Missed 1 opening bracket/s?");
+                StringAssert.Contains(exception.Message, "Missed 1 opening bracket(s)?");
             }
         }
 
@@ -173,7 +173,7 @@ namespace Syntax_Pars_Tests
             }
             catch (ParsingException exception)
             {
-                StringAssert.Contains(exception.Message, "Missed 2 ñlosing bracket/s?");
+                StringAssert.Contains(exception.Message, "Missed 2 ñlosing bracket(s)?");
             }
         }
         [TestMethod]
@@ -225,7 +225,7 @@ namespace Syntax_Pars_Tests
             }
             catch (ParsingException exception)
             {
-                StringAssert.Contains(exception.Message, "Missed 5 opening bracket/s?");
+                StringAssert.Contains(exception.Message, "Missed 5 opening bracket(s)?");
             }
         }
         [TestMethod]
@@ -330,3 +330,4 @@ namespace Syntax_Pars_Tests
         }
     }
 }
+
