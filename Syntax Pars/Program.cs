@@ -11,7 +11,12 @@ namespace Syntax_Pars
             {
                 Console.WriteLine("Enter your phrase for calculation: ");
                 input = Console.ReadLine();
+                Solve(input);
             }
+        }
+        internal static string Solve(string input)
+        {
+            string output = null;
             try
             {
                 Node<CalculationElement> myNode = input.GrowNodeTree();
@@ -19,6 +24,7 @@ namespace Syntax_Pars
                 {
                     decimal result = myNode.Calculate();
                     Console.WriteLine(result);
+                    output = result.ToString();
                 }
             }
             catch (ParsingException ex)
@@ -33,6 +39,7 @@ namespace Syntax_Pars
             {
                 Console.WriteLine("Error: Calculation failed");
             }
+            return output;
         }
     }
 }
