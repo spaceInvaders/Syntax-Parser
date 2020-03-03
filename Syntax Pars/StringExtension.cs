@@ -43,43 +43,30 @@ namespace Syntax_Pars
             string right = null;
             string left = null;
             char operation = '\0';
-
-            for (int plusMinusIndex = input.Length - 1; plusMinusIndex >= 0; plusMinusIndex--)
+            int multDivSetter = 0;
+            int powerSetter = 0;
+            for (int index = input.Length - 1; index >= 0; index--)
             {
-                if (marker[plusMinusIndex] == 0 && input[plusMinusIndex] == Plus ||
-                    marker[plusMinusIndex] == 0 && input[plusMinusIndex] == Minus)
+                if (marker[index] == 0 && (input[index] == Plus || input[index] == Minus))
                 {
-                    right = input.Substring(plusMinusIndex + 1);
-                    left = input.Substring(0, plusMinusIndex);
-                    operation = input[plusMinusIndex];
+                    right = input.Substring(index + 1);
+                    left = input.Substring(0, index);
+                    operation = input[index];
                     break;
                 }
-                else if (plusMinusIndex == 0)
+                else if (marker[index] == 0 && (input[index] == Multiply || input[index] == Divide) && multDivSetter == 0)
                 {
-                    for (int multDivIndex = input.Length - 1; multDivIndex >= 0; multDivIndex--)
-                    {
-                        if (marker[multDivIndex] == 0 && input[multDivIndex] == Multiply ||
-                            marker[multDivIndex] == 0 && input[multDivIndex] == Divide)
-                        {
-                            right = input.Substring(multDivIndex + 1);
-                            left = input.Substring(0, multDivIndex);
-                            operation = input[multDivIndex];
-                            break;
-                        }
-                        else if (plusMinusIndex == 0 && multDivIndex == 0)
-                        {
-                            for (int powerIndex = input.Length - 1; powerIndex >= 0; powerIndex--)
-                            {
-                                if (marker[powerIndex] == 0 && input[powerIndex] == Power)
-                                {
-                                    right = input.Substring(powerIndex + 1);
-                                    left = input.Substring(0, powerIndex);
-                                    operation = input[powerIndex];
-                                    break;
-                                }
-                            }
-                        }
-                    }
+                    right = input.Substring(index + 1);
+                    left = input.Substring(0, index);
+                    operation = input[index];
+                    multDivSetter = 1;
+                }
+                if (marker[index] == 0 && input[index] == Power && multDivSetter == 0 && powerSetter == 0)
+                {
+                    right = input.Substring(index + 1);
+                    left = input.Substring(0, index);
+                    operation = input[index];
+                    powerSetter = 1;
                 }
             }
             Node<CalculationElement> node = new Node<CalculationElement>();
