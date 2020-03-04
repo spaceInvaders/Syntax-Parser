@@ -23,7 +23,9 @@ namespace Syntax_Pars
                 if (myNode != null)
                 {
                     decimal result = myNode.Calculate();
+                    decimal binaryResult = Convertions.ConvertToBinary(input: result);
                     Console.WriteLine(result);
+                    Console.WriteLine("0b " + binaryResult);
                     output = result.ToString();
                 }
             }

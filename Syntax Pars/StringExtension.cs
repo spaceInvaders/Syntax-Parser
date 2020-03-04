@@ -61,7 +61,7 @@ namespace Syntax_Pars
                     operation = input[index];
                     multDivSetter = 1;
                 }
-                if (marker[index] == 0 && input[index] == Power && multDivSetter == 0 && powerSetter == 0)
+                else if (marker[index] == 0 && input[index] == Power && multDivSetter == 0 && powerSetter == 0)
                 {
                     right = input.Substring(index + 1);
                     left = input.Substring(0, index);
