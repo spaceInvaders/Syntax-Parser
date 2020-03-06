@@ -235,7 +235,7 @@ namespace Syntax_Pars
             }
             if (marker.Last() > 0)
             {
-                throw new ParsingException($"Missed {marker.Last()} сlosing bracket(s)?");
+                throw new ParsingException($"Missed {marker.Last()} closing bracket(s)?");
             }
             else if (marker.Last() < 0)
             {
@@ -269,4 +269,5 @@ namespace Syntax_Pars
         }
     }
 }
+
 

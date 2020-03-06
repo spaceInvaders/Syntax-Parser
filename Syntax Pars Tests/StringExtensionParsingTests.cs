@@ -1,4 +1,4 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+ï»¿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Syntax_Pars;
 
 namespace Syntax_Pars_Tests
@@ -173,7 +173,7 @@ namespace Syntax_Pars_Tests
             }
             catch (ParsingException exception)
             {
-                StringAssert.Contains(exception.Message, "Missed 2 ñlosing bracket(s)?");
+                StringAssert.Contains(exception.Message, "Missed 2 closing bracket(s)?");
             }
         }
         [TestMethod]
