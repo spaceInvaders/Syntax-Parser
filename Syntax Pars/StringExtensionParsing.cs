@@ -53,8 +53,8 @@ namespace Syntax_Pars
 
         internal static string CheckOnBrackets(this string input)
         {
-            int[] marker = BracketsLevel(input: input);
-            if (marker.Last() == 0 && input.All(character => "()".Contains(character)))
+            int[] bracketsLevel = StringExtension.BracketsLevel(input: input);
+            if (bracketsLevel.Last() == 0 && input.All(character => "()".Contains(character)))
             {
                 throw new ParsingException("Empty brackets");
             }
@@ -209,49 +209,49 @@ namespace Syntax_Pars
 
         internal static int[] BracketsLevel(string input)
         {
-            int[] marker = new int[input.Length];
+            int[] bracketsLevel = new int[input.Length];
             if (input.StartsWith(OpeningBracket))
             {
-                marker[0] = 1;
+                bracketsLevel[0] = 1;
             }
             if (input.StartsWith(ClosingBracket))
             {
-                marker[0] = -1;
+                bracketsLevel[0] = -1;
             }
             for (int index = 1; index < input.Length; index++)
             {
                 if (input[index] == OpeningBracket)
                 {
-                    marker[index] = marker[index - 1] + 1;
+                    bracketsLevel[index] = bracketsLevel[index - 1] + 1;
                 }
                 else if (input[index] == ClosingBracket)
                 {
-                    marker[index] = marker[index - 1] - 1;
+                    bracketsLevel[index] = bracketsLevel[index - 1] - 1;
                 }
                 else
                 {
-                    marker[index] = marker[index - 1];
+                    bracketsLevel[index] = bracketsLevel[index - 1];
                 }
             }
-            if (marker.Last() > 0)
+            if (bracketsLevel.Last() > 0)
             {
-                throw new ParsingException($"Missed {marker.Last()} closing bracket(s)?");
+                throw new ParsingException($"Missed {bracketsLevel.Last()} closing bracket(s)?");
             }
-            else if (marker.Last() < 0)
+            else if (bracketsLevel.Last() < 0)
             {
-                throw new ParsingException($"Missed {marker.Last() * (-1)} opening bracket(s)?");
+                throw new ParsingException($"Missed {bracketsLevel.Last() * (-1)} opening bracket(s)?");
             }
-            return marker;
+            return bracketsLevel;
         }
 
         internal static string TrimBracketsString(this string input)
         {
             if (input.StartsWith(OpeningBracket) && input.EndsWith(ClosingBracket))
             {
-                int[] marker = BracketsLevel(input: input);
+                int[] bracketsLevel = BracketsLevel(input: input);
                 for (int index = 1; index < input.Length - 1; index++)
                 {
-                    if (marker[index] == 0)
+                    if (bracketsLevel[index] == 0)
                     {
                         return input;
                     }

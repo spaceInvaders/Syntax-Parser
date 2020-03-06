@@ -39,7 +39,7 @@ namespace Syntax_Pars
         internal static Node<CalculationElement> SplitToNodes(this string input)
         {
             input = TrimBracketsString(input: input);
-            int[] marker = BracketsLevel(input: input);
+            int[] bracketsLevel = BracketsLevel(input: input);
             string right = null;
             string left = null;
             char operation = '\0';
@@ -47,21 +47,21 @@ namespace Syntax_Pars
             int powerSetter = 0;
             for (int index = input.Length - 1; index >= 0; index--)
             {
-                if (marker[index] == 0 && (input[index] == Plus || input[index] == Minus))
+                if (bracketsLevel[index] == 0 && (input[index] == Plus || input[index] == Minus))
                 {
                     right = input.Substring(index + 1);
                     left = input.Substring(0, index);
                     operation = input[index];
                     break;
                 }
-                else if (marker[index] == 0 && (input[index] == Multiply || input[index] == Divide) && multDivSetter == 0)
+                else if (bracketsLevel[index] == 0 && (input[index] == Multiply || input[index] == Divide) && multDivSetter == 0)
                 {
                     right = input.Substring(index + 1);
                     left = input.Substring(0, index);
                     operation = input[index];
                     multDivSetter = 1;
                 }
-                else if (marker[index] == 0 && input[index] == Power && multDivSetter == 0 && powerSetter == 0)
+                else if (bracketsLevel[index] == 0 && input[index] == Power && multDivSetter == 0 && powerSetter == 0)
                 {
                     right = input.Substring(index + 1);
                     left = input.Substring(0, index);
