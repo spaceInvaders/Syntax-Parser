@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace Syntax_Pars
 {
@@ -26,7 +27,7 @@ namespace Syntax_Pars
                     decimal binaryResult = Convertions.ConvertToBinary(input: result);
                     Console.WriteLine(result);
                     Console.WriteLine("0b " + binaryResult);
-                    output = result.ToString();
+                    output = result.ToString(new CultureInfo("uk-UA"));
                 }
             }
             catch (ParsingException ex)

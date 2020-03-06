@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 
 namespace Syntax_Pars
@@ -17,7 +18,7 @@ namespace Syntax_Pars
             {
                 node = new Node<CalculationElement>();
                 node.info.Operation = Operation.Number;
-                node.info.Number = Convert.ToDecimal(editedInput);
+                node.info.Number = decimal.Parse(editedInput, new CultureInfo("uk-UA"));
             }
             return node;
         }
@@ -96,7 +97,7 @@ namespace Syntax_Pars
             {
                 node.Left = new Node<CalculationElement>();
                 left = left.TrimBracketsString();
-                node.Left.info.Number = Convert.ToDecimal(left);
+                node.Left.info.Number = decimal.Parse(left, new CultureInfo("uk-UA"));
             }
             if (right.Any(character => PlusMinMultDivPow.Contains(character)))
             {
@@ -106,7 +107,7 @@ namespace Syntax_Pars
             {
                 node.Right = new Node<CalculationElement>();
                 right = right.TrimBracketsString();
-                node.Right.info.Number = Convert.ToDecimal(right);
+                node.Right.info.Number = decimal.Parse(right, new CultureInfo("uk-UA"));
             }
             return node;
         }
