@@ -12,9 +12,10 @@ namespace Syntax_Pars
             {
                 Console.WriteLine("Enter your phrase for calculation: ");
                 input = Console.ReadLine();
-                Solve(input);
             }
+            Solve(input);
         }
+
         internal static string Solve(string input)
         {
             string output = null;
