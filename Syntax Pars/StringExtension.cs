@@ -40,36 +40,16 @@ namespace Syntax_Pars
         internal static Node<CalculationElement> SplitToNodes(this string input)
         {
             input = TrimBracketsString(input: input);
-            int[] bracketsLevel = BracketsLevel(input: input);
             string right = null;
             string left = null;
             char operation = '\0';
-            int multDivSetter = 0;
-            int powerSetter = 0;
-            for (int index = input.Length - 1; index >= 0; index--)
-            {
-                if (bracketsLevel[index] == 0 && (input[index] == Plus || input[index] == Minus))
-                {
-                    right = input.Substring(index + 1);
-                    left = input.Substring(0, index);
-                    operation = input[index];
-                    break;
-                }
-                else if (bracketsLevel[index] == 0 && (input[index] == Multiply || input[index] == Divide) && multDivSetter == 0)
-                {
-                    right = input.Substring(index + 1);
-                    left = input.Substring(0, index);
-                    operation = input[index];
-                    multDivSetter = 1;
-                }
-                else if (bracketsLevel[index] == 0 && input[index] == Power && multDivSetter == 0 && powerSetter == 0)
-                {
-                    right = input.Substring(index + 1);
-                    left = input.Substring(0, index);
-                    operation = input[index];
-                    powerSetter = 1;
-                }
-            }
+            /* Since people read from left to right, to ensure the correct order of operations,
+             * node tree should be built from right to left with priority of operations outside brackets:
+             * plus or minus, multply or divide, power */
+            int lastOperationIndex = input.FindLastOerationWithPriorityPlusMinus();
+            right = input.Substring(lastOperationIndex + 1);
+            left = input.Substring(0, lastOperationIndex);
+            operation = input[lastOperationIndex];
             Node<CalculationElement> node = new Node<CalculationElement>();
             switch (operation)
             {
@@ -110,6 +90,33 @@ namespace Syntax_Pars
                 node.Right.info.Number = decimal.Parse(right, new CultureInfo("uk-UA"));
             }
             return node;
+        }
+
+        internal static int FindLastOerationWithPriorityPlusMinus(this string input)
+        {
+            int[] bracketsLevel = BracketsLevel(input: input);
+            int lastOperationIndex = 0;
+            bool multDivOperationHasBeenFound = false;
+            bool powerOperationHasBeenFound = false;
+            for (int index = input.Length - 1; index >= 0; index--)
+            {
+                if ((input[index] == Plus || input[index] == Minus) && bracketsLevel[index] == 0 )
+                {
+                    lastOperationIndex = index;
+                    break;
+                }
+                else if ((input[index] == Multiply || input[index] == Divide) && bracketsLevel[index] == 0 && !multDivOperationHasBeenFound)
+                {
+                    lastOperationIndex = index;
+                    multDivOperationHasBeenFound = true;
+                }
+                else if (bracketsLevel[index] == 0 && input[index] == Power && !multDivOperationHasBeenFound && !powerOperationHasBeenFound)
+                {
+                    lastOperationIndex = index;
+                    powerOperationHasBeenFound = true;
+                }
+            }
+            return lastOperationIndex;
         }
     }
 }
