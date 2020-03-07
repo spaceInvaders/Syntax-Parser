@@ -7,6 +7,14 @@ namespace Syntax_Pars_Tests
     public class StringExtensionParsingTests
     {
         [TestMethod]
+        public void FindLastOerationWithPriorityPlusMinusTest1()
+        {
+            string testInput = "8-7^2+9*1";
+            int actualLastOperationIndex = testInput.FindLastOerationWithPriorityPlusMinus();
+            int expectedLastOperationIndex = 5;
+            Assert.AreEqual(expectedLastOperationIndex, actualLastOperationIndex);
+        }
+        [TestMethod]
         public void CheckOnOperationsTest1()
         {
             try

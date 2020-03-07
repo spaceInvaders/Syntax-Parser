@@ -19,6 +19,33 @@ namespace Syntax_Pars
         const char ClosingBracket = ')';
         const char Comma = ',';
 
+        internal static int FindLastOerationWithPriorityPlusMinus(this string input)
+        {
+            int[] bracketsLevel = BracketsLevel(input: input);
+            int lastOperationIndex = 0;
+            bool multDivOperationHasBeenFound = false;
+            bool powerOperationHasBeenFound = false;
+            for (int index = input.Length - 1; index >= 0; index--)
+            {
+                if ((input[index] == Plus || input[index] == Minus) && bracketsLevel[index] == 0)
+                {
+                    lastOperationIndex = index;
+                    break;
+                }
+                else if ((input[index] == Multiply || input[index] == Divide) && bracketsLevel[index] == 0 && !multDivOperationHasBeenFound)
+                {
+                    lastOperationIndex = index;
+                    multDivOperationHasBeenFound = true;
+                }
+                else if (input[index] == Power && bracketsLevel[index] == 0 && !multDivOperationHasBeenFound && !powerOperationHasBeenFound)
+                {
+                    lastOperationIndex = index;
+                    powerOperationHasBeenFound = true;
+                }
+            }
+            return lastOperationIndex;
+        }
+
         internal static void CheckOnFigures(this string input)
         {
             if (!input.All(character => ValidatedFigures.Contains(character)))
