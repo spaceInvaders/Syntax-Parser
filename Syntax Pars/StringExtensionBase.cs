@@ -28,7 +28,7 @@ namespace Syntax_Pars
             string editedInput = input.Replace(".", ",");
             editedInput = editedInput.Replace(" ", String.Empty);
             editedInput.CheckOnBrackets();
-            editedInput.CheckOnComma();
+            editedInput.CheckOnSeparator();
             editedInput.CheckOnFigures();
             editedInput.CheckOnOperations();
             editedInput = editedInput.TrimBracketsString();

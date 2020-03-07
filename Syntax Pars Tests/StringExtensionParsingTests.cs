@@ -67,11 +67,11 @@ namespace Syntax_Pars_Tests
         {
             try
             {
-                ",03".CheckOnComma();
+                ",03".CheckOnSeparator();
             }
             catch (ParsingException exception)
             {
-                StringAssert.Contains(exception.Message, "Comma at the beginning");
+                StringAssert.Contains(exception.Message, "Separator at the beginning");
             }
         }
         [TestMethod]
@@ -79,11 +79,11 @@ namespace Syntax_Pars_Tests
         {
             try
             {
-                "8889,7087,03".CheckOnComma();
+                "8889,7087,03".CheckOnSeparator();
             }
             catch (ParsingException exception)
             {
-                StringAssert.Contains(exception.Message, "Double comma ',7087,'");
+                StringAssert.Contains(exception.Message, "Double separator ',7087,'");
             }
         }
         [TestMethod]
@@ -91,11 +91,11 @@ namespace Syntax_Pars_Tests
         {
             try
             {
-                "403,".CheckOnComma();
+                "403,".CheckOnSeparator();
             }
             catch (ParsingException exception)
             {
-                StringAssert.Contains(exception.Message, "Comma at the end");
+                StringAssert.Contains(exception.Message, "Separator at the end");
             }
         }
 

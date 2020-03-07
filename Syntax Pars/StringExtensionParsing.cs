@@ -8,7 +8,7 @@ namespace Syntax_Pars
         const string ValidatedFigures = "0123456789+-*/^(),";
         const string PlusMinMultDivPowBrackets = "+-*/^)(";
         const string PlusMinMultDivPow = "+-*/^";
-        const string PlusMinMultDivPowCom = "+-*/^,";
+        const string PlusMinMultDivPowSep = "+-*/^,";
         const char Zero = '0';
         const char Plus = '+';
         const char Minus = '-';
@@ -17,7 +17,7 @@ namespace Syntax_Pars
         const char Power = '^';
         const char OpeningBracket = '(';
         const char ClosingBracket = ')';
-        const char Comma = ',';
+        const char Separator = ',';
 
         internal static int FindLastOerationWithPriorityPlusMinus(this string input)
         {
@@ -138,11 +138,11 @@ namespace Syntax_Pars
                         {
                             throw new ParsingException($"Invalid last element '{input[index]}'");
                         }
-                        else if (PlusMinMultDivPowCom.Contains(input[index - 1]))
+                        else if (PlusMinMultDivPowSep.Contains(input[index - 1]))
                         {
                             throw new ParsingException($"Invalid fragment '{input[index - 1]}{input[index]}'");
                         }
-                        else if (PlusMinMultDivPowCom.Contains(input[index + 1]))
+                        else if (PlusMinMultDivPowSep.Contains(input[index + 1]))
                         {
                             throw new ParsingException($"Invalid fragment '{input[index]}{input[index + 1]}'");
                         }
@@ -151,23 +151,23 @@ namespace Syntax_Pars
             }
         }
 
-        internal static void CheckOnComma(this string input)
+        internal static void CheckOnSeparator(this string input)
         {
             for (int index = 0; index < input.Length; index++)
             {
-                if (input[index] == Comma)
+                if (input[index] == Separator)
                 {
                     if (input.Length == 1)
                     {
-                        throw new ParsingException("Just a comma?");
+                        throw new ParsingException("Just a separator?");
                     }
                     else if (index == 0)
                     {
-                        throw new ParsingException("Comma at the beginning");
+                        throw new ParsingException("Separator at the beginning");
                     }
                     else if (index == input.Length - 1)
                     {
-                        throw new ParsingException("Comma at the end");
+                        throw new ParsingException("Separator at the end");
                     }
                     else if (PlusMinMultDivPowBrackets.Contains(input[index - 1]))
                     {
@@ -175,12 +175,12 @@ namespace Syntax_Pars
                     }
                     for (int secondIndex = index + 1; secondIndex < input.Length; secondIndex++)
                     {
-                        if (input[secondIndex] == Comma)
+                        if (input[secondIndex] == Separator)
                         {
                             string editedInput = input.Substring(index + 1, secondIndex - index - 1);
                             if (!editedInput.Any(character => PlusMinMultDivPow.Contains(character)))
                             {
-                                throw new ParsingException($"Double comma '{Comma + editedInput + Comma}'");
+                                throw new ParsingException($"Double separator '{Separator + editedInput + Separator}'");
                             }
                         }
                     }
@@ -192,7 +192,7 @@ namespace Syntax_Pars
         {
             for (int index = 0; index < input.Length; index++)
             {
-                if (input[index] == Comma)
+                if (input[index] == Separator)
                 {
                     for (int secondIndex = index + 1; secondIndex < input.Length; secondIndex++)
                     {
@@ -200,7 +200,7 @@ namespace Syntax_Pars
                         {
                             while (input[secondIndex - 1] == Zero && !PlusMinMultDivPowBrackets.Contains(input[secondIndex - 2]))
                             {
-                                if (input[secondIndex - 2] == Comma)
+                                if (input[secondIndex - 2] == Separator)
                                 {
                                     input = input.Substring(0, secondIndex - 2) + input.Substring(secondIndex, input.Length - secondIndex);
                                     return input;
@@ -216,7 +216,7 @@ namespace Syntax_Pars
                             {
                                 input = input.Substring(0, secondIndex - 1) + input.Substring(secondIndex, input.Length - secondIndex);
                                 secondIndex -= 1;
-                                if (input[secondIndex - 1] == Comma)
+                                if (input[secondIndex - 1] == Separator)
                                 {
                                     input = input.Substring(0, secondIndex - 1);
                                     break;
