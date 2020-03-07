@@ -29,7 +29,7 @@ namespace Syntax_Pars
             editedInput = editedInput.Replace(" ", String.Empty);
             editedInput.CheckOnBrackets();
             editedInput.CheckOnSeparator();
-            editedInput.CheckOnFigures();
+            editedInput.CheckOnValidatedFigures();
             editedInput.CheckOnOperations();
             editedInput = editedInput.TrimBracketsString();
             editedInput = editedInput.ValidatedUnaryMinusString();

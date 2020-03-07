@@ -46,7 +46,7 @@ namespace Syntax_Pars
             return lastOperationIndex;
         }
 
-        internal static void CheckOnFigures(this string input)
+        internal static void CheckOnValidatedFigures(this string input)
         {
             if (!input.All(character => ValidatedFigures.Contains(character)))
             {

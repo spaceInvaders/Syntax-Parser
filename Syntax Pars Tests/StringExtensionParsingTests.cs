@@ -289,7 +289,7 @@ namespace Syntax_Pars_Tests
         {
             try
             {
-                StringExtension.CheckOnFigures("a&#######89+0b0");
+                StringExtension.CheckOnValidatedFigures("a&#######89+0b0");
             }
             catch (ParsingException exception)
             {
