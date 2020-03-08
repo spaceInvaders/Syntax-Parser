@@ -47,7 +47,7 @@ namespace Syntax_Pars_Tests
             }
             catch (ParsingException exception)
             {
-                StringAssert.Contains(exception.Message, "Missed 5 opening bracket(s)?");
+                StringAssert.Contains(exception.Message, "Missed 5 '(' ?");
             }
         }
         [TestMethod]
@@ -155,7 +155,7 @@ namespace Syntax_Pars_Tests
             }
             catch (ParsingException exception)
             {
-                StringAssert.Contains(exception.Message, "Separator at the beginning");
+                StringAssert.Contains(exception.Message, "Invalid first element ','");
             }
         }
         [TestMethod]
@@ -167,7 +167,7 @@ namespace Syntax_Pars_Tests
             }
             catch (ParsingException exception)
             {
-                StringAssert.Contains(exception.Message, "Double separator ',7087,'");
+                StringAssert.Contains(exception.Message, "Invalid fragment ',7087,' at indexes: 4-9");
             }
         }
         [TestMethod]
@@ -179,7 +179,7 @@ namespace Syntax_Pars_Tests
             }
             catch (ParsingException exception)
             {
-                StringAssert.Contains(exception.Message, "Separator at the end");
+                StringAssert.Contains(exception.Message, "Invalid last element ',' at index 3");
             }
         }
 
@@ -204,7 +204,7 @@ namespace Syntax_Pars_Tests
             }
             catch (ParsingException exception)
             {
-                StringAssert.Contains(exception.Message, "Empty brackets");
+                StringAssert.Contains(exception.Message, "Invalid fragment '()'");
             }
         }
         [TestMethod]
@@ -216,7 +216,7 @@ namespace Syntax_Pars_Tests
             }
             catch (ParsingException exception)
             {
-                StringAssert.Contains(exception.Message, "Separator at the beginning");
+                StringAssert.Contains(exception.Message, "Invalid first element ','");
             }
         }
         [TestMethod]
@@ -228,7 +228,7 @@ namespace Syntax_Pars_Tests
             }
             catch (ParsingException exception)
             {
-                StringAssert.Contains(exception.Message, "Missed 1 opening bracket(s)?");
+                StringAssert.Contains(exception.Message, "Missed 1 '(' ?");
             }
         }
 
@@ -265,7 +265,7 @@ namespace Syntax_Pars_Tests
             }
             catch (ParsingException exception)
             {
-                StringAssert.Contains(exception.Message, "Missed 2 closing bracket(s)?");
+                StringAssert.Contains(exception.Message, "Missed 2 ')' ?");
             }
         }
         [TestMethod]
@@ -294,7 +294,7 @@ namespace Syntax_Pars_Tests
             }
             catch (ParsingException exception)
             {
-                StringAssert.Contains(exception.Message, "Invalid figures: a&#b");
+                StringAssert.Contains(exception.Message, "Invalid elements 'a&#b'");
             }
         }
         [TestMethod]

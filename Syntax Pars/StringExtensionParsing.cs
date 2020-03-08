@@ -74,16 +74,18 @@ namespace Syntax_Pars
                     lastOperationIndex = index;
                     break;
                 }
-                else if ((input[index] == Multiply || input[index] == Divide) && bracketsLevel[index] == 0 && !multDivOperationHasBeenFound)
-                {
-                    lastOperationIndex = index;
-                    multDivOperationHasBeenFound = true;
-                }
-                else if (input[index] == Power && bracketsLevel[index] == 0 && !multDivOperationHasBeenFound && !powerOperationHasBeenFound)
-                {
-                    lastOperationIndex = index;
-                    powerOperationHasBeenFound = true;
-                }
+                else if ((input[index] == Multiply || input[index] == Divide) &&
+                        bracketsLevel[index] == 0 && !multDivOperationHasBeenFound)
+                     {
+                         lastOperationIndex = index;
+                         multDivOperationHasBeenFound = true;
+                     }
+                else if (input[index] == Power && bracketsLevel[index] == 0 &&
+                         !multDivOperationHasBeenFound && !powerOperationHasBeenFound)
+                     {
+                         lastOperationIndex = index;
+                         powerOperationHasBeenFound = true;
+                     }
             }
             return lastOperationIndex;
         }
@@ -102,7 +104,7 @@ namespace Syntax_Pars
                         elements.Add(character);
                     }
                     string invalidFigures = new string(elements.ToArray());
-                    throw new ParsingException($"Invalid figures: {invalidFigures}");
+                    throw new ParsingInvalidEemenstException(invalidElements: invalidFigures);
                 }
             }
         }
@@ -126,32 +128,36 @@ namespace Syntax_Pars
             int[] bracketsLevel = StringExtension.BracketsLevel(input: input);
             if (bracketsLevel.Last() == 0 && input.All(character => "()".Contains(character)))
             {
-                throw new ParsingException("Empty brackets");
+                throw new ParsingInvalidFragmentException(fragment: input);
             }
             switch (bracket)
             {
                 case OpeningBracket:
                     if (index > 0 && !"(+-*/^".Contains(input[index - 1]))
                     {
-                        throw new ParsingException($"Invalid fragment '{input[index - 1]}{input[index]}'");
+                        throw new ParsingInvalidFragmentException
+                            (fragment: $"{input[index - 1] }{ input[index]}", firstEntry: index - 1, lastEntry: index);
                     }
                     else if (index == input.Length - 1)
                     {
-                        throw new ParsingException($"Invalid last element {OpeningBracket}");
+                        throw new ParsingInvalidLastElementException(element: OpeningBracket, location: index);
                     }
                     else if ("*/,^".Contains(input[index + 1]))
                     {
-                        throw new ParsingException($"Invalid fragment '{input[index]}{input[index + 1]}'");
+                        throw new ParsingInvalidFragmentException
+                            (fragment: $"{input[index]}{input[index + 1]}", firstEntry: index, lastEntry: index + 1);
                     }
                     break;
                 case ClosingBracket:
                     if (index > 0 && "(,+-*/^".Contains(input[index - 1]))
                     {
-                        throw new ParsingException($"Invalid fragment '{input[index - 1]}{input[index]}'");
+                        throw new ParsingInvalidFragmentException
+                            (fragment: $"{input[index - 1]}{input[index]}", firstEntry: index - 1, lastEntry: index);
                     }
                     else if (index != input.Length - 1 && !"+-*/^)".Contains(input[index + 1]))
                     {
-                        throw new ParsingException($"Invalid fragment '{input[index]}{input[index + 1]}'");
+                        throw new ParsingInvalidFragmentException
+                            (fragment: $"{input[index]}{input[index + 1]}", firstEntry: index, lastEntry: index + 1);
                     }
                     break;
             }
@@ -161,23 +167,25 @@ namespace Syntax_Pars
         {
             if (input.Length == 1)
             {
-                throw new ParsingException($"Just a '{input}'?");
+                throw new ParsingJustAnElementException(input: input);
             }
             else if ("*/^".Contains(input.First()))
             {
-                throw new ParsingException($"Invalid first element '{input.First()}'");
+                throw new ParsingInvalidFirstElementException(element: input.First());
             }
             else if (index == input.Length - 1)
             {
-                throw new ParsingException($"Invalid last element '{input[index]}'");
+                throw new ParsingInvalidLastElementException(element: input[index], location: index);
             }
             else if (PlusMinMultDivPowSep.Contains(input[index - 1]))
             {
-                throw new ParsingException($"Invalid fragment '{input[index - 1]}{input[index]}'");
+                throw new ParsingInvalidFragmentException
+                    (fragment: $"{input[index - 1]}{input[index]}", firstEntry: index - 1, lastEntry: index);
             }
             else if (PlusMinMultDivPowSep.Contains(input[index + 1]))
             {
-                throw new ParsingException($"Invalid fragment '{input[index]}{input[index + 1]}'");
+                throw new ParsingInvalidFragmentException
+                    (fragment: $"{input[index]}{input[index + 1]}", firstEntry: index, lastEntry: index + 1);
             }
         }
 
@@ -185,28 +193,30 @@ namespace Syntax_Pars
         {
             if (input.Length == 1)
             {
-                throw new ParsingException("Just a separator?");
+                throw new ParsingJustAnElementException(input: input);
             }
             else if (index == 0)
             {
-                throw new ParsingException("Separator at the beginning");
+                throw new ParsingInvalidFirstElementException(element: Separator);
             }
             else if (index == input.Length - 1)
             {
-                throw new ParsingException("Separator at the end");
+                throw new ParsingInvalidLastElementException(element: Separator, location: index);
             }
             else if (PlusMinMultDivPowBrackets.Contains(input[index - 1]))
             {
-                throw new ParsingException($"Invalid fragment '{input[index - 1]}{input[index]}'");
+                throw new ParsingInvalidFragmentException
+                    (fragment: $"{input[index - 1]}{input[index]}", firstEntry: index - 1, lastEntry: index);
             }
-            for (int afterSeparator = index + 1; afterSeparator < input.Length; afterSeparator++)
+            for (int secondIndex = index + 1; secondIndex < input.Length; secondIndex++)
             {
-                if (input[afterSeparator] == Separator)
+                if (input[secondIndex] == Separator)
                 {
-                    string editedInput = input.Substring(index + 1, afterSeparator - index - 1);
+                    string editedInput = input.Substring(index + 1, secondIndex - index - 1);
                     if (!editedInput.Any(character => PlusMinMultDivPow.Contains(character)))
                     {
-                        throw new ParsingException($"Double separator '{Separator + editedInput + Separator}'");
+                        throw new ParsingInvalidFragmentException
+                            (fragment: Separator + editedInput + Separator, firstEntry: index, lastEntry: secondIndex);
                     }
                 }
             }
@@ -218,7 +228,8 @@ namespace Syntax_Pars
             {
                 if ("+-/*)".Contains(input[afterSeparator]))
                 {
-                    while (input[afterSeparator - 1] == Zero && !PlusMinMultDivPowBrackets.Contains(input[afterSeparator - 2]))
+                    while (input[afterSeparator - 1] == Zero &&
+                        !PlusMinMultDivPowBrackets.Contains(input[afterSeparator - 2]))
                     {
                         if (input[afterSeparator - 2] == Separator)
                         {
@@ -280,11 +291,11 @@ namespace Syntax_Pars
             }
             if (bracketsLevel.Last() > 0)
             {
-                throw new ParsingException($"Missed {bracketsLevel.Last()} closing bracket(s)?");
+                throw new ParsingMissedElementException(element: ClosingBracket, number: bracketsLevel.Last());
             }
             else if (bracketsLevel.Last() < 0)
             {
-                throw new ParsingException($"Missed {bracketsLevel.Last() * (-1)} opening bracket(s)?");
+                throw new ParsingMissedElementException(element: OpeningBracket, number: bracketsLevel.Last()*(-1));
             }
             return bracketsLevel;
         }
