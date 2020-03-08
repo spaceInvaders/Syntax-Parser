@@ -15,192 +15,6 @@ namespace Syntax_Pars_Tests
             Assert.AreEqual(expectedLastOperationIndex, actualLastOperationIndex);
         }
         [TestMethod]
-        public void CheckOnOperationsTest1()
-        {
-            try
-            {
-                "++9".CheckOnOperations();
-            }
-            catch (ParsingException exception)
-            {
-                StringAssert.Contains(exception.Message, "Invalid fragment '++'");
-            }
-        }
-        [TestMethod]
-        public void CheckOnOperationsTest2()
-        {
-            try
-            {
-                "9-*0".CheckOnOperations();
-            }
-            catch (ParsingException exception)
-            {
-                StringAssert.Contains(exception.Message, "Invalid fragment '-*'");
-            }
-        }
-        [TestMethod]
-        public void CheckOnOperationsTest3()
-        {
-            try
-            {
-                "+".CheckOnOperations();
-            }
-            catch (ParsingException exception)
-            {
-                StringAssert.Contains(exception.Message, "Just a '+'?");
-            }
-        }
-        [TestMethod]
-        public void CheckOnOperationsTest4()
-        {
-            try
-            {
-                "7+".CheckOnOperations();
-            }
-            catch (ParsingException exception)
-            {
-                StringAssert.Contains(exception.Message, "Invalid last element '+'");
-            }
-        }
-        [TestMethod]
-        public void CheckOnCommaTest1()
-        {
-            try
-            {
-                ",03".CheckOnSeparator();
-            }
-            catch (ParsingException exception)
-            {
-                StringAssert.Contains(exception.Message, "Separator at the beginning");
-            }
-        }
-        [TestMethod]
-        public void CheckOnCommaTest2()
-        {
-            try
-            {
-                "8889,7087,03".CheckOnSeparator();
-            }
-            catch (ParsingException exception)
-            {
-                StringAssert.Contains(exception.Message, "Double separator ',7087,'");
-            }
-        }
-        [TestMethod]
-        public void CheckOnCommaTest3()
-        {
-            try
-            {
-                "403,".CheckOnSeparator();
-            }
-            catch (ParsingException exception)
-            {
-                StringAssert.Contains(exception.Message, "Separator at the end");
-            }
-        }
-
-        [TestMethod]
-        public void CheckOnBracketsTest2()
-        {
-            try
-            {
-                "(*6)".CheckOnBrackets();
-            }
-            catch (ParsingException exception)
-            {
-                StringAssert.Contains(exception.Message, "Invalid fragment '(*'");
-            }
-        }
-        [TestMethod]
-        public void CheckOnBracketsTest3()
-        {
-            try
-            {
-                "()".CheckOnBrackets();
-            }
-            catch (ParsingException exception)
-            {
-                StringAssert.Contains(exception.Message, "Empty brackets");
-            }
-        }
-        [TestMethod]
-        public void CheckOnBracketsTest4()
-        {
-            try
-            {
-                ",(2+4)".CheckOnBrackets();
-            }
-            catch (ParsingException exception)
-            {
-                StringAssert.Contains(exception.Message, "Invalid fragment ',('");
-            }
-        }
-        [TestMethod]
-        public void CheckOnBracketsTest5()
-        {
-            try
-            {
-                ")(2+4)".CheckOnBrackets();
-            }
-            catch (ParsingException exception)
-            {
-                StringAssert.Contains(exception.Message, "Missed 1 opening bracket(s)?");
-            }
-        }
-
-        [TestMethod]
-        public void CheckOnBracketsTest8()
-        {
-            try
-            {
-                "-((2)+4),".CheckOnBrackets();
-            }
-            catch (ParsingException exception)
-            {
-                StringAssert.Contains(exception.Message, "Invalid fragment '),'");
-            }
-        }
-        [TestMethod]
-        public void CheckOnBracketsTest9()
-        {
-            try
-            {
-                "(9+0)(2-4)".CheckOnBrackets();
-            }
-            catch (ParsingException exception)
-            {
-                StringAssert.Contains(exception.Message, "Invalid fragment ')('");
-            }
-        }
-        [TestMethod]
-        public void CheckOnBracketsTest10()
-        {
-            try
-            {
-                "((9+0)+(2-4)(".CheckOnBrackets();
-            }
-            catch (ParsingException exception)
-            {
-                StringAssert.Contains(exception.Message, "Missed 2 closing bracket(s)?");
-            }
-        }
-        [TestMethod]
-        public void ValidatedUnaryMinusStringTest1()
-        {
-            string test = "-(6)";
-            string expected = "0-(6)";
-            string actual = StringExtension.ValidatedUnaryMinusString(test);
-            Assert.AreEqual(expected, actual);
-        }
-        [TestMethod]
-        public void ValidatedUnaryMinusStringTest2()
-        {
-            string test = "(-6)-(+7)";
-            string expected = "(0-6)-(0+7)";
-            string actual = StringExtension.ValidatedUnaryMinusString(test);
-            Assert.AreEqual(expected, actual);
-        }
-        [TestMethod]
         public void BracketsLevelTest1()
         {
             string test = "((2*4)-7)";
@@ -285,11 +99,198 @@ namespace Syntax_Pars_Tests
             Assert.AreEqual(expected, actual);
         }
         [TestMethod]
-        public void CheckOnFiguresTest1()
+        public void ParseInputStringTest1()
         {
             try
             {
-                StringExtension.CheckOnValidatedFigures("a&#######89+0b0");
+                "++9".ParseInputString();
+            }
+            catch (ParsingException exception)
+            {
+                StringAssert.Contains(exception.Message, "Invalid fragment '++'");
+            }
+        }
+        [TestMethod]
+        public void ParseInputStringTest2()
+        {
+            try
+            {
+                "9-*0".ParseInputString();
+            }
+            catch (ParsingException exception)
+            {
+                StringAssert.Contains(exception.Message, "Invalid fragment '-*'");
+            }
+        }
+        [TestMethod]
+        public void ParseInputStringTest3()
+        {
+            try
+            {
+                "+".ParseInputString();
+            }
+            catch (ParsingException exception)
+            {
+                StringAssert.Contains(exception.Message, "Just a '+'?");
+            }
+        }
+        [TestMethod]
+        public void ParseInputStringTest4()
+        {
+            try
+            {
+                "7+".ParseInputString();
+            }
+            catch (ParsingException exception)
+            {
+                StringAssert.Contains(exception.Message, "Invalid last element '+'");
+            }
+        }
+        [TestMethod]
+        public void ParseInputStringTest5()
+        {
+            try
+            {
+                ",03".ParseInputString();
+            }
+            catch (ParsingException exception)
+            {
+                StringAssert.Contains(exception.Message, "Separator at the beginning");
+            }
+        }
+        [TestMethod]
+        public void ParseInputStringTest6()
+        {
+            try
+            {
+                "8889,7087,03".ParseInputString();
+            }
+            catch (ParsingException exception)
+            {
+                StringAssert.Contains(exception.Message, "Double separator ',7087,'");
+            }
+        }
+        [TestMethod]
+        public void ParseInputStringTest7()
+        {
+            try
+            {
+                "403,".ParseInputString();
+            }
+            catch (ParsingException exception)
+            {
+                StringAssert.Contains(exception.Message, "Separator at the end");
+            }
+        }
+
+        [TestMethod]
+        public void ParseInputStringTest8()
+        {
+            try
+            {
+                "(*6)".ParseInputString();
+            }
+            catch (ParsingException exception)
+            {
+                StringAssert.Contains(exception.Message, "Invalid fragment '(*'");
+            }
+        }
+        [TestMethod]
+        public void ParseInputStringTest9()
+        {
+            try
+            {
+                "()".ParseInputString();
+            }
+            catch (ParsingException exception)
+            {
+                StringAssert.Contains(exception.Message, "Empty brackets");
+            }
+        }
+        [TestMethod]
+        public void ParseInputStringTest10()
+        {
+            try
+            {
+                ",(2+4)".ParseInputString();
+            }
+            catch (ParsingException exception)
+            {
+                StringAssert.Contains(exception.Message, "Separator at the beginning");
+            }
+        }
+        [TestMethod]
+        public void ParseInputStringTest11()
+        {
+            try
+            {
+                ")(2+4)".ParseInputString();
+            }
+            catch (ParsingException exception)
+            {
+                StringAssert.Contains(exception.Message, "Missed 1 opening bracket(s)?");
+            }
+        }
+
+        [TestMethod]
+        public void ParseInputStringTest12()
+        {
+            try
+            {
+                "-((2)+4),".ParseInputString();
+            }
+            catch (ParsingException exception)
+            {
+                StringAssert.Contains(exception.Message, "Invalid fragment '),'");
+            }
+        }
+        [TestMethod]
+        public void ParseInputStringTest13()
+        {
+            try
+            {
+                "(9+0)(2-4)".ParseInputString();
+            }
+            catch (ParsingException exception)
+            {
+                StringAssert.Contains(exception.Message, "Invalid fragment ')('");
+            }
+        }
+        [TestMethod]
+        public void ParseInputStringTest14()
+        {
+            try
+            {
+                "((9+0)+(2-4)(".ParseInputString();
+            }
+            catch (ParsingException exception)
+            {
+                StringAssert.Contains(exception.Message, "Missed 2 closing bracket(s)?");
+            }
+        }
+        [TestMethod]
+        public void ParseInputStringTest15()
+        {
+            string test = "-(6)";
+            string expected = "0-(6)";
+            string actual = StringExtension.ParseInputString(test);
+            Assert.AreEqual(expected, actual);
+        }
+        [TestMethod]
+        public void ParseInputStringTest16()
+        {
+            string test = "(-6)-(+7)+(-(-8))";
+            string expected = "(0-6)-(0+7)+(0-(0-8))";
+            string actual = StringExtension.ParseInputString(test);
+            Assert.AreEqual(expected, actual);
+        }
+        
+        [TestMethod]
+        public void ParseInputStringTest17()
+        {
+            try
+            {
+                StringExtension.ParseInputString("a&#######89+0b0");
             }
             catch (ParsingException exception)
             {
@@ -297,43 +298,51 @@ namespace Syntax_Pars_Tests
             }
         }
         [TestMethod]
-        public void TrimExcessiveZerosStringTest1()
+        public void ParseInputStringTest18()
         {
             string test = "2,9450000000";
             string expected = "2,945";
-            string actual = StringExtension.TrimExcessiveZerosString(test);
+            string actual = StringExtension.ParseInputString(test);
             Assert.AreEqual(expected, actual);
         }
         [TestMethod]
-        public void TrimExcessiveZerosStringTest2()
+        public void ParseInputStringTest19()
         {
-            string test = "2,9450000000*2";
-            string expected = "2,945*2";
-            string actual = StringExtension.TrimExcessiveZerosString(test);
+            string test = "2,9450000000+200+2,0000";
+            string expected = "2,945+200+2";
+            string actual = StringExtension.ParseInputString(test);
             Assert.AreEqual(expected, actual);
         }
         [TestMethod]
-        public void TrimExcessiveZerosStringTest3()
+        public void ParseInputStringTest20()
+        {
+            string test = "2,9+2,0";
+            string expected = "2,9+2";
+            string actual = StringExtension.ParseInputString(test);
+            Assert.AreEqual(expected, actual);
+        }
+        [TestMethod]
+        public void ParseInputStringTest21()
         {
             string test = "2,00000*2";
             string expected = "2*2";
-            string actual = StringExtension.TrimExcessiveZerosString(test);
+            string actual = StringExtension.ParseInputString(test);
             Assert.AreEqual(expected, actual);
         }
         [TestMethod]
-        public void TrimExcessiveZerosStringTest4()
+        public void ParseInputStringTest22()
         {
             string test = "200000*2";
             string expected = "200000*2";
-            string actual = StringExtension.TrimExcessiveZerosString(test);
+            string actual = StringExtension.ParseInputString(test);
             Assert.AreEqual(expected, actual);
         }
         [TestMethod]
-        public void TrimExcessiveZerosStringTest5()
+        public void ParseInputStringTest23()
         {
             string test = "2,0000";
             string expected = "2";
-            string actual = StringExtension.TrimExcessiveZerosString(test);
+            string actual = StringExtension.ParseInputString(test);
             Assert.AreEqual(expected, actual);
         }
     }

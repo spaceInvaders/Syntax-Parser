@@ -6,6 +6,7 @@ namespace Syntax_Pars
     static partial class StringExtension
     {
         const string ValidatedFigures = "0123456789+-*/^(),";
+        const string Digits = "0123456789";
         const string PlusMinMultDivPowBrackets = "+-*/^)(";
         const string PlusMinMultDivPow = "+-*/^";
         const string PlusMinMultDivPowSep = "+-*/^,";
@@ -18,6 +19,47 @@ namespace Syntax_Pars
         const char OpeningBracket = '(';
         const char ClosingBracket = ')';
         const char Separator = ',';
+
+        internal static string ParseInputString(this string input)
+        {
+            string editedInput = input;
+            for (int parseIndex = 0; parseIndex < input.Length; parseIndex++)
+            {
+                int editedInputParseIndex = parseIndex - (input.Length - editedInput.Length);
+                switch (input[parseIndex])
+                {
+                    case OpeningBracket:
+                        CheckOnBrackets(input: input, index: parseIndex, bracket: OpeningBracket);
+                        break;
+                    case ClosingBracket:
+                        CheckOnBrackets(input: input, index: parseIndex, bracket: ClosingBracket);
+                        break;
+                    case Separator:
+                        CheckOnSeparator(input: editedInput, index: editedInputParseIndex);
+                        editedInput = editedInput.TrimExcessiveZerosString(index: editedInputParseIndex);
+                        break;
+                    case Plus:
+                        if (parseIndex == 0 || input[parseIndex - 1] == OpeningBracket)
+                            editedInput = editedInput.ValidatedUnaryMinusString(index: editedInputParseIndex);
+                        else
+                            goto case Multiply;
+                        break;
+                    case Minus:
+                        goto case Plus;
+                    case Multiply:
+                        CheckOnOperations(input: input, index: parseIndex);
+                        break;
+                    case Divide:
+                        goto case Multiply;
+                    case Power:
+                        goto case Multiply;
+                    default:
+                        CheckOnValidatedFigures(input: input, index: parseIndex);
+                        break;
+                }
+            }
+            return editedInput;
+        }
 
         internal static int FindLastOerationWithPriorityPlusMinus(this string input)
         {
@@ -46,81 +88,78 @@ namespace Syntax_Pars
             return lastOperationIndex;
         }
 
-        internal static void CheckOnValidatedFigures(this string input)
+        internal static void CheckOnValidatedFigures(string input, int index)
         {
-            if (!input.All(character => ValidatedFigures.Contains(character)))
+            if (!Digits.Contains(input[index]))
             {
-                var exceptionElements = input.ToCharArray().Except(ValidatedFigures.ToCharArray());
-                List<char> elements = new List<char>();
-                foreach (char character in exceptionElements)
+                string inputForCheck = input[index..];
+                if (!inputForCheck.All(character => ValidatedFigures.Contains(character)))
                 {
-                    elements.Add(character);
+                    var exceptionElements = inputForCheck.ToCharArray().Except(ValidatedFigures.ToCharArray());
+                    List<char> elements = new List<char>();
+                    foreach (char character in exceptionElements)
+                    {
+                        elements.Add(character);
+                    }
+                    string invalidFigures = new string(elements.ToArray());
+                    throw new ParsingException($"Invalid figures: {invalidFigures}");
                 }
-                string invalidFigures = new string(elements.ToArray());
-                throw new ParsingException($"Invalid figures: {invalidFigures}");
             }
         }
 
-        internal static string ValidatedUnaryMinusString(this string input)
+        internal static string ValidatedUnaryMinusString(this string input, int index)
         {
             if (input.StartsWith(Minus) || input.StartsWith(Plus))
             {
                 input = Zero + input;
             }
-            for (int index = 1; index < input.Length; index++)
-            {
-                if ((input[index] == Minus && input[index - 1] == OpeningBracket) ||
+            else if ((input[index] == Minus && input[index - 1] == OpeningBracket) ||
                     (input[index] == Plus && input[index - 1] == OpeningBracket))
-                {
+                 {
                     input = input.Insert(index, Zero.ToString());
-                }
-            }
+                 }
             return input;
         }
 
-        internal static string CheckOnBrackets(this string input)
+        internal static void CheckOnBrackets(string input, int index, char bracket)
         {
             int[] bracketsLevel = StringExtension.BracketsLevel(input: input);
             if (bracketsLevel.Last() == 0 && input.All(character => "()".Contains(character)))
             {
                 throw new ParsingException("Empty brackets");
             }
-            for (int index = 0; index < input.Length; index++)
+            switch (bracket)
             {
-                switch (input[index])
-                {
-                    case OpeningBracket:
-                        if (index > 0 && !"(+-*/^".Contains(input[index - 1]))
-                        {
-                            throw new ParsingException($"Invalid fragment '{input[index - 1]}{input[index]}'");
-                        }
-                        else if (index == input.Length - 1)
-                        {
-                            throw new ParsingException($"Invalid last element {OpeningBracket}");
-                        }
-                        else if ("*/,^".Contains(input[index + 1]))
-                        {
-                            throw new ParsingException($"Invalid fragment '{input[index]}{input[index + 1]}'");
-                        }
-                        break;
-                    case ClosingBracket:
-                        if (index > 0 && "(,+-*/^".Contains(input[index - 1]))
-                        {
-                            throw new ParsingException($"Invalid fragment '{input[index - 1]}{input[index]}'");
-                        }
-                        else if (index != input.Length - 1 && !"+-*/^)".Contains(input[index + 1]))
-                        {
-                            throw new ParsingException($"Invalid fragment '{input[index]}{input[index + 1]}'");
-                        }
-                        break;
-                }
+                case OpeningBracket:
+                    if (index > 0 && !"(+-*/^".Contains(input[index - 1]))
+                    {
+                        throw new ParsingException($"Invalid fragment '{input[index - 1]}{input[index]}'");
+                    }
+                    else if (index == input.Length - 1)
+                    {
+                        throw new ParsingException($"Invalid last element {OpeningBracket}");
+                    }
+                    else if ("*/,^".Contains(input[index + 1]))
+                    {
+                        throw new ParsingException($"Invalid fragment '{input[index]}{input[index + 1]}'");
+                    }
+                    break;
+                case ClosingBracket:
+                    if (index > 0 && "(,+-*/^".Contains(input[index - 1]))
+                    {
+                        throw new ParsingException($"Invalid fragment '{input[index - 1]}{input[index]}'");
+                    }
+                    else if (index != input.Length - 1 && !"+-*/^)".Contains(input[index + 1]))
+                    {
+                        throw new ParsingException($"Invalid fragment '{input[index]}{input[index + 1]}'");
+                    }
+                    break;
             }
-            return input;
         }
 
-        internal static void CheckOnOperations(this string input)
+        internal static void CheckOnOperations(string input, int index)
         {
-            if (input.Length == 1 && PlusMinMultDivPow.Contains(input))
+            if (input.Length == 1)
             {
                 throw new ParsingException($"Just a '{input}'?");
             }
@@ -128,105 +167,84 @@ namespace Syntax_Pars
             {
                 throw new ParsingException($"Invalid first element '{input.First()}'");
             }
-            else
+            else if (index == input.Length - 1)
             {
-                for (int index = 1; index < input.Length; index++)
+                throw new ParsingException($"Invalid last element '{input[index]}'");
+            }
+            else if (PlusMinMultDivPowSep.Contains(input[index - 1]))
+            {
+                throw new ParsingException($"Invalid fragment '{input[index - 1]}{input[index]}'");
+            }
+            else if (PlusMinMultDivPowSep.Contains(input[index + 1]))
+            {
+                throw new ParsingException($"Invalid fragment '{input[index]}{input[index + 1]}'");
+            }
+        }
+
+        internal static void CheckOnSeparator(this string input, int index)
+        {
+            if (input.Length == 1)
+            {
+                throw new ParsingException("Just a separator?");
+            }
+            else if (index == 0)
+            {
+                throw new ParsingException("Separator at the beginning");
+            }
+            else if (index == input.Length - 1)
+            {
+                throw new ParsingException("Separator at the end");
+            }
+            else if (PlusMinMultDivPowBrackets.Contains(input[index - 1]))
+            {
+                throw new ParsingException($"Invalid fragment '{input[index - 1]}{input[index]}'");
+            }
+            for (int afterSeparator = index + 1; afterSeparator < input.Length; afterSeparator++)
+            {
+                if (input[afterSeparator] == Separator)
                 {
-                    if (PlusMinMultDivPow.Contains(input[index]))
+                    string editedInput = input.Substring(index + 1, afterSeparator - index - 1);
+                    if (!editedInput.Any(character => PlusMinMultDivPow.Contains(character)))
                     {
-                        if (index == input.Length - 1)
-                        {
-                            throw new ParsingException($"Invalid last element '{input[index]}'");
-                        }
-                        else if (PlusMinMultDivPowSep.Contains(input[index - 1]))
-                        {
-                            throw new ParsingException($"Invalid fragment '{input[index - 1]}{input[index]}'");
-                        }
-                        else if (PlusMinMultDivPowSep.Contains(input[index + 1]))
-                        {
-                            throw new ParsingException($"Invalid fragment '{input[index]}{input[index + 1]}'");
-                        }
+                        throw new ParsingException($"Double separator '{Separator + editedInput + Separator}'");
                     }
                 }
             }
         }
 
-        internal static void CheckOnSeparator(this string input)
+        internal static string TrimExcessiveZerosString(this string input, int index)
         {
-            for (int index = 0; index < input.Length; index++)
+            for (int afterSeparator = index + 1; afterSeparator < input.Length; afterSeparator++)
             {
-                if (input[index] == Separator)
+                if ("+-/*)".Contains(input[afterSeparator]))
                 {
-                    if (input.Length == 1)
+                    while (input[afterSeparator - 1] == Zero && !PlusMinMultDivPowBrackets.Contains(input[afterSeparator - 2]))
                     {
-                        throw new ParsingException("Just a separator?");
-                    }
-                    else if (index == 0)
-                    {
-                        throw new ParsingException("Separator at the beginning");
-                    }
-                    else if (index == input.Length - 1)
-                    {
-                        throw new ParsingException("Separator at the end");
-                    }
-                    else if (PlusMinMultDivPowBrackets.Contains(input[index - 1]))
-                    {
-                        throw new ParsingException($"Invalid fragment '{input[index - 1]}{input[index]}'");
-                    }
-                    for (int secondIndex = index + 1; secondIndex < input.Length; secondIndex++)
-                    {
-                        if (input[secondIndex] == Separator)
+                        if (input[afterSeparator - 2] == Separator)
                         {
-                            string editedInput = input.Substring(index + 1, secondIndex - index - 1);
-                            if (!editedInput.Any(character => PlusMinMultDivPow.Contains(character)))
-                            {
-                                throw new ParsingException($"Double separator '{Separator + editedInput + Separator}'");
-                            }
+                            input = input.Substring(0, afterSeparator - 2) + input[afterSeparator..];
+                            break;
                         }
+                        input = input.Substring(0, afterSeparator - 1) + input[afterSeparator..];
+                        afterSeparator -= 1;
                     }
+                    break;
                 }
-            }
-        }
-
-        internal static string TrimExcessiveZerosString(this string input)
-        {
-            for (int index = 0; index < input.Length; index++)
-            {
-                if (input[index] == Separator)
+                else if (afterSeparator == input.Length - 1)
                 {
-                    for (int secondIndex = index + 1; secondIndex < input.Length; secondIndex++)
+                    while (input[afterSeparator] == Zero)
                     {
-                        if ("+-/*)".Contains(input[secondIndex]))
+                        input = input.Substring(0, afterSeparator - 1) + input[afterSeparator..];
+                        afterSeparator -= 1;
+                        if (input[afterSeparator - 1] == Separator)
                         {
-                            while (input[secondIndex - 1] == Zero && !PlusMinMultDivPowBrackets.Contains(input[secondIndex - 2]))
-                            {
-                                if (input[secondIndex - 2] == Separator)
-                                {
-                                    input = input.Substring(0, secondIndex - 2) + input.Substring(secondIndex, input.Length - secondIndex);
-                                    return input;
-                                }
-                                input = input.Substring(0, secondIndex - 1) + input.Substring(secondIndex, input.Length - secondIndex);
-                                secondIndex -= 1;
-                            }
-                            return input;
+                            input = input.Substring(0, afterSeparator - 1);
+                            break;
                         }
-                        else if (secondIndex == input.Length - 1)
+                        else if ("123456789".Contains(input[afterSeparator - 1]))
                         {
-                            while (input[secondIndex - 1] == Zero)
-                            {
-                                input = input.Substring(0, secondIndex - 1) + input.Substring(secondIndex, input.Length - secondIndex);
-                                secondIndex -= 1;
-                                if (input[secondIndex - 1] == Separator)
-                                {
-                                    input = input.Substring(0, secondIndex - 1);
-                                    break;
-                                }
-                                else if ("123456789".Contains(input[secondIndex - 1]))
-                                {
-                                    input = input.Substring(0, secondIndex);
-                                    break;
-                                }
-                            }
+                            input = input.Substring(0, afterSeparator);
+                            break;
                         }
                     }
                 }

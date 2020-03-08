@@ -23,17 +23,14 @@ namespace Syntax_Pars
             return node;
         }
 
+
+
         internal static string CheckInput(string input)
         {
             string editedInput = input.Replace(".", ",");
             editedInput = editedInput.Replace(" ", String.Empty);
-            editedInput.CheckOnBrackets();
-            editedInput.CheckOnSeparator();
-            editedInput.CheckOnValidatedFigures();
-            editedInput.CheckOnOperations();
+            editedInput = editedInput.ParseInputString();
             editedInput = editedInput.TrimBracketsString();
-            editedInput = editedInput.ValidatedUnaryMinusString();
-            editedInput = editedInput.TrimExcessiveZerosString();
             return editedInput;
         }
 
