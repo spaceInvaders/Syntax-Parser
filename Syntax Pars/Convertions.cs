@@ -5,23 +5,44 @@ namespace Syntax_Pars
 {
     class Convertions
     {
-        internal static int ConvertToBinary(decimal input)
+        internal static double ConvertToBinary(decimal input, double roundingPrecision)
         {
-            int number = Decimal.ToInt32(input);
-            List<int> list = new List<int>();
-            int binaryResult = 0;
-            while (number > 0)
+            bool isPositive = false;
+            if (input >= 0)
+                isPositive = true;
+            else
+                input *= -1;
+            int integerPart= (int)Math.Truncate(input);
+            decimal fractionalPart = input % integerPart;
+            List<int> integerPartlist = new List<int>();
+            List<int> fractionalPartlist = new List<int>();
+            int integerResult = 0;
+            double fractionalResult = 0;
+            while (integerPart > 0)
             {
-                list.Add(number % 2);
-                number /= 2;
+                integerPartlist.Add(integerPart % 2);
+                integerPart /= 2;
             }
-            list.Reverse();
-            for (int index = 0; index < list.Count; index++)
+            integerPartlist.Reverse();
+            for (int index = 0; index < integerPartlist.Count; index++)
             {
-                binaryResult *= 10;
-                binaryResult += list[index];
+                integerResult *= 10;
+                integerResult += integerPartlist[index];
             }
-            return binaryResult;
+            for (int index = 0; index < roundingPrecision; index++)
+            {
+                fractionalPart *= 2;
+                fractionalPartlist.Add((int)Math.Truncate(fractionalPart));
+                fractionalPart -= Math.Truncate(fractionalPart);
+                fractionalResult *= 10;
+                fractionalResult += fractionalPartlist[index];
+            }
+            fractionalResult /= Math.Pow(10, roundingPrecision);
+            double binaryResult = integerResult + fractionalResult;
+            if (isPositive)
+                return binaryResult;
+            else
+                return binaryResult * (-1);
         }
     }
 }

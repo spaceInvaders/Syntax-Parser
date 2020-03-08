@@ -25,7 +25,7 @@ namespace Syntax_Pars
                 if (myNode != null)
                 {
                     decimal result = myNode.Calculate();
-                    decimal binaryResult = Convertions.ConvertToBinary(input: result);
+                    double binaryResult = Convertions.ConvertToBinary(input: result, roundingPrecision: 5.0);
                     Console.WriteLine(result);
                     Console.WriteLine("0b " + binaryResult);
                     output = result.ToString(new CultureInfo("uk-UA"));
