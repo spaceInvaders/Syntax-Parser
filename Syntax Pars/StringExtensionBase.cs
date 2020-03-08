@@ -23,8 +23,6 @@ namespace Syntax_Pars
             return node;
         }
 
-
-
         internal static string CheckInput(string input)
         {
             string editedInput = input.Replace(".", ",");
