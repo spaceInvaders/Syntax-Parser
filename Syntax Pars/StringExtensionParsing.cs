@@ -88,7 +88,7 @@ namespace Syntax_Pars
             return lastOperationIndex;
         }
 
-        internal static void CheckOnValidatedFigures(string input, int index)
+        static void CheckOnValidatedFigures(string input, int index)
         {
             if (!Digits.Contains(input[index]))
             {
@@ -107,7 +107,7 @@ namespace Syntax_Pars
             }
         }
 
-        internal static string ValidatedUnaryMinusString(this string input, int index)
+        static string ValidatedUnaryMinusString(this string input, int index)
         {
             if (input.StartsWith(Minus) || input.StartsWith(Plus))
             {
@@ -121,7 +121,7 @@ namespace Syntax_Pars
             return input;
         }
 
-        internal static void CheckOnBrackets(string input, int index, char bracket)
+        static void CheckOnBrackets(string input, int index, char bracket)
         {
             int[] bracketsLevel = StringExtension.BracketsLevel(input: input);
             if (bracketsLevel.Last() == 0 && input.All(character => "()".Contains(character)))
@@ -157,7 +157,7 @@ namespace Syntax_Pars
             }
         }
 
-        internal static void CheckOnOperations(string input, int index)
+        static void CheckOnOperations(string input, int index)
         {
             if (input.Length == 1)
             {
@@ -181,7 +181,7 @@ namespace Syntax_Pars
             }
         }
 
-        internal static void CheckOnSeparator(this string input, int index)
+        static void CheckOnSeparator(this string input, int index)
         {
             if (input.Length == 1)
             {
@@ -212,7 +212,7 @@ namespace Syntax_Pars
             }
         }
 
-        internal static string TrimExcessiveZerosString(this string input, int index)
+        static string TrimExcessiveZerosString(this string input, int index)
         {
             for (int afterSeparator = index + 1; afterSeparator < input.Length; afterSeparator++)
             {
