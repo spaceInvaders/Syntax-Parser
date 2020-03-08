@@ -84,7 +84,7 @@ namespace Syntax_Pars_Tests
             }
             catch (ParsingException exception)
             {
-                StringAssert.Contains(exception.Message, "Invalid elements 'abhyt'");
+                Assert.AreEqual(exception.Message, "Invalid elements 'abhyt'");
             }
         }
         [TestMethod]

@@ -47,7 +47,7 @@ namespace Syntax_Pars_Tests
             }
             catch (ParsingException exception)
             {
-                StringAssert.Contains(exception.Message, "Missed 5 '(' ?");
+                Assert.AreEqual(exception.Message, "Missed 5 '(' ?");
             }
         }
         [TestMethod]
@@ -107,7 +107,7 @@ namespace Syntax_Pars_Tests
             }
             catch (ParsingException exception)
             {
-                StringAssert.Contains(exception.Message, "Invalid fragment '++'");
+                Assert.AreEqual(exception.Message, "Invalid fragment '++' at indexes: 0-1");
             }
         }
         [TestMethod]
@@ -119,7 +119,7 @@ namespace Syntax_Pars_Tests
             }
             catch (ParsingException exception)
             {
-                StringAssert.Contains(exception.Message, "Invalid fragment '-*'");
+                Assert.AreEqual(exception.Message, "Invalid fragment '-*' at indexes: 1-2");
             }
         }
         [TestMethod]
@@ -131,7 +131,7 @@ namespace Syntax_Pars_Tests
             }
             catch (ParsingException exception)
             {
-                StringAssert.Contains(exception.Message, "Just a '+'?");
+                Assert.AreEqual(exception.Message, "Just a '+'?");
             }
         }
         [TestMethod]
@@ -143,7 +143,7 @@ namespace Syntax_Pars_Tests
             }
             catch (ParsingException exception)
             {
-                StringAssert.Contains(exception.Message, "Invalid last element '+'");
+                Assert.AreEqual(exception.Message, "Invalid last element '+' at index 1");
             }
         }
         [TestMethod]
@@ -155,7 +155,7 @@ namespace Syntax_Pars_Tests
             }
             catch (ParsingException exception)
             {
-                StringAssert.Contains(exception.Message, "Invalid first element ','");
+                Assert.AreEqual(exception.Message, "Invalid first element ','");
             }
         }
         [TestMethod]
@@ -167,7 +167,7 @@ namespace Syntax_Pars_Tests
             }
             catch (ParsingException exception)
             {
-                StringAssert.Contains(exception.Message, "Invalid fragment ',7087,' at indexes: 4-9");
+                Assert.AreEqual(exception.Message, "Invalid fragment ',7087,' at indexes: 4-9");
             }
         }
         [TestMethod]
@@ -179,7 +179,7 @@ namespace Syntax_Pars_Tests
             }
             catch (ParsingException exception)
             {
-                StringAssert.Contains(exception.Message, "Invalid last element ',' at index 3");
+                Assert.AreEqual(exception.Message, "Invalid last element ',' at index 3");
             }
         }
 
@@ -192,7 +192,7 @@ namespace Syntax_Pars_Tests
             }
             catch (ParsingException exception)
             {
-                StringAssert.Contains(exception.Message, "Invalid fragment '(*'");
+                Assert.AreEqual(exception.Message, "Invalid fragment '(*' at indexes: 0-1");
             }
         }
         [TestMethod]
@@ -204,7 +204,7 @@ namespace Syntax_Pars_Tests
             }
             catch (ParsingException exception)
             {
-                StringAssert.Contains(exception.Message, "Invalid fragment '()'");
+                Assert.AreEqual(exception.Message, "Invalid fragment '()'");
             }
         }
         [TestMethod]
@@ -216,7 +216,7 @@ namespace Syntax_Pars_Tests
             }
             catch (ParsingException exception)
             {
-                StringAssert.Contains(exception.Message, "Invalid first element ','");
+                Assert.AreEqual(exception.Message, "Invalid first element ','");
             }
         }
         [TestMethod]
@@ -228,7 +228,7 @@ namespace Syntax_Pars_Tests
             }
             catch (ParsingException exception)
             {
-                StringAssert.Contains(exception.Message, "Missed 1 '(' ?");
+                Assert.AreEqual(exception.Message, "Missed 1 '(' ?");
             }
         }
 
@@ -241,7 +241,7 @@ namespace Syntax_Pars_Tests
             }
             catch (ParsingException exception)
             {
-                StringAssert.Contains(exception.Message, "Invalid fragment '),'");
+                Assert.AreEqual(exception.Message, "Invalid fragment '),' at indexes: 7-8");
             }
         }
         [TestMethod]
@@ -253,7 +253,7 @@ namespace Syntax_Pars_Tests
             }
             catch (ParsingException exception)
             {
-                StringAssert.Contains(exception.Message, "Invalid fragment ')('");
+                Assert.AreEqual(exception.Message, "Invalid fragment ')(' at indexes: 4-5");
             }
         }
         [TestMethod]
@@ -265,7 +265,7 @@ namespace Syntax_Pars_Tests
             }
             catch (ParsingException exception)
             {
-                StringAssert.Contains(exception.Message, "Missed 2 ')' ?");
+                Assert.AreEqual(exception.Message, "Missed 2 ')' ?");
             }
         }
         [TestMethod]
@@ -294,7 +294,7 @@ namespace Syntax_Pars_Tests
             }
             catch (ParsingException exception)
             {
-                StringAssert.Contains(exception.Message, "Invalid elements 'a&#b'");
+                Assert.AreEqual(exception.Message, "Invalid elements 'a&#b'");
             }
         }
         [TestMethod]
