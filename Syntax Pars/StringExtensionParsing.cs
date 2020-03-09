@@ -5,11 +5,14 @@ namespace Syntax_Pars
 {
     static partial class StringExtension
     {
-        const string ValidatedFigures = "0123456789+-*/^(),";
+        const string ValidatedFigures = "0123456789+-*/^)(,p";
         const string Digits = "0123456789";
         const string PlusMinMultDivPowBrackets = "+-*/^)(";
         const string PlusMinMultDivPow = "+-*/^";
         const string PlusMinMultDivPowSep = "+-*/^,";
+        const string PlusMinMultDivPowClosBrack = "+-*/^)";
+        const string PlusMinMultDivPowOpenBrack = "+-*/^(";
+        const string PiValue = "3,14159265358979323846";
         const char Zero = '0';
         const char Plus = '+';
         const char Minus = '-';
@@ -19,6 +22,7 @@ namespace Syntax_Pars
         const char OpeningBracket = '(';
         const char ClosingBracket = ')';
         const char Separator = ',';
+        const char PiChar = 'p';
 
         internal static string ParseInputString(this string input)
         {
@@ -53,6 +57,9 @@ namespace Syntax_Pars
                         goto case Multiply;
                     case Power:
                         goto case Multiply;
+                    case PiChar:
+                        CheckOnPI(input: input, index: parseIndex);
+                        break;
                     default:
                         CheckOnValidatedFigures(input: input, index: parseIndex);
                         break;
@@ -133,7 +140,7 @@ namespace Syntax_Pars
             switch (bracket)
             {
                 case OpeningBracket:
-                    if (index > 0 && !"(+-*/^".Contains(input[index - 1]))
+                    if (index > 0 && !PlusMinMultDivPowOpenBrack.Contains(input[index - 1]))
                     {
                         throw new ParsingInvalidFragmentException
                             (fragment: $"{input[index - 1] }{ input[index]}", firstEntry: index - 1, lastEntry: index);
@@ -154,7 +161,7 @@ namespace Syntax_Pars
                         throw new ParsingInvalidFragmentException
                             (fragment: $"{input[index - 1]}{input[index]}", firstEntry: index - 1, lastEntry: index);
                     }
-                    else if (index != input.Length - 1 && !"+-*/^)".Contains(input[index + 1]))
+                    else if (index != input.Length - 1 && !PlusMinMultDivPowClosBrack.Contains(input[index + 1]))
                     {
                         throw new ParsingInvalidFragmentException
                             (fragment: $"{input[index]}{input[index + 1]}", firstEntry: index, lastEntry: index + 1);
@@ -261,6 +268,20 @@ namespace Syntax_Pars
                 }
             }
             return input;
+        }
+
+        static void CheckOnPI(string input, int index)
+        {
+            if (index > 0 && !PlusMinMultDivPowOpenBrack.Contains(input[index - 1]))
+            {
+                throw new ParsingInvalidFragmentException
+                    (fragment: $"{input[index - 1]}{input[index]}", firstEntry: index - 1, lastEntry: index);
+            }
+            else if (index != input.Length - 1 && !PlusMinMultDivPowClosBrack.Contains(input[index + 1]))
+            {
+                throw new ParsingInvalidFragmentException
+                    (fragment: $"{input[index]}{input[index + 1]}", firstEntry: index, lastEntry: index + 1);
+            }
         }
 
         internal static int[] BracketsLevel(string input)

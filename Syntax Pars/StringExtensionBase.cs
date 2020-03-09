@@ -29,6 +29,7 @@ namespace Syntax_Pars
             editedInput = editedInput.Replace(" ", String.Empty);
             editedInput = editedInput.ParseInputString();
             editedInput = editedInput.TrimBracketsString();
+            editedInput = editedInput.Replace(PiChar.ToString(), PiValue);
             return editedInput;
         }
 
