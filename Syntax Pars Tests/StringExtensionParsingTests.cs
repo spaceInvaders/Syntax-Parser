@@ -345,6 +345,14 @@ namespace Syntax_Pars_Tests
             string actual = StringExtension.ParseInputString(test);
             Assert.AreEqual(expected, actual);
         }
+        [TestMethod]
+        public void ParseInputStringTest24()
+        {
+            string test = "10,0";
+            string expected = "10";
+            string actual = StringExtension.ParseInputString(test);
+            Assert.AreEqual(expected, actual);
+        }
     }
 }
 

@@ -25,19 +25,23 @@ namespace Syntax_Pars
                 if (myNode != null)
                 {
                     decimal result = myNode.Calculate();
-                    decimal binaryResult = Convertions.ConvertToBinary(input: result, roundingPrecision: 5.0);
                     Console.WriteLine(result);
-                    Console.WriteLine("0b " + binaryResult);
                     output = result.ToString(new CultureInfo("uk-UA"));
+                    string binaryResult = "0b: " + Convertions.ConvertDecimalToBinaryString(input: result, roundingPrecision: 5);
+                    Console.WriteLine(binaryResult);
                 }
             }
-            catch (ParsingException ex)
+            catch (ParsingException exception)
             {
-                Console.WriteLine("Error: " + ex.Message);
+                Console.WriteLine("Error: " + exception.Message);
             }
             catch (DivideByZeroException)
             {
                 Console.WriteLine("Error: Divide by Zero");
+            }
+            catch (OverflowException)
+            {
+                Console.WriteLine("Error: Value was too large or too small");
             }
             catch (Exception)
             {

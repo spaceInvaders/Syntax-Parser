@@ -21,7 +21,7 @@ namespace Syntax_Pars
         const char Power = '^';
         const char OpeningBracket = '(';
         const char ClosingBracket = ')';
-        const char Separator = ',';
+        internal const char Separator = ',';
         const char PiChar = 'p';
 
         internal static string ParseInputString(this string input)
@@ -246,6 +246,11 @@ namespace Syntax_Pars
                         input = input.Substring(0, afterSeparator - 1) + input[afterSeparator..];
                         afterSeparator -= 1;
                     }
+                    break;
+                }
+                else if (afterSeparator == input.Length - 1 && input[afterSeparator - 1] == Separator)
+                {
+                    input = input.Substring(0, afterSeparator - 1);
                     break;
                 }
                 else if (afterSeparator == input.Length - 1)
