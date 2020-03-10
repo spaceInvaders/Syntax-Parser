@@ -111,7 +111,7 @@ namespace Syntax_Pars
                         elements.Add(character);
                     }
                     string invalidFigures = new string(elements.ToArray());
-                    throw new ParsingInvalidEemenstException(invalidElements: invalidFigures);
+                    throw new ParsingInvalidElemenstException(invalidElements: invalidFigures);
                 }
             }
         }

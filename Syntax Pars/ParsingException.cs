@@ -8,6 +8,7 @@ namespace Syntax_Pars
             : base(message)
         { }
     }
+
     class ParsingInvalidFragmentException : ParsingException
     {
         public ParsingInvalidFragmentException(string fragment, int firstEntry, int lastEntry)
@@ -26,6 +27,7 @@ namespace Syntax_Pars
         public int FirstEntry { get; }
         public int LastEntry { get; }
     }
+
     class ParsingJustAnElementException : ParsingException
     {
         public ParsingJustAnElementException(string input)
@@ -35,6 +37,7 @@ namespace Syntax_Pars
         }
         public string Input { get; }
     }
+
     class ParsingMissedElementException : ParsingException
     {
         public ParsingMissedElementException(char element, int number)
@@ -46,6 +49,7 @@ namespace Syntax_Pars
         public int Number { get; }
         public char Element { get; }
     }
+
     class ParsingInvalidFirstElementException : ParsingException
     {
         public ParsingInvalidFirstElementException(char element)
@@ -55,6 +59,7 @@ namespace Syntax_Pars
         }
         public char Element { get; }
     }
+
     class ParsingInvalidLastElementException : ParsingException
     {
         public ParsingInvalidLastElementException(char element, int location)
@@ -66,9 +71,10 @@ namespace Syntax_Pars
         public char Element { get; }
         public int Location { get; }
     }
-    class ParsingInvalidEemenstException : ParsingException
+
+    class ParsingInvalidElemenstException : ParsingException
     {
-        public ParsingInvalidEemenstException(string invalidElements)
+        public ParsingInvalidElemenstException(string invalidElements)
             : base($"Invalid elements '{invalidElements}'")
         {
             InvalidElements = invalidElements;

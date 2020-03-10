@@ -7,28 +7,11 @@ namespace Syntax_Tests
     public class ConvertionsTests
     {
         [TestMethod]
-        public void ConvertToBinaryTest1()
+        public void ConvertToBinaryTest()
         {
-            decimal test = 3345.7680098M;
-            string expected = "110100010001,110001";
-            string actual = Convertions.ConvertDecimalToBinaryString(input: test, roundingPrecision: 6);
-            Assert.AreEqual(expected, actual);
-        }
-        [TestMethod]
-        public void ConvertToBinaryTest2()
-        {
-            decimal test = -10516.7888M;
-            string expected = "-10100100010100,11";
-            string actual = Convertions.ConvertDecimalToBinaryString(input: test, roundingPrecision: 4);
-            Assert.AreEqual(expected, actual);
-        }
-        [TestMethod]
-        public void ConvertToBinaryTest3()
-        {
-            decimal test = 2147483648M;
-            string expected = "10000000000000000000000000000000";
-            string actual = Convertions.ConvertDecimalToBinaryString(input: test, roundingPrecision: 5);
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual("110100010001,110001", Convertions.ConvertDecimalToBinaryString(input: 3345.7680098M, roundingPrecision: 6));
+            Assert.AreEqual("-10100100010100,11", Convertions.ConvertDecimalToBinaryString(input: -10516.7888M, roundingPrecision: 4));
+            Assert.AreEqual("10000000000000000000000000000000", Convertions.ConvertDecimalToBinaryString(input: 2147483648M, roundingPrecision: 5));
         }
     }
 }
