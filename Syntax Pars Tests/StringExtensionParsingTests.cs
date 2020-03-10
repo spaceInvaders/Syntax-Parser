@@ -53,50 +53,16 @@ namespace Syntax_Pars_Tests
         [TestMethod]
         public void TrimBracketsStringTest1()
         {
-            string test = "(7+5)";
-            string expected = "7+5";
-            string actual = StringExtension.TrimBracketsString(test);
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual("7+5", StringExtension.TrimBracketsString("(7+5)"));
+            Assert.AreEqual("7+5", StringExtension.TrimBracketsString("(((7+5)))"));
+            Assert.AreEqual("(7+5)+(3-4)", StringExtension.TrimBracketsString("(((7+5)+(3-4)))"));
         }
         [TestMethod]
         public void TrimBracketsStringTest2()
         {
-            string test = "((7+5))";
-            string expected = "7+5";
-            string actual = StringExtension.TrimBracketsString(test);
-            Assert.AreEqual(expected, actual);
-        }
-        [TestMethod]
-        public void TrimBracketsStringTest3()
-        {
-            string test = "(7+5)+(3-4)";
-            string expected = "(7+5)+(3-4)";
-            string actual = StringExtension.TrimBracketsString(test);
-            Assert.AreEqual(expected, actual);
-        }
-        [TestMethod]
-        public void TrimBracketsStringTest4()
-        {
-            string test = "(7+5";
-            string expected = "(7+5";
-            string actual = StringExtension.TrimBracketsString(test);
-            Assert.AreEqual(expected, actual);
-        }
-        [TestMethod]
-        public void TrimBracketsTest6()
-        {
-            string test = "7+5)";
-            string expected = "7+5)";
-            string actual = StringExtension.TrimBracketsString(test);
-            Assert.AreEqual(expected, actual);
-        }
-        [TestMethod]
-        public void TrimBracketsTest7()
-        {
-            string test = "(((7+5)+(3-4)))";
-            string expected = "(7+5)+(3-4)";
-            string actual = StringExtension.TrimBracketsString(test);
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual("(7+5", StringExtension.TrimBracketsString("(7+5"));
+            Assert.AreEqual("7+5)", StringExtension.TrimBracketsString("7+5)"));
+            Assert.AreEqual("(7+5)+(3-4)", StringExtension.TrimBracketsString("(7+5)+(3-4)"));
         }
         [TestMethod]
         public void ParseInputStringTest1()
@@ -182,7 +148,6 @@ namespace Syntax_Pars_Tests
                 Assert.AreEqual(exception.Message, "Invalid last element ',' at index 3");
             }
         }
-
         [TestMethod]
         public void ParseInputStringTest8()
         {
@@ -231,7 +196,6 @@ namespace Syntax_Pars_Tests
                 Assert.AreEqual(exception.Message, "Missed 1 '(' ?");
             }
         }
-
         [TestMethod]
         public void ParseInputStringTest12()
         {
@@ -271,22 +235,11 @@ namespace Syntax_Pars_Tests
         [TestMethod]
         public void ParseInputStringTest15()
         {
-            string test = "-(6)";
-            string expected = "0-(6)";
-            string actual = StringExtension.ParseInputString(test);
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual("0-(6)", StringExtension.ParseInputString("-(6)"));
+            Assert.AreEqual("(0-6)-(0+7)+(0-(0-8))", StringExtension.ParseInputString("(-6)-(+7)+(-(-8))"));
         }
         [TestMethod]
         public void ParseInputStringTest16()
-        {
-            string test = "(-6)-(+7)+(-(-8))";
-            string expected = "(0-6)-(0+7)+(0-(0-8))";
-            string actual = StringExtension.ParseInputString(test);
-            Assert.AreEqual(expected, actual);
-        }
-        
-        [TestMethod]
-        public void ParseInputStringTest17()
         {
             try
             {
@@ -298,60 +251,18 @@ namespace Syntax_Pars_Tests
             }
         }
         [TestMethod]
+        public void ParseInputStringTest17()
+        {
+            Assert.AreEqual("2,945", StringExtension.ParseInputString("2,9450000000"));
+            Assert.AreEqual("2,9+2", StringExtension.ParseInputString("2,9+2,0"));
+            Assert.AreEqual("2*2", StringExtension.ParseInputString("2,00000*2"));
+        }
+        [TestMethod]
         public void ParseInputStringTest18()
         {
-            string test = "2,9450000000";
-            string expected = "2,945";
-            string actual = StringExtension.ParseInputString(test);
-            Assert.AreEqual(expected, actual);
-        }
-        [TestMethod]
-        public void ParseInputStringTest19()
-        {
-            string test = "2,9450000000+200+2,0000";
-            string expected = "2,945+200+2";
-            string actual = StringExtension.ParseInputString(test);
-            Assert.AreEqual(expected, actual);
-        }
-        [TestMethod]
-        public void ParseInputStringTest20()
-        {
-            string test = "2,9+2,0";
-            string expected = "2,9+2";
-            string actual = StringExtension.ParseInputString(test);
-            Assert.AreEqual(expected, actual);
-        }
-        [TestMethod]
-        public void ParseInputStringTest21()
-        {
-            string test = "2,00000*2";
-            string expected = "2*2";
-            string actual = StringExtension.ParseInputString(test);
-            Assert.AreEqual(expected, actual);
-        }
-        [TestMethod]
-        public void ParseInputStringTest22()
-        {
-            string test = "200000*2";
-            string expected = "200000*2";
-            string actual = StringExtension.ParseInputString(test);
-            Assert.AreEqual(expected, actual);
-        }
-        [TestMethod]
-        public void ParseInputStringTest23()
-        {
-            string test = "2,0000";
-            string expected = "2";
-            string actual = StringExtension.ParseInputString(test);
-            Assert.AreEqual(expected, actual);
-        }
-        [TestMethod]
-        public void ParseInputStringTest24()
-        {
-            string test = "10,0";
-            string expected = "10";
-            string actual = StringExtension.ParseInputString(test);
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual("2,945+200+2", StringExtension.ParseInputString("2,9450000000+200+2,0000"));
+            Assert.AreEqual("200000*2", StringExtension.ParseInputString("200000*2"));
+            Assert.AreEqual("10", StringExtension.ParseInputString("10,0"));
         }
     }
 }

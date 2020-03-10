@@ -70,10 +70,8 @@ namespace Syntax_Pars_Tests
         [TestMethod]
         public void CheckInputTest1()
         {
-            string test = "0 + 1.234   -  5.67/89*0";
-            string expected = "0+1,234-5,67/89*0";
-            string actual = StringExtension.CheckInput(test);
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual("0+1,234-5,67/89*0", StringExtension.CheckInput("0 + 1.234   -  5.67/89*0"));
+            Assert.AreEqual("0-2,66/2*3,14159265358979323846", StringExtension.CheckInput(" (  ( (-2.660000000000     00000/2*p)))"));
         }
         [TestMethod]
         public void CheckInputTest2()
@@ -86,14 +84,6 @@ namespace Syntax_Pars_Tests
             {
                 Assert.AreEqual(exception.Message, "Invalid elements 'abhyt'");
             }
-        }
-        [TestMethod]
-        public void CheckInputTest3()
-        {
-            string test = " (  ( (-2.660000000000     00000/2)))";
-            string expected = "0-2,66/2";
-            string actual = StringExtension.CheckInput(test);
-            Assert.AreEqual(expected, actual);
         }
     }
 }
