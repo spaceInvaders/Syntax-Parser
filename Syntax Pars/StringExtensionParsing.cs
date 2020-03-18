@@ -1,18 +1,17 @@
 ﻿using System.Collections.Generic;
+using System;
 using System.Linq;
+using System.Globalization;
 
 namespace Syntax_Pars
 {
     static partial class StringExtension
     {
-        const string ValidatedFigures = "0123456789+-*/^)(,p";
         const string Digits = "0123456789";
         const string PlusMinMultDivPowBrackets = "+-*/^)(";
         const string PlusMinMultDivPow = "+-*/^";
-        const string PlusMinMultDivPowSep = "+-*/^,";
         const string PlusMinMultDivPowClosBrack = "+-*/^)";
         const string PlusMinMultDivPowOpenBrack = "+-*/^(";
-        const string PiValue = "3,14159265358979323846";
         const char Zero = '0';
         const char Plus = '+';
         const char Minus = '-';
@@ -21,10 +20,15 @@ namespace Syntax_Pars
         const char Power = '^';
         const char OpeningBracket = '(';
         const char ClosingBracket = ')';
-        internal const char Separator = ',';
         const char PiChar = 'p';
+        const char Comma = ',';
+        const char Dot = '.';
 
-        internal static string ParseInputString(this string input)
+        internal static char Separator(CultureInfo culture) => Convert.ToChar(culture.NumberFormat.NumberDecimalSeparator);
+        static string ValidatedFigures(CultureInfo culture) => "0123456789+-*/^)(p" + Separator(culture: culture);
+        static string PlusMinMultDivPowSep(CultureInfo culture) => "+-*/^" + Separator(culture: culture);
+
+        internal static string ParseInputString(this string input, CultureInfo culture)
         {
             string editedInput = input;
             for (int parseIndex = 0; parseIndex < input.Length; parseIndex++)
@@ -33,35 +37,36 @@ namespace Syntax_Pars
                 switch (input[parseIndex])
                 {
                     case OpeningBracket:
-                        CheckOnBrackets(input: input, index: parseIndex, bracket: OpeningBracket);
+                        CheckOnBrackets(input: input, index: parseIndex, bracket: OpeningBracket, culture: culture);
                         break;
                     case ClosingBracket:
-                        CheckOnBrackets(input: input, index: parseIndex, bracket: ClosingBracket);
-                        break;
-                    case Separator:
-                        CheckOnSeparator(input: editedInput, index: editedInputParseIndex);
-                        editedInput = editedInput.TrimExcessiveZerosString(index: editedInputParseIndex);
-                        break;
-                    case Plus:
-                        if (parseIndex == 0 || input[parseIndex - 1] == OpeningBracket)
-                            editedInput = editedInput.ValidatedUnaryMinusString(index: editedInputParseIndex);
-                        else
-                            goto case Multiply;
+                        CheckOnBrackets(input: input, index: parseIndex, bracket: ClosingBracket, culture: culture);
                         break;
                     case Minus:
-                        goto case Plus;
-                    case Multiply:
-                        CheckOnOperations(input: input, index: parseIndex);
+                    case Plus:
+                        if (parseIndex == 0 || input[parseIndex - 1] == OpeningBracket) 
+                            editedInput = editedInput.ValidatedUnaryMinusString(index: editedInputParseIndex);
+                        else
+                            CheckOnOperations(input: input, index: parseIndex, culture: culture);
                         break;
+                    case Multiply:
                     case Divide:
-                        goto case Multiply;
                     case Power:
-                        goto case Multiply;
+                        CheckOnOperations(input: input, index: parseIndex, culture: culture);
+                        break;
                     case PiChar:
                         CheckOnPI(input: input, index: parseIndex);
                         break;
                     default:
-                        CheckOnValidatedFigures(input: input, index: parseIndex);
+                        if (input[parseIndex] == Separator(culture: culture))
+                        {
+                            CheckOnSeparator(input: editedInput, index: editedInputParseIndex, culture: culture);
+                            editedInput = editedInput.TrimExcessiveZerosString(index: editedInputParseIndex, culture: culture);
+                        }
+                        else
+                        {
+                            CheckOnValidatedFigures(input: input, index: parseIndex, culture: culture);
+                        }
                         break;
                 }
             }
@@ -97,14 +102,14 @@ namespace Syntax_Pars
             return lastOperationIndex;
         }
 
-        static void CheckOnValidatedFigures(string input, int index)
+        static void CheckOnValidatedFigures(string input, int index, CultureInfo culture)
         {
             if (!Digits.Contains(input[index]))
             {
                 string inputForCheck = input[index..];
-                if (!inputForCheck.All(character => ValidatedFigures.Contains(character)))
+                if (!inputForCheck.All(character => ValidatedFigures(culture: culture).Contains(character)))
                 {
-                    var exceptionElements = inputForCheck.ToCharArray().Except(ValidatedFigures.ToCharArray());
+                    var exceptionElements = inputForCheck.ToCharArray().Except(ValidatedFigures(culture: culture).ToCharArray());
                     List<char> elements = new List<char>();
                     foreach (char character in exceptionElements)
                     {
@@ -130,7 +135,7 @@ namespace Syntax_Pars
             return input;
         }
 
-        static void CheckOnBrackets(string input, int index, char bracket)
+        static void CheckOnBrackets(string input, int index, char bracket, CultureInfo culture)
         {
             int[] bracketsLevel = StringExtension.BracketsLevel(input: input);
             if (bracketsLevel.Last() == 0 && input.All(character => "()".Contains(character)))
@@ -149,14 +154,14 @@ namespace Syntax_Pars
                     {
                         throw new ParsingInvalidLastElementException(element: OpeningBracket, location: index);
                     }
-                    else if ("*/,^".Contains(input[index + 1]))
+                    else if (("*/^" + Separator(culture: culture).ToString()).Contains(input[index + 1]))
                     {
                         throw new ParsingInvalidFragmentException
                             (fragment: $"{input[index]}{input[index + 1]}", firstEntry: index, lastEntry: index + 1);
                     }
                     break;
                 case ClosingBracket:
-                    if (index > 0 && "(,+-*/^".Contains(input[index - 1]))
+                    if (index > 0 && ("(+-*/^" + Separator(culture: culture).ToString()).Contains(input[index - 1]))
                     {
                         throw new ParsingInvalidFragmentException
                             (fragment: $"{input[index - 1]}{input[index]}", firstEntry: index - 1, lastEntry: index);
@@ -170,7 +175,7 @@ namespace Syntax_Pars
             }
         }
 
-        static void CheckOnOperations(string input, int index)
+        static void CheckOnOperations(string input, int index, CultureInfo culture)
         {
             if (input.Length == 1)
             {
@@ -184,19 +189,19 @@ namespace Syntax_Pars
             {
                 throw new ParsingInvalidLastElementException(element: input[index], location: index);
             }
-            else if (PlusMinMultDivPowSep.Contains(input[index - 1]))
+            else if (PlusMinMultDivPowSep(culture: culture).Contains(input[index - 1]))
             {
                 throw new ParsingInvalidFragmentException
                     (fragment: $"{input[index - 1]}{input[index]}", firstEntry: index - 1, lastEntry: index);
             }
-            else if (PlusMinMultDivPowSep.Contains(input[index + 1]))
+            else if (PlusMinMultDivPowSep(culture: culture).Contains(input[index + 1]))
             {
                 throw new ParsingInvalidFragmentException
                     (fragment: $"{input[index]}{input[index + 1]}", firstEntry: index, lastEntry: index + 1);
             }
         }
 
-        static void CheckOnSeparator(this string input, int index)
+        static void CheckOnSeparator(this string input, int index, CultureInfo culture)
         {
             if (input.Length == 1)
             {
@@ -204,11 +209,11 @@ namespace Syntax_Pars
             }
             else if (index == 0)
             {
-                throw new ParsingInvalidFirstElementException(element: Separator);
+                throw new ParsingInvalidFirstElementException(element: Separator(culture: culture));
             }
             else if (index == input.Length - 1)
             {
-                throw new ParsingInvalidLastElementException(element: Separator, location: index);
+                throw new ParsingInvalidLastElementException(element: Separator(culture: culture), location: index);
             }
             else if (PlusMinMultDivPowBrackets.Contains(input[index - 1]))
             {
@@ -217,19 +222,19 @@ namespace Syntax_Pars
             }
             for (int secondIndex = index + 1; secondIndex < input.Length; secondIndex++)
             {
-                if (input[secondIndex] == Separator)
+                if (input[secondIndex] == Separator(culture: culture))
                 {
                     string editedInput = input.Substring(index + 1, secondIndex - index - 1);
                     if (!editedInput.Any(character => PlusMinMultDivPow.Contains(character)))
                     {
                         throw new ParsingInvalidFragmentException
-                            (fragment: Separator + editedInput + Separator, firstEntry: index, lastEntry: secondIndex);
+                            (fragment: Separator(culture: culture) + editedInput + Separator(culture: culture), firstEntry: index, lastEntry: secondIndex);
                     }
                 }
             }
         }
 
-        static string TrimExcessiveZerosString(this string input, int index)
+        internal static string TrimExcessiveZerosString(this string input, int index, CultureInfo culture)
         {
             for (int afterSeparator = index + 1; afterSeparator < input.Length; afterSeparator++)
             {
@@ -238,7 +243,7 @@ namespace Syntax_Pars
                     while (input[afterSeparator - 1] == Zero &&
                         !PlusMinMultDivPowBrackets.Contains(input[afterSeparator - 2]))
                     {
-                        if (input[afterSeparator - 2] == Separator)
+                        if (input[afterSeparator - 2] == Separator(culture: culture))
                         {
                             input = input.Substring(0, afterSeparator - 2) + input[afterSeparator..];
                             break;
@@ -248,7 +253,7 @@ namespace Syntax_Pars
                     }
                     break;
                 }
-                else if (afterSeparator == input.Length - 1 && input[afterSeparator - 1] == Separator)
+                else if (input[afterSeparator] == Zero && afterSeparator == input.Length - 1 && input[afterSeparator - 1] == Separator(culture: culture))
                 {
                     input = input.Substring(0, afterSeparator - 1);
                     break;
@@ -259,7 +264,7 @@ namespace Syntax_Pars
                     {
                         input = input.Substring(0, afterSeparator - 1) + input[afterSeparator..];
                         afterSeparator -= 1;
-                        if (input[afterSeparator - 1] == Separator)
+                        if (input[afterSeparator - 1] == Separator(culture: culture))
                         {
                             input = input.Substring(0, afterSeparator - 1);
                             break;
@@ -339,7 +344,7 @@ namespace Syntax_Pars
                     }
                     else if (index == input.Length - 2)
                     {
-                        input = input.Substring(1, input.Length - 2);
+                        input = input[1..^1];
                     }
                 }
             }

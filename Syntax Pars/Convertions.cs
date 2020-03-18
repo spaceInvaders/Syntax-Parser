@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace Syntax_Pars
 {
     class Convertions
     {
-        internal static string ConvertDecimalToBinaryString(decimal input, int roundingPrecision)
+        internal static string ConvertDecimalToBinaryString(decimal input, int roundingPrecision, CultureInfo culture)
         {
             try
             {
@@ -34,11 +35,11 @@ namespace Syntax_Pars
                     fractionalPart -= Math.Truncate(fractionalPart);
                 }
                 string fractionalResult = String.Join(String.Empty, fractionalPartlist.ToArray());
-                string binaryResult = integerPartString + StringExtension.Separator + Convert.ToString(fractionalResult);
+                string binaryResult = integerPartString + StringExtension.Separator(culture: culture) + Convert.ToString(fractionalResult);
                 while (binaryResult.EndsWith('0'))
                 {
                     binaryResult = binaryResult[0..^1];
-                    if (binaryResult.EndsWith(StringExtension.Separator))
+                    if (binaryResult.EndsWith(StringExtension.Separator(culture: culture)))
                     {
                         binaryResult = binaryResult[0..^1];
                         break;

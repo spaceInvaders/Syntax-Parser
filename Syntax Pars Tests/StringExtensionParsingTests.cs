@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Syntax_Pars;
+using System.Globalization;
 
 namespace Syntax_Pars_Tests
 {
@@ -69,7 +70,7 @@ namespace Syntax_Pars_Tests
         {
             try
             {
-                "++9".ParseInputString();
+                "++9".ParseInputString(culture: new CultureInfo("zh-HK"));
             }
             catch (ParsingException exception)
             {
@@ -81,7 +82,7 @@ namespace Syntax_Pars_Tests
         {
             try
             {
-                "9-*0".ParseInputString();
+                "9-*0".ParseInputString(culture: new CultureInfo("es-ES"));
             }
             catch (ParsingException exception)
             {
@@ -93,7 +94,7 @@ namespace Syntax_Pars_Tests
         {
             try
             {
-                "+".ParseInputString();
+                "+".ParseInputString(culture: new CultureInfo("hr-HR"));
             }
             catch (ParsingException exception)
             {
@@ -105,7 +106,7 @@ namespace Syntax_Pars_Tests
         {
             try
             {
-                "7+".ParseInputString();
+                "7+".ParseInputString(culture: new CultureInfo("ja-JP"));
             }
             catch (ParsingException exception)
             {
@@ -117,11 +118,11 @@ namespace Syntax_Pars_Tests
         {
             try
             {
-                ",03".ParseInputString();
+                ".03".ParseInputString(culture: new CultureInfo("hr-HR"));
             }
             catch (ParsingException exception)
             {
-                Assert.AreEqual(exception.Message, "Invalid first element ','");
+                Assert.AreEqual(exception.Message, "Invalid elements '.'");
             }
         }
         [TestMethod]
@@ -129,11 +130,11 @@ namespace Syntax_Pars_Tests
         {
             try
             {
-                "8889,7087,03".ParseInputString();
+                "8889.7087.03".ParseInputString(culture: new CultureInfo("ja-JP"));
             }
             catch (ParsingException exception)
             {
-                Assert.AreEqual(exception.Message, "Invalid fragment ',7087,' at indexes: 4-9");
+                Assert.AreEqual(exception.Message, "Invalid fragment '.7087.' at indexes: 4-9");
             }
         }
         [TestMethod]
@@ -141,11 +142,11 @@ namespace Syntax_Pars_Tests
         {
             try
             {
-                "403,".ParseInputString();
+                "403.".ParseInputString(culture: new CultureInfo("en-US"));
             }
             catch (ParsingException exception)
             {
-                Assert.AreEqual(exception.Message, "Invalid last element ',' at index 3");
+                Assert.AreEqual(exception.Message, "Invalid last element '.' at index 3");
             }
         }
         [TestMethod]
@@ -153,7 +154,7 @@ namespace Syntax_Pars_Tests
         {
             try
             {
-                "(*6)".ParseInputString();
+                "(*6)".ParseInputString(culture: new CultureInfo("en-US"));
             }
             catch (ParsingException exception)
             {
@@ -165,7 +166,7 @@ namespace Syntax_Pars_Tests
         {
             try
             {
-                "()".ParseInputString();
+                "()".ParseInputString(culture: new CultureInfo("en-US"));
             }
             catch (ParsingException exception)
             {
@@ -177,11 +178,11 @@ namespace Syntax_Pars_Tests
         {
             try
             {
-                ",(2+4)".ParseInputString();
+                ".(2+4)".ParseInputString(culture: new CultureInfo("uk-UA"));
             }
             catch (ParsingException exception)
             {
-                Assert.AreEqual(exception.Message, "Invalid first element ','");
+                Assert.AreEqual(exception.Message, "Invalid elements '.'");
             }
         }
         [TestMethod]
@@ -189,7 +190,7 @@ namespace Syntax_Pars_Tests
         {
             try
             {
-                ")(2+4)".ParseInputString();
+                ")(2+4)".ParseInputString(culture: new CultureInfo("en-US"));
             }
             catch (ParsingException exception)
             {
@@ -201,7 +202,7 @@ namespace Syntax_Pars_Tests
         {
             try
             {
-                "-((2)+4),".ParseInputString();
+                "-((2)+4),".ParseInputString(culture: new CultureInfo("ru-RU"));
             }
             catch (ParsingException exception)
             {
@@ -213,7 +214,7 @@ namespace Syntax_Pars_Tests
         {
             try
             {
-                "(9+0)(2-4)".ParseInputString();
+                "(9+0)(2-4)".ParseInputString(culture: new CultureInfo("ru-RU"));
             }
             catch (ParsingException exception)
             {
@@ -225,7 +226,7 @@ namespace Syntax_Pars_Tests
         {
             try
             {
-                "((9+0)+(2-4)(".ParseInputString();
+                "((9+0)+(2-4)(".ParseInputString(culture: new CultureInfo("ru-RU"));
             }
             catch (ParsingException exception)
             {
@@ -235,15 +236,15 @@ namespace Syntax_Pars_Tests
         [TestMethod]
         public void ParseInputStringTest15()
         {
-            Assert.AreEqual("0-(6)", StringExtension.ParseInputString("-(6)"));
-            Assert.AreEqual("(0-6)-(0+7)+(0-(0-8))", StringExtension.ParseInputString("(-6)-(+7)+(-(-8))"));
+            Assert.AreEqual("0-(6)", StringExtension.ParseInputString("-(6)", culture: new CultureInfo("ru-RU")));
+            Assert.AreEqual("(0-6)-(0+7)+(0-(0-8))", StringExtension.ParseInputString("(-6)-(+7)+(-(-8))", culture: new CultureInfo("ru-RU")));
         }
         [TestMethod]
         public void ParseInputStringTest16()
         {
             try
             {
-                StringExtension.ParseInputString("a&#######89+0b0");
+                StringExtension.ParseInputString("a&#######89+0b0", culture: new CultureInfo("ru-RU"));
             }
             catch (ParsingException exception)
             {
@@ -253,16 +254,17 @@ namespace Syntax_Pars_Tests
         [TestMethod]
         public void ParseInputStringTest17()
         {
-            Assert.AreEqual("2,945", StringExtension.ParseInputString("2,9450000000"));
-            Assert.AreEqual("2,9+2", StringExtension.ParseInputString("2,9+2,0"));
-            Assert.AreEqual("2*2", StringExtension.ParseInputString("2,00000*2"));
+            Assert.AreEqual("2.945", StringExtension.ParseInputString("2.9450000000", culture: new CultureInfo("ja-JP")));
+            Assert.AreEqual("2.9+2", StringExtension.ParseInputString("2.9+2.0", culture: new CultureInfo("zh-HK")));
+            Assert.AreEqual("2*2", StringExtension.ParseInputString("2.00000*2", culture: new CultureInfo("zh-HK")));
         }
         [TestMethod]
         public void ParseInputStringTest18()
         {
-            Assert.AreEqual("2,945+200+2", StringExtension.ParseInputString("2,9450000000+200+2,0000"));
-            Assert.AreEqual("200000*2", StringExtension.ParseInputString("200000*2"));
-            Assert.AreEqual("10", StringExtension.ParseInputString("10,0"));
+            Assert.AreEqual("2.945+200+2", StringExtension.ParseInputString("2.9450000000+200+2.0000", culture: new CultureInfo("zh-HK")));
+            Assert.AreEqual("200000*2", StringExtension.ParseInputString("200000*2", culture: new CultureInfo("zh-HK")));
+            Assert.AreEqual("10", StringExtension.ParseInputString("10.0", culture: new CultureInfo("ja-JP")));
+            Assert.AreEqual("5.5", StringExtension.ParseInputString("5.5", culture: new CultureInfo("zh-HK")));
         }
     }
 }

@@ -13,21 +13,23 @@ namespace Syntax_Pars
                 Console.WriteLine("Enter your phrase for calculation: ");
                 input = Console.ReadLine();
             }
-            Solve(input);
+            Solve(input: input, culture: CultureInfo.CurrentCulture);
         }
-
-        internal static string Solve(string input)
+  
+        internal static string Solve(string input, CultureInfo culture)
         {
-            string output = null;
+            string decimalResult = null;
             try
             {
-                Node<CalculationElement> myNode = input.GrowNodeTree();
+                Node<CalculationElement> myNode = input.GrowNodeTree(culture: culture);
                 if (myNode != null)
                 {
                     decimal result = myNode.Calculate();
-                    Console.WriteLine(result);
-                    output = result.ToString(new CultureInfo("uk-UA"));
-                    string binaryResult = "0b: " + Convertions.ConvertDecimalToBinaryString(input: result, roundingPrecision: 5);
+                    decimalResult = result.ToString("n15", culture);
+                    string separator = culture.NumberFormat.NumberDecimalSeparator;
+                    decimalResult = decimalResult.TrimEnd('0').TrimEnd(Convert.ToChar(separator));
+                    Console.WriteLine(decimalResult);
+                    string binaryResult = "0b: " + Convertions.ConvertDecimalToBinaryString(input: result, roundingPrecision: 5, culture: culture);
                     Console.WriteLine(binaryResult);
                 }
             }
@@ -41,13 +43,13 @@ namespace Syntax_Pars
             }
             catch (OverflowException)
             {
-                Console.WriteLine("Error: Value was too large or too small");
+                Console.WriteLine("Error: Too large or too small value");
             }
             catch (Exception)
             {
                 Console.WriteLine("Error: Calculation failed");
             }
-            return output;
+            return decimalResult;
         }
     }
 }
