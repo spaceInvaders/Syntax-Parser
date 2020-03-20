@@ -45,15 +45,7 @@ namespace Syntax_Pars
                 }
                 string fractionalResult = String.Join(String.Empty, fractionalPartlist.ToArray());
                 string binaryResult = integerPartString + StringExtension.Separator(culture: culture) + Convert.ToString(fractionalResult);
-                while (binaryResult.EndsWith('0'))
-                {
-                    binaryResult = binaryResult[0..^1];
-                    if (binaryResult.EndsWith(StringExtension.Separator(culture: culture)))
-                    {
-                        binaryResult = binaryResult[0..^1];
-                        break;
-                    }
-                }
+                binaryResult = binaryResult.TrimEnd('0').TrimEnd(Convert.ToChar(StringExtension.Separator(culture: culture)));
                 if (isPositive)
                     return binaryResult;
                 else
