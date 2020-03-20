@@ -22,7 +22,7 @@ namespace Syntax_Tests
         [TestMethod]
         public void SolveTest3()
         {
-            for (decimal testInputNumber = 0.1M; testInputNumber < 1000; testInputNumber += 0.1M)
+            for (decimal testInputNumber = 0.1M; testInputNumber < 1000M; testInputNumber += 0.1M)
             {
                 Assert.AreEqual(testInputNumber.ToString(new CultureInfo("en-US")).TrimEnd('0').TrimEnd('.'),
                                 Program.Solve(testInputNumber.ToString(new CultureInfo("en-US")), culture: new CultureInfo("en-US")));
@@ -31,11 +31,18 @@ namespace Syntax_Tests
         [TestMethod]
         public void SolveTest4()
         {
-            for (decimal testInputNumber = 0.1M; testInputNumber < 1000; testInputNumber += 0.1M)
+            for (decimal testInputNumber = 0.1M; testInputNumber < 1000M; testInputNumber += 0.1M)
             {
                 Assert.AreEqual(testInputNumber.ToString(new CultureInfo("uk-UA")).TrimEnd('0').TrimEnd(','),
                                 Program.Solve(testInputNumber.ToString(new CultureInfo("uk-UA")), culture: new CultureInfo("uk-UA")));
             }
+        }
+        [TestMethod]
+        public void SolveTest5()
+        {
+            Assert.AreEqual("4 294 967,295001", Program.Solve(input: "4294967,295001", culture: new CultureInfo("nb-NO")));
+            Assert.AreEqual("42,94,967.295001", Program.Solve(input: "4294967.295001", culture: new CultureInfo("en-IN")));
+            Assert.AreEqual("42,94,967.295001", Program.Solve(input: "4294967.295001", culture: new CultureInfo("hi-IN")));
         }
     }
 }

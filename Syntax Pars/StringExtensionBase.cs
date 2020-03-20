@@ -25,12 +25,11 @@ namespace Syntax_Pars
 
         internal static string CheckInput(string input, CultureInfo culture)
         {
-            char Separator = Convert.ToChar(culture.NumberFormat.NumberDecimalSeparator);
-            string editedInput = input.Replace(" ", String.Empty);
-            if (Separator != Comma)
-            {
-                editedInput = input.Replace(Comma.ToString(), String.Empty);
-            }
+            string editedInput = new string(input.ToCharArray().Where(character => !Char.IsWhiteSpace(character)).ToArray());
+            if (Separator(culture: culture) == Comma)
+                editedInput = editedInput.Replace(Dot.ToString(), String.Empty);
+            else
+                editedInput = editedInput.Replace(Comma.ToString(), String.Empty);
             editedInput = editedInput.ParseInputString(culture: culture);
             editedInput = editedInput.TrimBracketsString();
             editedInput = editedInput.Replace(PiChar.ToString(), Math.PI.ToString(culture));

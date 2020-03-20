@@ -7,7 +7,6 @@ namespace Syntax_Pars
 {
     static partial class StringExtension
     {
-        const string Digits = "0123456789";
         const string PlusMinMultDivPowBrackets = "+-*/^)(";
         const string PlusMinMultDivPow = "+-*/^";
         const string PlusMinMultDivPowClosBrack = "+-*/^)";
@@ -22,6 +21,7 @@ namespace Syntax_Pars
         const char ClosingBracket = ')';
         const char PiChar = 'p';
         const char Comma = ',';
+        const char Dot = '.';
 
         internal static char Separator(CultureInfo culture) => Convert.ToChar(culture.NumberFormat.NumberDecimalSeparator);
         static string ValidatedFigures(CultureInfo culture) => "0123456789+-*/^)(p" + Separator(culture: culture);
@@ -103,7 +103,7 @@ namespace Syntax_Pars
 
         static void CheckOnValidatedFigures(string input, int index, CultureInfo culture)
         {
-            if (!Digits.Contains(input[index]))
+            if (!Char.IsDigit(input[index]))
             {
                 string inputForCheck = input[index..];
                 if (!inputForCheck.All(character => ValidatedFigures(culture: culture).Contains(character)))

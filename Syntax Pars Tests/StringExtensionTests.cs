@@ -26,7 +26,7 @@ namespace Syntax_Pars_Tests
         [TestMethod]
         public void SplitToNodesTest2()
         {
-            string test = "6-8/((4.2))";
+            string test = "6-8/((  4.2))";
             Node<CalculationElement> expectedNode = new Node<CalculationElement>();
             expectedNode.info.Operation = Operation.Subtraction;
             expectedNode.Left = new Node<CalculationElement>();

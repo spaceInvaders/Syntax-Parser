@@ -15,7 +15,7 @@ namespace Syntax_Pars
             }
             Solve(input: input, culture: CultureInfo.CurrentCulture);
         }
-  
+
         internal static string Solve(string input, CultureInfo culture)
         {
             string decimalResult = null;
