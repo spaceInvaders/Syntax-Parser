@@ -60,7 +60,6 @@ namespace Syntax_Pars
                         if (input[parseIndex] == Separator(culture: culture))
                         {
                             CheckOnSeparator(input: editedInput, index: editedInputParseIndex, culture: culture);
-                            editedInput = editedInput.TrimExcessiveZerosString(index: editedInputParseIndex, culture: culture);
                         }
                         else
                         {
@@ -83,20 +82,19 @@ namespace Syntax_Pars
                 if ((input[index] == Plus || input[index] == Minus) && bracketsLevel[index] == 0)
                 {
                     lastOperationIndex = index;
+
                     break;
                 }
-                else if ((input[index] == Multiply || input[index] == Divide) &&
-                        bracketsLevel[index] == 0 && !multDivOperationHasBeenFound)
-                     {
-                         lastOperationIndex = index;
-                         multDivOperationHasBeenFound = true;
-                     }
-                else if (input[index] == Power && bracketsLevel[index] == 0 &&
-                         !multDivOperationHasBeenFound && !powerOperationHasBeenFound)
-                     {
-                         lastOperationIndex = index;
-                         powerOperationHasBeenFound = true;
-                     }
+                else if ((input[index] == Multiply || input[index] == Divide) && bracketsLevel[index] == 0 && !multDivOperationHasBeenFound)
+                {
+                    lastOperationIndex = index;
+                    multDivOperationHasBeenFound = true;
+                }
+                else if (input[index] == Power && bracketsLevel[index] == 0 && !multDivOperationHasBeenFound && !powerOperationHasBeenFound)
+                {
+                    lastOperationIndex = index;
+                    powerOperationHasBeenFound = true;
+                }
             }
             return lastOperationIndex;
         }
@@ -126,11 +124,10 @@ namespace Syntax_Pars
             {
                 input = Zero + input;
             }
-            else if ((input[index] == Minus && input[index - 1] == OpeningBracket) ||
-                    (input[index] == Plus && input[index - 1] == OpeningBracket))
-                 {
-                    input = input.Insert(index, Zero.ToString());
-                 }
+            else if ((input[index] == Minus && input[index - 1] == OpeningBracket) || (input[index] == Plus && input[index - 1] == OpeningBracket))
+            {
+                input = input.Insert(index, Zero.ToString());
+            }
             return input;
         }
 
@@ -231,52 +228,6 @@ namespace Syntax_Pars
                     }
                 }
             }
-        }
-
-        internal static string TrimExcessiveZerosString(this string input, int index, CultureInfo culture)
-        {
-            for (int afterSeparator = index + 1; afterSeparator < input.Length; afterSeparator++)
-            {
-                if ("+-/*)".Contains(input[afterSeparator]))
-                {
-                    while (input[afterSeparator - 1] == Zero &&
-                        !PlusMinMultDivPowBrackets.Contains(input[afterSeparator - 2]))
-                    {
-                        if (input[afterSeparator - 2] == Separator(culture: culture))
-                        {
-                            input = input.Substring(0, afterSeparator - 2) + input[afterSeparator..];
-                            break;
-                        }
-                        input = input.Substring(0, afterSeparator - 1) + input[afterSeparator..];
-                        afterSeparator -= 1;
-                    }
-                    break;
-                }
-                else if (input[afterSeparator] == Zero && afterSeparator == input.Length - 1 && input[afterSeparator - 1] == Separator(culture: culture))
-                {
-                    input = input.Substring(0, afterSeparator - 1);
-                    break;
-                }
-                else if (afterSeparator == input.Length - 1)
-                {
-                    while (input[afterSeparator] == Zero)
-                    {
-                        input = input.Substring(0, afterSeparator - 1) + input[afterSeparator..];
-                        afterSeparator -= 1;
-                        if (input[afterSeparator - 1] == Separator(culture: culture))
-                        {
-                            input = input.Substring(0, afterSeparator - 1);
-                            break;
-                        }
-                        else if ("123456789".Contains(input[afterSeparator - 1]))
-                        {
-                            input = input.Substring(0, afterSeparator);
-                            break;
-                        }
-                    }
-                }
-            }
-            return input;
         }
 
         static void CheckOnPI(string input, int index)

@@ -26,8 +26,7 @@ namespace Syntax_Pars
                 {
                     decimal result = myNode.Calculate();
                     decimalResult = result.ToString("n15", culture);
-                    string separator = culture.NumberFormat.NumberDecimalSeparator;
-                    decimalResult = decimalResult.TrimEnd('0').TrimEnd(Convert.ToChar(separator));
+                    decimalResult = decimalResult.TrimEnd('0').TrimEnd(Convert.ToChar(StringExtension.Separator(culture: culture)));
                     Console.WriteLine(decimalResult);
                     string binaryResult = "0b: " + Convertions.ConvertDecimalToBinaryString(input: result, roundingPrecision: 5, culture: culture);
                     Console.WriteLine(binaryResult);

@@ -42,7 +42,7 @@ namespace Syntax_Tests
         {
             Assert.AreEqual("4 294 967,295001", Program.Solve(input: "4294967,295001", culture: new CultureInfo("nb-NO")));
             Assert.AreEqual("42,94,967.295001", Program.Solve(input: "4294967.295001", culture: new CultureInfo("en-IN")));
-            Assert.AreEqual("42,94,967.295001", Program.Solve(input: "4294967.295001", culture: new CultureInfo("hi-IN")));
+            Assert.AreEqual("42,94,967.295001", Program.Solve(input: "4294967.29500100000000000", culture: new CultureInfo("hi-IN")));
         }
     }
 }

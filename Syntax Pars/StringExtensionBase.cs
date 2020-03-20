@@ -38,17 +38,14 @@ namespace Syntax_Pars
 
         internal static Node<CalculationElement> SplitToNodes(this string input, CultureInfo culture)
         {
-            input = TrimBracketsString(input: input);
-            string right = null;
-            string left = null;
-            char operation = '\0';
+            input = input.TrimBracketsString();
             /* Since people read from left to right, to ensure the correct order of operations,
              * node tree should be built from right to left with priority of operations outside brackets:
              * plus or minus, multply or divide, power */
             int lastOperationIndex = input.FindLastOerationWithPriorityPlusMinus();
-            right = input.Substring(lastOperationIndex + 1);
-            left = input.Substring(0, lastOperationIndex);
-            operation = input[lastOperationIndex];
+            string right = input.Substring(lastOperationIndex + 1);
+            string left = input.Substring(0, lastOperationIndex);
+            char operation = input[lastOperationIndex];
             Node<CalculationElement> node = new Node<CalculationElement>();
             switch (operation)
             {

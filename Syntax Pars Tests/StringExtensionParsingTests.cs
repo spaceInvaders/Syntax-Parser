@@ -251,21 +251,6 @@ namespace Syntax_Pars_Tests
                 Assert.AreEqual(exception.Message, "Invalid elements 'a&#b'");
             }
         }
-        [TestMethod]
-        public void ParseInputStringTest17()
-        {
-            Assert.AreEqual("2.945", StringExtension.ParseInputString("2.9450000000", culture: new CultureInfo("ja-JP")));
-            Assert.AreEqual("2.9+2", StringExtension.ParseInputString("2.9+2.0", culture: new CultureInfo("zh-HK")));
-            Assert.AreEqual("2*2", StringExtension.ParseInputString("2.00000*2", culture: new CultureInfo("zh-HK")));
-        }
-        [TestMethod]
-        public void ParseInputStringTest18()
-        {
-            Assert.AreEqual("2.945+200+2", StringExtension.ParseInputString("2.9450000000+200+2.0000", culture: new CultureInfo("zh-HK")));
-            Assert.AreEqual("200000*2", StringExtension.ParseInputString("200000*2", culture: new CultureInfo("zh-HK")));
-            Assert.AreEqual("10", StringExtension.ParseInputString("10.0", culture: new CultureInfo("ja-JP")));
-            Assert.AreEqual("5.5", StringExtension.ParseInputString("5.5", culture: new CultureInfo("zh-HK")));
-        }
     }
 }
 
