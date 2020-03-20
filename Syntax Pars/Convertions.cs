@@ -19,14 +19,23 @@ namespace Syntax_Pars
                 decimal fractionalPart = input - integerPart;
 
                 List<string> integerPartlist = new List<string>();
-                while (integerPart > 0)
+                string integerPartString = null;
+                if (integerPart == 0)
                 {
-                    decimal remainder = integerPart - (Math.Truncate(integerPart / 2) * 2);
-                    integerPartlist.Add(Convert.ToString(remainder));
-                    integerPart = Math.Truncate(integerPart / 2);
+                    integerPartString = "0";
                 }
-                integerPartlist.Reverse();
-                string integerPartString = String.Join(String.Empty, integerPartlist.ToArray());
+                else
+                {
+                    while (integerPart > 0)
+                    {
+                        decimal remainder = integerPart - (Math.Truncate(integerPart / 2) * 2);
+                        integerPartlist.Add(Convert.ToString(remainder));
+                        integerPart = Math.Truncate(integerPart / 2);
+                    }
+                    integerPartlist.Reverse();
+                    integerPartString = String.Join(String.Empty, integerPartlist.ToArray());
+                }
+               
                 List<string> fractionalPartlist = new List<string>();
                 for (int index = 0; index < roundingPrecision; index++)
                 {

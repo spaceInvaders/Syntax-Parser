@@ -19,5 +19,23 @@ namespace Syntax_Tests
             Assert.AreEqual("-6,772", Program.Solve("-4^(((2^1/2)))-(22,5/5-1,2^3)", culture: new CultureInfo("uk-UA")));
             Assert.AreEqual("-6.772", Program.Solve("-4^(((2^1/2)))-(22.5/5-1.2^3)", culture: new CultureInfo("en-US")));
         }
+        [TestMethod]
+        public void SolveTest3()
+        {
+            for (decimal testInputNumber = 0.1M; testInputNumber < 1000; testInputNumber += 0.1M)
+            {
+                Assert.AreEqual(testInputNumber.ToString(new CultureInfo("en-US")).TrimEnd('0').TrimEnd('.'),
+                                Program.Solve(testInputNumber.ToString(new CultureInfo("en-US")), culture: new CultureInfo("en-US")));
+            }
+        }
+        [TestMethod]
+        public void SolveTest4()
+        {
+            for (decimal testInputNumber = 0.1M; testInputNumber < 1000; testInputNumber += 0.1M)
+            {
+                Assert.AreEqual(testInputNumber.ToString(new CultureInfo("uk-UA")).TrimEnd('0').TrimEnd(','),
+                                Program.Solve(testInputNumber.ToString(new CultureInfo("uk-UA")), culture: new CultureInfo("uk-UA")));
+            }
+        }
     }
 }

@@ -22,7 +22,6 @@ namespace Syntax_Pars
         const char ClosingBracket = ')';
         const char PiChar = 'p';
         const char Comma = ',';
-        const char Dot = '.';
 
         internal static char Separator(CultureInfo culture) => Convert.ToChar(culture.NumberFormat.NumberDecimalSeparator);
         static string ValidatedFigures(CultureInfo culture) => "0123456789+-*/^)(p" + Separator(culture: culture);
@@ -137,7 +136,7 @@ namespace Syntax_Pars
 
         static void CheckOnBrackets(string input, int index, char bracket, CultureInfo culture)
         {
-            int[] bracketsLevel = StringExtension.BracketsLevel(input: input);
+            int[] bracketsLevel = BracketsLevel(input: input);
             if (bracketsLevel.Last() == 0 && input.All(character => "()".Contains(character)))
             {
                 throw new ParsingInvalidFragmentException(fragment: input);
