@@ -122,7 +122,7 @@ namespace Syntax_Pars_Tests
             }
             catch (ParsingException exception)
             {
-                Assert.AreEqual(exception.Message, "Invalid elements '.'");
+                Assert.AreEqual(exception.Message, "Invalid elements: '.'");
             }
         }
         [TestMethod]
@@ -182,7 +182,7 @@ namespace Syntax_Pars_Tests
             }
             catch (ParsingException exception)
             {
-                Assert.AreEqual(exception.Message, "Invalid elements '.'");
+                Assert.AreEqual(exception.Message, "Invalid elements: '.'");
             }
         }
         [TestMethod]
@@ -248,7 +248,7 @@ namespace Syntax_Pars_Tests
             }
             catch (ParsingException exception)
             {
-                Assert.AreEqual(exception.Message, "Invalid elements 'a&#b'");
+                Assert.AreEqual(exception.Message, "Invalid elements: 'a&#b'");
             }
         }
     }

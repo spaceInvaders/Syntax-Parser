@@ -75,7 +75,7 @@ namespace Syntax_Pars
     class ParsingInvalidElemenstException : ParsingException
     {
         public ParsingInvalidElemenstException(string invalidElements)
-            : base($"Invalid elements '{invalidElements}'")
+            : base($"Invalid elements: '{invalidElements}'")
         {
             InvalidElements = invalidElements;
         }
