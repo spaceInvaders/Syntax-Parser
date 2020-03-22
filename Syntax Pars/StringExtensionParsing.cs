@@ -82,7 +82,6 @@ namespace Syntax_Pars
                 if ((input[index] == Plus || input[index] == Minus) && bracketsLevel[index] == 0)
                 {
                     lastOperationIndex = index;
-
                     break;
                 }
                 else if ((input[index] == Multiply || input[index] == Divide) && bracketsLevel[index] == 0 && !multDivOperationHasBeenFound)
