@@ -122,7 +122,7 @@ namespace Syntax_Pars_Tests
             }
             catch (ParsingException exception)
             {
-                Assert.AreEqual(exception.Message, "Invalid elements: '.'");
+                Assert.AreEqual(exception.Message, "Invalid first element '.'");
             }
         }
         [TestMethod]

@@ -28,6 +28,20 @@ namespace Syntax_Pars
         static string ValidatedFigures(CultureInfo culture) => "0123456789+-*/^)(p" + Separator(culture: culture);
         static string PlusMinMultDivPowSep(CultureInfo culture) => "+-*/^" + Separator(culture: culture);
 
+        internal static string RemoveWhiteSpaces(this string input)
+        {
+            return new string(input.ToCharArray().Where(character => !Char.IsWhiteSpace(character)).ToArray());
+        }
+
+        internal static string RemoveGroupSeparator(this string input, CultureInfo culture)
+        {
+            if (Separator(culture: culture) == Comma && Convert.ToChar(GroupSeparator(culture: culture)) == Dot)
+                input = input.Replace(Dot.ToString(), String.Empty);
+            else if (Separator(culture: culture) == Dot && Convert.ToChar(GroupSeparator(culture: culture)) == Comma)
+                input = input.Replace(Comma.ToString(), String.Empty);
+            return input;
+        }
+
         internal static string ParseInputString(this string input, CultureInfo culture)
         {
             string editedInput = input;
@@ -44,7 +58,7 @@ namespace Syntax_Pars
                         break;
                     case Minus:
                     case Plus:
-                        if (parseIndex == 0 || input[parseIndex - 1] == OpeningBracket) 
+                        if (parseIndex == 0 || input[parseIndex - 1] == OpeningBracket)
                             editedInput = editedInput.ValidatedUnaryMinusString(index: editedInputParseIndex);
                         else
                             CheckOnOperations(input: input, index: parseIndex, culture: culture);
@@ -58,7 +72,7 @@ namespace Syntax_Pars
                         CheckOnPI(input: input, index: parseIndex);
                         break;
                     default:
-                        if (input[parseIndex] == Separator(culture: culture))
+                        if (input[parseIndex] == Separator(culture: culture) || input[parseIndex] == GroupSeparator(culture: culture))
                             CheckOnSeparator(input: editedInput, index: editedInputParseIndex, culture: culture);
                         else
                             CheckOnValidatedFigures(input: input, index: parseIndex, culture: culture);
@@ -201,11 +215,11 @@ namespace Syntax_Pars
             }
             else if (index == 0)
             {
-                throw new ParsingInvalidFirstElementException(element: Separator(culture: culture));
+                throw new ParsingInvalidFirstElementException(element: input[index]);
             }
             else if (index == input.Length - 1)
             {
-                throw new ParsingInvalidLastElementException(element: Separator(culture: culture), location: index);
+                throw new ParsingInvalidLastElementException(element: input[index], location: index);
             }
             else if (PlusMinMultDivPowBrackets.Contains(input[index - 1]))
             {
@@ -214,15 +228,19 @@ namespace Syntax_Pars
             }
             for (int secondIndex = index + 1; secondIndex < input.Length; secondIndex++)
             {
-                if (input[secondIndex] == Separator(culture: culture))
+                if (input[index] == Separator(culture: culture) && input[secondIndex] == Separator(culture: culture))
                 {
                     string editedInput = input.Substring(index + 1, secondIndex - index - 1);
                     if (!editedInput.Any(character => PlusMinMultDivPow.Contains(character)))
-                    {
                         throw new ParsingInvalidFragmentException
                             (fragment: Separator(culture: culture) + editedInput + Separator(culture: culture),
                             firstEntry: index, lastEntry: secondIndex);
-                    }
+                }
+                if (((input[index] == GroupSeparator(culture: culture) || input[index] == Separator(culture: culture))
+                        && input[secondIndex] == GroupSeparator(culture: culture)) && (secondIndex == index + 1))
+                {
+                        throw new ParsingInvalidFragmentException
+                        (fragment: input[index].ToString() + input[index + 1], firstEntry: index, lastEntry: secondIndex);
                 }
             }
         }

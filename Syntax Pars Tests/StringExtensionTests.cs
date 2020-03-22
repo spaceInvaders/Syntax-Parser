@@ -83,8 +83,8 @@ namespace Syntax_Pars_Tests
         [TestMethod]
         public void CheckInputTest2()
         {
-            Assert.AreEqual("50.123456", StringExtension.CheckInput("50.123,456", culture: new CultureInfo("en-US")));
-            Assert.AreEqual("50,123456", StringExtension.CheckInput("50,123.456", culture: new CultureInfo("es-ES")));
+            Assert.AreEqual("50.123456789", StringExtension.CheckInput("50.123,456,789", culture: new CultureInfo("en-US")));
+            Assert.AreEqual("50,123456789", StringExtension.CheckInput("50,123.456.789", culture: new CultureInfo("es-ES")));
         }
         [TestMethod]
         public void CheckInputTest3()
@@ -96,6 +96,42 @@ namespace Syntax_Pars_Tests
             catch (ParsingException exception)
             {
                 Assert.AreEqual(exception.Message, "Invalid elements: '.'");
+            }
+        }
+        [TestMethod]
+        public void CheckInputTest4()
+        {
+            try
+            {
+                StringExtension.CheckInput("50,123,,456,78", culture: new CultureInfo("en-US"));
+            }
+            catch (ParsingException exception)
+            {
+                Assert.AreEqual(exception.Message, "Invalid fragment ',,' at indexes: 6-7");
+            }
+        }
+        [TestMethod]
+        public void CheckInputTest5()
+        {
+            try
+            {
+                StringExtension.CheckInput("50..23,456,78", culture: new CultureInfo("en-US"));
+            }
+            catch (ParsingException exception)
+            {
+                Assert.AreEqual(exception.Message, "Invalid fragment '..' at indexes: 2-3");
+            }
+        }
+        [TestMethod]
+        public void CheckInputTest6()
+        {
+            try
+            {
+                StringExtension.CheckInput("50.,23,456,78", culture: new CultureInfo("en-US"));
+            }
+            catch (ParsingException exception)
+            {
+                Assert.AreEqual(exception.Message, "Invalid fragment '.,' at indexes: 2-3");
             }
         }
     }
