@@ -26,9 +26,10 @@ namespace Syntax_Pars
         internal static string CheckInput(string input, CultureInfo culture)
         {
             string editedInput = new string(input.ToCharArray().Where(character => !Char.IsWhiteSpace(character)).ToArray());
-            editedInput = Separator(culture: culture) == Comma ?
-                editedInput.Replace(Dot.ToString(), String.Empty) :
-                editedInput.Replace(Comma.ToString(), String.Empty);
+            if (Separator(culture: culture) == Comma && Convert.ToChar(GroupSeparator(culture: culture)) == Dot)
+                editedInput = editedInput.Replace(Dot.ToString(), String.Empty);
+            else if (Separator(culture: culture) == Dot && Convert.ToChar(GroupSeparator(culture: culture)) == Comma)
+                editedInput = editedInput.Replace(Comma.ToString(), String.Empty);
             editedInput = editedInput.ParseInputString(culture: culture);
             editedInput = editedInput.TrimBracketsString();
             editedInput = editedInput.Replace(PiChar.ToString(), Math.PI.ToString(culture));

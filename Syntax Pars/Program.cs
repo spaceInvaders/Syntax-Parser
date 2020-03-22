@@ -10,7 +10,8 @@ namespace Syntax_Pars
             string input = null;
             while (String.IsNullOrWhiteSpace(input))
             {
-                Console.WriteLine("Enter your phrase for calculation: ");
+                Console.WriteLine("Enter your phrase for calculation:");
+                Console.WriteLine($"(Notice, your decmal separator is '{StringExtension.Separator(culture: CultureInfo.CurrentCulture)}')");
                 input = Console.ReadLine();
             }
             Solve(input: input, culture: CultureInfo.CurrentCulture);
@@ -26,7 +27,7 @@ namespace Syntax_Pars
                 {
                     decimal result = myNode.Calculate();
                     decimalResult = result.ToString("n15", culture);
-                    decimalResult = decimalResult.TrimEnd('0').TrimEnd(Convert.ToChar(StringExtension.Separator(culture: culture)));
+                    decimalResult = decimalResult.TrimEnd('0').TrimEnd(StringExtension.Separator(culture: culture));
                     Console.WriteLine(decimalResult);
                     string binaryResult = "0b: " + Convertions.ConvertDecimalToBinaryString(input: result, roundingPrecision: 5, culture: culture);
                     Console.WriteLine(binaryResult);

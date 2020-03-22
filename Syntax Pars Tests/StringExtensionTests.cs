@@ -80,5 +80,23 @@ namespace Syntax_Pars_Tests
                 Assert.AreEqual(exception.Message, "Invalid elements: 'abhyt'");
             }
         }
+        [TestMethod]
+        public void CheckInputTest2()
+        {
+            Assert.AreEqual("50.123456", StringExtension.CheckInput("50.123,456", culture: new CultureInfo("en-US")));
+            Assert.AreEqual("50,123456", StringExtension.CheckInput("50,123.456", culture: new CultureInfo("es-ES")));
+        }
+        [TestMethod]
+        public void CheckInputTest3()
+        {
+            try
+            {
+                StringExtension.CheckInput("50,123.456", culture: new CultureInfo("uk-UA"));
+            }
+            catch (ParsingException exception)
+            {
+                Assert.AreEqual(exception.Message, "Invalid elements: '.'");
+            }
+        }
     }
 }

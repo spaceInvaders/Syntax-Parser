@@ -42,7 +42,7 @@ namespace Syntax_Pars
                 }
                 string fractionalResult = String.Join(String.Empty, fractionalPartlist.ToArray());
                 string binaryResult = integerPartString + StringExtension.Separator(culture: culture) + Convert.ToString(fractionalResult);
-                binaryResult = binaryResult.TrimEnd('0').TrimEnd(Convert.ToChar(StringExtension.Separator(culture: culture)));
+                binaryResult = binaryResult.TrimEnd('0').TrimEnd(StringExtension.Separator(culture: culture));
                 return isPositive == true ?  binaryResult : "-" + binaryResult;
             }
             catch (Exception)

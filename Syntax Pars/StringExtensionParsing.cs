@@ -24,6 +24,7 @@ namespace Syntax_Pars
         const char Dot = '.';
 
         internal static char Separator(CultureInfo culture) => Convert.ToChar(culture.NumberFormat.NumberDecimalSeparator);
+        internal static char GroupSeparator(CultureInfo culture) => Convert.ToChar(culture.NumberFormat.NumberGroupSeparator);
         static string ValidatedFigures(CultureInfo culture) => "0123456789+-*/^)(p" + Separator(culture: culture);
         static string PlusMinMultDivPowSep(CultureInfo culture) => "+-*/^" + Separator(culture: culture);
 
@@ -58,13 +59,9 @@ namespace Syntax_Pars
                         break;
                     default:
                         if (input[parseIndex] == Separator(culture: culture))
-                        {
                             CheckOnSeparator(input: editedInput, index: editedInputParseIndex, culture: culture);
-                        }
                         else
-                        {
                             CheckOnValidatedFigures(input: input, index: parseIndex, culture: culture);
-                        }
                         break;
                 }
             }
@@ -223,7 +220,8 @@ namespace Syntax_Pars
                     if (!editedInput.Any(character => PlusMinMultDivPow.Contains(character)))
                     {
                         throw new ParsingInvalidFragmentException
-                            (fragment: Separator(culture: culture) + editedInput + Separator(culture: culture), firstEntry: index, lastEntry: secondIndex);
+                            (fragment: Separator(culture: culture) + editedInput + Separator(culture: culture),
+                            firstEntry: index, lastEntry: secondIndex);
                     }
                 }
             }
