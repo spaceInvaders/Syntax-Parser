@@ -10,11 +10,8 @@ namespace Syntax_Pars
         {
             try
             {
-                bool isPositive = false;
-                if (input >= 0)
-                    isPositive = true;
-                else
-                    input *= -1;
+                bool isPositive = input >= 0 ? true : false;
+                input = input >= 0 ? input : input *= -1;
                 decimal integerPart = Math.Truncate(input);
                 decimal fractionalPart = input - integerPart;
 
@@ -46,10 +43,7 @@ namespace Syntax_Pars
                 string fractionalResult = String.Join(String.Empty, fractionalPartlist.ToArray());
                 string binaryResult = integerPartString + StringExtension.Separator(culture: culture) + Convert.ToString(fractionalResult);
                 binaryResult = binaryResult.TrimEnd('0').TrimEnd(Convert.ToChar(StringExtension.Separator(culture: culture)));
-                if (isPositive)
-                    return binaryResult;
-                else
-                    return "-" + binaryResult;
+                return isPositive == true ?  binaryResult : "-" + binaryResult;
             }
             catch (Exception)
             {
