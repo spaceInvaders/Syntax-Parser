@@ -11,7 +11,7 @@ namespace Syntax_Pars
             while (String.IsNullOrWhiteSpace(input))
             {
                 Console.WriteLine("Enter your phrase for calculation:");
-                Console.WriteLine($"(Notice, your decmal separator is '{StringExtension.Separator(culture: CultureInfo.CurrentCulture)}')");
+                Console.WriteLine($"(Note, your decimal separator is '{StringExtension.Separator(culture: CultureInfo.CurrentCulture)}')");
                 input = Console.ReadLine();
             }
             Solve(input: input, culture: CultureInfo.CurrentCulture);
