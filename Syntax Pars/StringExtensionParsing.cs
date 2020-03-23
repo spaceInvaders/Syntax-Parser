@@ -154,7 +154,7 @@ namespace Syntax_Pars
                     if (index > 0 && !PlusMinMultDivPowOpenBrack.Contains(input[index - 1]))
                     {
                         throw new ParsingInvalidFragmentException
-                            (fragment: $"{input[index - 1] }{ input[index]}", firstEntry: index - 1, lastEntry: index);
+                            (fragment: input[index - 1].ToString() + input[index], firstEntry: index - 1, lastEntry: index);
                     }
                     else if (index == input.Length - 1)
                     {
@@ -163,19 +163,19 @@ namespace Syntax_Pars
                     else if (("*/^" + Separator(culture: culture).ToString()).Contains(input[index + 1]))
                     {
                         throw new ParsingInvalidFragmentException
-                            (fragment: $"{input[index]}{input[index + 1]}", firstEntry: index, lastEntry: index + 1);
+                            (fragment: input[index].ToString() + input[index + 1], firstEntry: index, lastEntry: index + 1);
                     }
                     break;
                 case ClosingBracket:
                     if (index > 0 && ("(+-*/^" + Separator(culture: culture).ToString()).Contains(input[index - 1]))
                     {
                         throw new ParsingInvalidFragmentException
-                            (fragment: $"{input[index - 1]}{input[index]}", firstEntry: index - 1, lastEntry: index);
+                            (fragment: input[index - 1].ToString() + input[index], firstEntry: index - 1, lastEntry: index);
                     }
                     else if (index != input.Length - 1 && !PlusMinMultDivPowClosBrack.Contains(input[index + 1]))
                     {
                         throw new ParsingInvalidFragmentException
-                            (fragment: $"{input[index]}{input[index + 1]}", firstEntry: index, lastEntry: index + 1);
+                           (fragment: input[index].ToString() + input[index + 1], firstEntry: index, lastEntry: index + 1);
                     }
                     break;
             }
@@ -198,12 +198,12 @@ namespace Syntax_Pars
             else if (PlusMinMultDivPowSep(culture: culture).Contains(input[index - 1]))
             {
                 throw new ParsingInvalidFragmentException
-                    (fragment: $"{input[index - 1]}{input[index]}", firstEntry: index - 1, lastEntry: index);
+                    (fragment: input[index - 1].ToString() + input[index], firstEntry: index - 1, lastEntry: index);
             }
             else if (PlusMinMultDivPowSep(culture: culture).Contains(input[index + 1]))
             {
                 throw new ParsingInvalidFragmentException
-                    (fragment: $"{input[index]}{input[index + 1]}", firstEntry: index, lastEntry: index + 1);
+                    (fragment: input[index].ToString() + input[index + 1], firstEntry: index, lastEntry: index + 1);
             }
         }
 
@@ -224,7 +224,7 @@ namespace Syntax_Pars
             else if (PlusMinMultDivPowBrackets.Contains(input[index - 1]))
             {
                 throw new ParsingInvalidFragmentException
-                    (fragment: $"{input[index - 1]}{input[index]}", firstEntry: index - 1, lastEntry: index);
+                    (fragment: input[index - 1].ToString() + input[index], firstEntry: index - 1, lastEntry: index);
             }
             for (int secondIndex = index + 1; secondIndex < input.Length; secondIndex++)
             {
@@ -250,12 +250,12 @@ namespace Syntax_Pars
             if (index > 0 && !PlusMinMultDivPowOpenBrack.Contains(input[index - 1]))
             {
                 throw new ParsingInvalidFragmentException
-                    (fragment: $"{input[index - 1]}{input[index]}", firstEntry: index - 1, lastEntry: index);
+                    (fragment: input[index - 1].ToString() + input[index], firstEntry: index - 1, lastEntry: index);
             }
             else if (index != input.Length - 1 && !PlusMinMultDivPowClosBrack.Contains(input[index + 1]))
             {
                 throw new ParsingInvalidFragmentException
-                    (fragment: $"{input[index]}{input[index + 1]}", firstEntry: index, lastEntry: index + 1);
+                    (fragment: input[index].ToString() + input[index + 1], firstEntry: index, lastEntry: index + 1);
             }
         }
 
