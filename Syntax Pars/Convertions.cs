@@ -26,7 +26,7 @@ namespace Syntax_Pars
                     while (integerPart > 0)
                     {
                         decimal remainder = integerPart - (Math.Truncate(integerPart / 2) * 2);
-                        integerPartlist.Add(Convert.ToString(remainder));
+                        integerPartlist.Add(remainder.ToString());
                         integerPart = Math.Truncate(integerPart / 2);
                     }
                     integerPartlist.Reverse();
@@ -37,11 +37,11 @@ namespace Syntax_Pars
                 for (int index = 0; index < roundingPrecision; index++)
                 {
                     fractionalPart *= 2;
-                    fractionalPartlist.Add(Convert.ToString(Math.Truncate(fractionalPart)));
+                    fractionalPartlist.Add(Math.Truncate(fractionalPart).ToString());
                     fractionalPart -= Math.Truncate(fractionalPart);
                 }
                 string fractionalResult = String.Join(String.Empty, fractionalPartlist.ToArray());
-                string binaryResult = integerPartString + StringExtension.Separator(culture: culture) + Convert.ToString(fractionalResult);
+                string binaryResult = integerPartString + StringExtension.Separator(culture: culture) + fractionalResult.ToString();
                 binaryResult = binaryResult.TrimEnd('0').TrimEnd(StringExtension.Separator(culture: culture));
                 return isPositive == true ?  binaryResult : "-" + binaryResult;
             }
