@@ -15,7 +15,6 @@ namespace Syntax_Pars
                 decimal integerPart = Math.Truncate(input);
                 decimal fractionalPart = input - integerPart;
 
-                List<string> integerPartlist = new List<string>();
                 string integerPartString = null;
                 if (integerPart == 0)
                 {
@@ -23,6 +22,7 @@ namespace Syntax_Pars
                 }
                 else
                 {
+                    List<string> integerPartlist = new List<string>();
                     while (integerPart > 0)
                     {
                         decimal remainder = integerPart - (Math.Truncate(integerPart / 2) * 2);
