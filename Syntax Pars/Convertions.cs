@@ -11,7 +11,7 @@ namespace Syntax_Pars
             try
             {
                 bool isPositive = input >= 0 ? true : false;
-                input = input >= 0 ? input : input *= -1;
+                input = input >= 0 ? input : input = Math.Abs(input);
                 decimal integerPart = Math.Truncate(input);
                 decimal fractionalPart = input - integerPart;
 
