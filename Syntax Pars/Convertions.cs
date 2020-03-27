@@ -14,7 +14,7 @@ namespace Syntax_Pars
                 input = input >= 0 ? input : input = Math.Abs(input);
                 decimal integerPart = Math.Truncate(input);
                 decimal fractionalPart = input - integerPart;
-
+                string binaryResult = null;
                 string integerPartString = null;
                 if (integerPart == 0)
                 {
@@ -32,18 +32,25 @@ namespace Syntax_Pars
                     integerPartlist.Reverse();
                     integerPartString = String.Join(String.Empty, integerPartlist.ToArray());
                 }
-               
-                List<string> fractionalPartlist = new List<string>();
-                for (int index = 0; index < roundingPrecision; index++)
+                string fractionalPartString = null;
+                if (fractionalPart == 0)
                 {
-                    fractionalPart *= 2;
-                    fractionalPartlist.Add(Math.Truncate(fractionalPart).ToString());
-                    fractionalPart -= Math.Truncate(fractionalPart);
+                    fractionalPartString = "0";
                 }
-                string fractionalResult = String.Join(String.Empty, fractionalPartlist.ToArray());
-                string binaryResult = integerPartString + StringExtension.Separator(culture: culture) + fractionalResult.ToString();
-                binaryResult = binaryResult.TrimEnd('0').TrimEnd(StringExtension.Separator(culture: culture));
-                return isPositive == true ?  binaryResult : "-" + binaryResult;
+                else
+                {
+                    List<string> fractionalPartlist = new List<string>();
+                    for (int index = 0; index < roundingPrecision; index++)
+                    {
+                        fractionalPart *= 2;
+                        fractionalPartlist.Add(Math.Truncate(fractionalPart).ToString());
+                        fractionalPart -= Math.Truncate(fractionalPart);
+                    }
+                    fractionalPartString = String.Join(String.Empty, fractionalPartlist.ToArray());
+                    binaryResult = integerPartString + StringExtension.Separator(culture: culture) + fractionalPartString.ToString();
+                    binaryResult = binaryResult.TrimEnd('0').TrimEnd(StringExtension.Separator(culture: culture));
+                }
+                return isPositive == true ? binaryResult : "-" + binaryResult;
             }
             catch (Exception)
             {
