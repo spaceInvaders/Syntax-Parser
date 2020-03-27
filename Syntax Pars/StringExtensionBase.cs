@@ -16,9 +16,10 @@ namespace Syntax_Pars
             }
             else
             {
-                node = new Node<CalculationElement>();
-                node.info.Operation = Operation.Number;
-                node.info.Number = decimal.Parse(editedInput, culture);
+                node = new Node<CalculationElement>
+                {
+                    Info = new CalculationElement(number: decimal.Parse(editedInput, culture))
+                };
             }
             return node;
         }
@@ -47,19 +48,19 @@ namespace Syntax_Pars
             switch (operation)
             {
                 case Plus:
-                    node.info.Operation = Operation.Addition;
+                    node.Info = new CalculationElement(operation: Operation.Addition);      
                     break;
                 case Minus:
-                    node.info.Operation = Operation.Subtraction;
+                    node.Info = new CalculationElement(operation: Operation.Subtraction);
                     break;
                 case Divide:
-                    node.info.Operation = Operation.Division;
+                    node.Info = new CalculationElement(operation: Operation.Division);
                     break;
                 case Multiply:
-                    node.info.Operation = Operation.Multiplication;
+                    node.Info = new CalculationElement(operation: Operation.Multiplication);
                     break;
                 case Power:
-                    node.info.Operation = Operation.ToThePower;
+                    node.Info = new CalculationElement(operation: Operation.ToThePower);
                     break;
             }
             if (left.Any(character => PlusMinMultDivPow.Contains(character)))
@@ -70,7 +71,7 @@ namespace Syntax_Pars
             {
                 node.Left = new Node<CalculationElement>();
                 left = left.TrimBracketsString();
-                node.Left.info.Number = decimal.Parse(left, culture);
+                node.Left.Info = new CalculationElement(number:decimal.Parse(left, culture));
             }
             if (right.Any(character => PlusMinMultDivPow.Contains(character)))
             {
@@ -80,7 +81,7 @@ namespace Syntax_Pars
             {
                 node.Right = new Node<CalculationElement>();
                 right = right.TrimBracketsString();
-                node.Right.info.Number = decimal.Parse(right, culture);
+                node.Right.Info = new CalculationElement(number: decimal.Parse(right, culture));
             }
             return node;
         }

@@ -12,14 +12,14 @@ namespace Syntax_Pars_Tests
         public void SplitToNodesTest1()
         {
             string test = "2 + 3";
-            Node<CalculationElement> expectedNode = new Node<CalculationElement>();
-            expectedNode.info.Operation = Operation.Addition;
-            expectedNode.Left = new Node<CalculationElement>();
-            expectedNode.Right = new Node<CalculationElement>();
-            expectedNode.Left.info.Operation = Operation.Number;
-            expectedNode.Right.info.Operation = Operation.Number;
-            expectedNode.Left.info.Number = 2M;
-            expectedNode.Right.info.Number = 3M;
+            Node<CalculationElement> expectedNode = new Node<CalculationElement>
+            {
+                Info = new CalculationElement(operation: Operation.Addition),
+                Left = new Node<CalculationElement>(),
+                Right = new Node<CalculationElement>()
+            };
+            expectedNode.Left.Info = new CalculationElement(number: 2M);
+            expectedNode.Right.Info = new CalculationElement(number: 3M);
             Node<CalculationElement> actualNode = test.SplitToNodes(culture: new CultureInfo("zh-HK"));
             actualNode.Should().BeEquivalentTo(expectedNode);
         }
@@ -27,19 +27,18 @@ namespace Syntax_Pars_Tests
         public void SplitToNodesTest2()
         {
             string test = "6-8/((  4.2))";
-            Node<CalculationElement> expectedNode = new Node<CalculationElement>();
-            expectedNode.info.Operation = Operation.Subtraction;
-            expectedNode.Left = new Node<CalculationElement>();
-            expectedNode.Right = new Node<CalculationElement>();
-            expectedNode.Left.info.Operation = Operation.Number;
-            expectedNode.Left.info.Number = 6M;
-            expectedNode.Right.info.Operation = Operation.Division;
+            Node<CalculationElement> expectedNode = new Node<CalculationElement>
+            {
+                Info = new CalculationElement(operation: Operation.Subtraction),
+                Left = new Node<CalculationElement>(),
+                Right = new Node<CalculationElement>()
+            };
+            expectedNode.Left.Info = new CalculationElement(number: 6M);
+            expectedNode.Right.Info = new CalculationElement(operation: Operation.Division);
             expectedNode.Right.Left = new Node<CalculationElement>();
             expectedNode.Right.Right = new Node<CalculationElement>();
-            expectedNode.Right.Left.info.Operation = Operation.Number;
-            expectedNode.Right.Right.info.Operation = Operation.Number;
-            expectedNode.Right.Left.info.Number = 8M;
-            expectedNode.Right.Right.info.Number = 4.2M;
+            expectedNode.Right.Left.Info = new CalculationElement(number: 8M);
+            expectedNode.Right.Right.Info = new CalculationElement(number: 4.2M);
             Node<CalculationElement> actualNode = test.SplitToNodes(culture: new CultureInfo("ja-JP"));
             actualNode.Should().BeEquivalentTo(expectedNode);
         }
@@ -47,14 +46,14 @@ namespace Syntax_Pars_Tests
         public void GrowNodeTreeTest1()
         {
             string test = "((2) + 3,0000)";
-            Node<CalculationElement> expectedNode = new Node<CalculationElement>();
-            expectedNode.info.Operation = Operation.Addition;
-            expectedNode.Left = new Node<CalculationElement>();
-            expectedNode.Right = new Node<CalculationElement>();
-            expectedNode.Left.info.Operation = Operation.Number;
-            expectedNode.Right.info.Operation = Operation.Number;
-            expectedNode.Left.info.Number = 2M;
-            expectedNode.Right.info.Number = 3M;
+            Node<CalculationElement> expectedNode = new Node<CalculationElement>
+            {
+                Info = new CalculationElement(operation: Operation.Addition),
+                Left = new Node<CalculationElement>(),
+                Right = new Node<CalculationElement>()
+            };
+            expectedNode.Left.Info = new CalculationElement(number: 2M);
+            expectedNode.Right.Info = new CalculationElement(number: 3M);
             Node<CalculationElement> actualNode = test.GrowNodeTree(culture: new CultureInfo("es-ES"));
             actualNode.Should().BeEquivalentTo(expectedNode);
         }
@@ -63,8 +62,7 @@ namespace Syntax_Pars_Tests
         {
             string test = "((386))";
             Node<CalculationElement> expectedNode = new Node<CalculationElement>();
-            expectedNode.info.Operation = Operation.Number;
-            expectedNode.info.Number = 386M;
+            expectedNode.Info = new CalculationElement(number: 386M);
             Node<CalculationElement> actualNode = test.GrowNodeTree(culture: new CultureInfo("es-ES"));
             actualNode.Should().BeEquivalentTo(expectedNode);
         }

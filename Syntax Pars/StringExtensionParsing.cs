@@ -291,7 +291,7 @@ namespace Syntax_Pars
             }
             else if (bracketsLevel.Last() < 0)
             {
-                throw new ParsingMissedElementException(element: OpeningBracket, number: bracketsLevel.Last()*(-1));
+                throw new ParsingMissedElementException(element: OpeningBracket, number: Math.Abs(bracketsLevel.Last()));
             }
             return bracketsLevel;
         }

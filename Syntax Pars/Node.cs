@@ -4,6 +4,6 @@
     {
         internal Node<T> Left { get; set; }
         internal Node<T> Right { get; set; }
-        internal T info;
+        internal T Info { get; set; }
     }
 }

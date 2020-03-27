@@ -10,10 +10,10 @@ namespace Syntax_Pars
         {
             try
             {
-                bool isPositive = input >= 0 ? true : false;
-                input = input >= 0 ? input : input = Math.Abs(input);
-                decimal integerPart = Math.Truncate(input);
-                decimal fractionalPart = input - integerPart;
+                bool isPositive = input >= 0;
+                decimal absoultinput = Math.Abs(input);
+                decimal integerPart = Math.Truncate(absoultinput);
+                decimal fractionalPart = absoultinput - integerPart;
                 string binaryResult = null;
                 string integerPartString = null;
                 if (integerPart == 0)
@@ -50,7 +50,7 @@ namespace Syntax_Pars
                     binaryResult = integerPartString + StringExtension.Separator(culture: culture) + fractionalPartString.ToString();
                     binaryResult = binaryResult.TrimEnd('0').TrimEnd(StringExtension.Separator(culture: culture));
                 }
-                return isPositive == true ? binaryResult : "-" + binaryResult;
+                return isPositive ? binaryResult : "-" + binaryResult;
             }
             catch (Exception)
             {

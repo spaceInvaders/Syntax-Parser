@@ -10,19 +10,18 @@ namespace Syntax_Pars_Tests
         public void SplitToNodesTest1()
         {
             //string test = "6-8/((4))";
-            Node<CalculationElement> testNode = new Node<CalculationElement>();
-            testNode.info.Operation = Operation.Subtraction;
-            testNode.Left = new Node<CalculationElement>();
-            testNode.Right = new Node<CalculationElement>();
-            testNode.Left.info.Operation = Operation.Number;
-            testNode.Left.info.Number = 6M;
-            testNode.Right.info.Operation = Operation.Division;
+            Node<CalculationElement> testNode = new Node<CalculationElement>
+            {
+                Info = new CalculationElement(operation: Operation.Subtraction),
+                Left = new Node<CalculationElement>(),
+                Right = new Node<CalculationElement>()
+            };
+            testNode.Left.Info = new CalculationElement(number: 6M);
+            testNode.Right.Info = new CalculationElement(operation: Operation.Division);
             testNode.Right.Left = new Node<CalculationElement>();
             testNode.Right.Right = new Node<CalculationElement>();
-            testNode.Right.Left.info.Operation = Operation.Number;
-            testNode.Right.Right.info.Operation = Operation.Number;
-            testNode.Right.Left.info.Number = 8M;
-            testNode.Right.Right.info.Number = 4M;
+            testNode.Right.Left.Info = new CalculationElement(number: 8M);
+            testNode.Right.Right.Info = new CalculationElement(number: 4M);
             decimal actualResult = testNode.Calculate();
             decimal expectedResult = 4M;
             Assert.AreEqual(expectedResult, actualResult);
