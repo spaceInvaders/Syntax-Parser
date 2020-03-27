@@ -61,8 +61,10 @@ namespace Syntax_Pars_Tests
         public void GrowNodeTreeTest2()
         {
             string test = "((386))";
-            Node<CalculationElement> expectedNode = new Node<CalculationElement>();
-            expectedNode.Info = new CalculationElement(number: 386M);
+            Node<CalculationElement> expectedNode = new Node<CalculationElement>
+            {
+                Info = new CalculationElement(number: 386M)
+            };
             Node<CalculationElement> actualNode = test.GrowNodeTree(culture: new CultureInfo("es-ES"));
             actualNode.Should().BeEquivalentTo(expectedNode);
         }

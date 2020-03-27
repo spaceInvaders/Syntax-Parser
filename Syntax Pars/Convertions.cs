@@ -6,7 +6,7 @@ namespace Syntax_Pars
 {
     class Convertions
     {
-        internal static string ConvertDecimalToBinaryString(decimal input, int roundingPrecision, CultureInfo culture)
+        internal static string ConvertDecimalToBinaryString(decimal input, int roundingPrecisionForBinary, CultureInfo culture)
         {
             try
             {
@@ -40,16 +40,16 @@ namespace Syntax_Pars
                 else
                 {
                     List<string> fractionalPartlist = new List<string>();
-                    for (int index = 0; index < roundingPrecision; index++)
+                    for (int index = 0; index < roundingPrecisionForBinary; index++)
                     {
                         fractionalPart *= 2;
                         fractionalPartlist.Add(Math.Truncate(fractionalPart).ToString());
                         fractionalPart -= Math.Truncate(fractionalPart);
                     }
                     fractionalPartString = String.Join(String.Empty, fractionalPartlist.ToArray());
-                    binaryResult = integerPartString + StringExtension.Separator(culture: culture) + fractionalPartString.ToString();
-                    binaryResult = binaryResult.TrimEnd('0').TrimEnd(StringExtension.Separator(culture: culture));
                 }
+                binaryResult = integerPartString + StringExtension.Separator(culture: culture) + fractionalPartString.ToString();
+                binaryResult = binaryResult.TrimEnd('0').TrimEnd(StringExtension.Separator(culture: culture));
                 return isPositive ? binaryResult : "-" + binaryResult;
             }
             catch (Exception)

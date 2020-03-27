@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Globalization;
 
 namespace Syntax_Pars
@@ -19,6 +20,8 @@ namespace Syntax_Pars
 
         internal static string Solve(string input, CultureInfo culture)
         {
+            const int PrecisionForDecimalResult = 15;
+            const int PrecisionForBinaryResult = 5;
             string decimalResult = null;
             try
             {
@@ -26,10 +29,14 @@ namespace Syntax_Pars
                 if (myNode != null)
                 {
                     decimal result = myNode.Calculate();
-                    decimalResult = result.ToString("n15", culture);
+                    decimalResult = result.ToString($"n{PrecisionForDecimalResult}", culture);
                     decimalResult = decimalResult.TrimEnd('0').TrimEnd(StringExtension.Separator(culture: culture));
                     Console.WriteLine(decimalResult);
-                    string binaryResult = "0b: " + Convertions.ConvertDecimalToBinaryString(input: result, roundingPrecision: 5, culture: culture);
+                    int separatorIndex = result.ToString().IndexOf(StringExtension.Separator(culture: culture));
+                    if (separatorIndex > 0 && result.ToString().Length - separatorIndex > PrecisionForBinaryResult)
+                        Console.WriteLine($"Warning: note, result is rounded, precision is '{PrecisionForDecimalResult}'");
+                    string binaryResult = "0b: " + Convertions.ConvertDecimalToBinaryString
+                        (input: result, roundingPrecisionForBinary: PrecisionForBinaryResult, culture: culture);
                     Console.WriteLine(binaryResult);
                 }
             }

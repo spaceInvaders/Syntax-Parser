@@ -309,7 +309,7 @@ namespace Syntax_Pars
                     }
                     else if (index == input.Length - 2)
                     {
-                        input = input.Trim();
+                        input = input[1..^1];
                     }
                 }
             }
