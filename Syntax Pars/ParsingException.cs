@@ -23,9 +23,9 @@ namespace Syntax_Pars
         {
             Fragment = fragment;
         }
-        internal string Fragment { get; }
-        internal int FirstEntry { get; }
-        internal int LastEntry { get; }
+        internal string Fragment { get; private set; }
+        internal int FirstEntry { get; private set; }
+        internal int LastEntry { get; private set; }
     }
 
     class ParsingJustAnElementException : ParsingException
@@ -35,7 +35,7 @@ namespace Syntax_Pars
         {
             Input = input;
         }
-        internal string Input { get; }
+        internal string Input { get; private set; }
     }
 
     class ParsingMissedElementException : ParsingException
@@ -46,8 +46,8 @@ namespace Syntax_Pars
             Element = element;
             Number = number;
         }
-        internal int Number { get; }
-        internal char Element { get; }
+        internal int Number { get; private set; }
+        internal char Element { get; private set; }
     }
 
     class ParsingInvalidFirstElementException : ParsingException
@@ -57,7 +57,7 @@ namespace Syntax_Pars
         {
             Element = element;
         }
-        internal char Element { get; }
+        internal char Element { get; private set; }
     }
 
     class ParsingInvalidLastElementException : ParsingException
@@ -68,8 +68,8 @@ namespace Syntax_Pars
             Element = element;
             Location = location;
         }
-        internal char Element { get; }
-        internal int Location { get; }
+        internal char Element { get; private set; }
+        internal int Location { get; private set; }
     }
 
     class ParsingInvalidElemenstException : ParsingException
@@ -79,6 +79,6 @@ namespace Syntax_Pars
         {
             InvalidElements = invalidElements;
         }
-        internal string InvalidElements { get; }
+        internal string InvalidElements { get; private set; }
     }
 }

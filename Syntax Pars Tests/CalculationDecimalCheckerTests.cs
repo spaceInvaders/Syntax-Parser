@@ -5,72 +5,80 @@ using System.Globalization;
 namespace Syntax_Pars_Tests
 {
     [TestClass]
-    public class StringExtensionParsingTests
+    public class CalculationDecimalCheckerTests
     {
         [TestMethod]
-        public void FindLastOerationWithPriorityPlusMinusTest1()
-        {
-            string testInput = "8-7^2+9*1";
-            int actualLastOperationIndex = testInput.FindLastOerationWithPriorityPlusMinus();
-            int expectedLastOperationIndex = 5;
-            Assert.AreEqual(expectedLastOperationIndex, actualLastOperationIndex);
-        }
-        [TestMethod]
-        public void BracketsLevelTest1()
-        {
-            string test = "((2*4)-7)";
-            int[] expected = new int[9] { 1, 2, 2, 2, 2, 1, 1, 1, 0 };
-            int[] actual = StringExtension.BracketsLevel(test);
-            CollectionAssert.AreEqual(expected, actual);
-        }
-        [TestMethod]
-        public void BracketsLevelTest2()
-        {
-            string test = "(2/2)+(3*3)";
-            int[] expected = new int[11] { 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0 };
-            int[] actual = StringExtension.BracketsLevel(test);
-            CollectionAssert.AreEqual(expected, actual);
-        }
-        [TestMethod]
-        public void BracketsLevelTest3()
-        {
-            string test = "()";
-            int[] expected = new int[2] { 1, 0 };
-            int[] actual = StringExtension.BracketsLevel(test);
-            CollectionAssert.AreEqual(expected, actual);
-        }
-        [TestMethod]
-        public void BracketsLevelTest4()
+        public void CheckInputTest1()
         {
             try
             {
-                StringExtension.BracketsLevel("(1))))))");
+                CalculationDecimalChecker.CheckInput("ab0+1234-5.67/89hyt*0", culture: new CultureInfo("ja-JP"));
             }
             catch (ParsingException exception)
             {
-                Assert.AreEqual(exception.Message, "Missed 5 '(' ?");
+                Assert.AreEqual(exception.Message, "Invalid elements: 'abhyt'");
             }
         }
         [TestMethod]
-        public void TrimBracketsStringTest1()
+        public void CheckInputTest2()
         {
-            Assert.AreEqual("7+5", StringExtension.TrimBracketsString("(7+5)"));
-            Assert.AreEqual("7+5", StringExtension.TrimBracketsString("(((7+5)))"));
-            Assert.AreEqual("(7+5)+(3-4)", StringExtension.TrimBracketsString("(((7+5)+(3-4)))"));
+            Assert.AreEqual("50.123456789", CalculationDecimalChecker.CheckInput("50.123,456,789", culture: new CultureInfo("en-US")));
+            Assert.AreEqual("50,123456789", CalculationDecimalChecker.CheckInput("50,123.456.789", culture: new CultureInfo("es-ES")));
         }
         [TestMethod]
-        public void TrimBracketsStringTest2()
-        {
-            Assert.AreEqual("(7+5", StringExtension.TrimBracketsString("(7+5"));
-            Assert.AreEqual("7+5)", StringExtension.TrimBracketsString("7+5)"));
-            Assert.AreEqual("(7+5)+(3-4)", StringExtension.TrimBracketsString("(7+5)+(3-4)"));
-        }
-        [TestMethod]
-        public void ParseInputStringTest1()
+        public void CheckInputTest3()
         {
             try
             {
-                "++9".ParseInputString(culture: new CultureInfo("zh-HK"));
+                CalculationDecimalChecker.CheckInput("50,123.456", culture: new CultureInfo("uk-UA"));
+            }
+            catch (ParsingException exception)
+            {
+                Assert.AreEqual(exception.Message, "Invalid elements: '.'");
+            }
+        }
+        [TestMethod]
+        public void CheckInputTest4()
+        {
+            try
+            {
+                CalculationDecimalChecker.CheckInput("50,123,,456,78", culture: new CultureInfo("en-US"));
+            }
+            catch (ParsingException exception)
+            {
+                Assert.AreEqual(exception.Message, "Invalid fragment ',,' at indexes: 6-7");
+            }
+        }
+        [TestMethod]
+        public void CheckInputTest5()
+        {
+            try
+            {
+                CalculationDecimalChecker.CheckInput("50..23,456,78", culture: new CultureInfo("en-US"));
+            }
+            catch (ParsingException exception)
+            {
+                Assert.AreEqual(exception.Message, "Invalid fragment '..' at indexes: 2-3");
+            }
+        }
+        [TestMethod]
+        public void CheckInputTest6()
+        {
+            try
+            {
+                CalculationDecimalChecker.CheckInput("50.,23,456,78", culture: new CultureInfo("en-US"));
+            }
+            catch (ParsingException exception)
+            {
+                Assert.AreEqual(exception.Message, "Invalid fragment '.,' at indexes: 2-3");
+            }
+        }
+        [TestMethod]
+        public void ParseInputTest1()
+        {
+            try
+            {
+                CalculationDecimalChecker.CheckInput(input: "++9", culture: new CultureInfo("zh-HK"));
             }
             catch (ParsingException exception)
             {
@@ -82,7 +90,7 @@ namespace Syntax_Pars_Tests
         {
             try
             {
-                "9-*0".ParseInputString(culture: new CultureInfo("es-ES"));
+                CalculationDecimalChecker.CheckInput(input: "9-*0", culture: new CultureInfo("es-ES"));
             }
             catch (ParsingException exception)
             {
@@ -94,7 +102,7 @@ namespace Syntax_Pars_Tests
         {
             try
             {
-                "+".ParseInputString(culture: new CultureInfo("hr-HR"));
+                CalculationDecimalChecker.CheckInput(input: "+", culture: new CultureInfo("hr-HR"));
             }
             catch (ParsingException exception)
             {
@@ -106,7 +114,7 @@ namespace Syntax_Pars_Tests
         {
             try
             {
-                "7+".ParseInputString(culture: new CultureInfo("ja-JP"));
+                CalculationDecimalChecker.CheckInput(input: "7+", culture: new CultureInfo("ja-JP"));
             }
             catch (ParsingException exception)
             {
@@ -118,7 +126,7 @@ namespace Syntax_Pars_Tests
         {
             try
             {
-                ".03".ParseInputString(culture: new CultureInfo("hr-HR"));
+                CalculationDecimalChecker.CheckInput(input: ".03", culture: new CultureInfo("hr-HR"));
             }
             catch (ParsingException exception)
             {
@@ -130,7 +138,7 @@ namespace Syntax_Pars_Tests
         {
             try
             {
-                "8889.7087.03".ParseInputString(culture: new CultureInfo("ja-JP"));
+                CalculationDecimalChecker.CheckInput(input: "8889.7087.03", culture: new CultureInfo("ja-JP"));
             }
             catch (ParsingException exception)
             {
@@ -142,7 +150,7 @@ namespace Syntax_Pars_Tests
         {
             try
             {
-                "403.".ParseInputString(culture: new CultureInfo("en-US"));
+                CalculationDecimalChecker.CheckInput(input: "403.", culture: new CultureInfo("en-US"));
             }
             catch (ParsingException exception)
             {
@@ -154,7 +162,7 @@ namespace Syntax_Pars_Tests
         {
             try
             {
-                "(*6)".ParseInputString(culture: new CultureInfo("en-US"));
+                CalculationDecimalChecker.CheckInput(input: "(*6)", culture: new CultureInfo("en-US"));
             }
             catch (ParsingException exception)
             {
@@ -166,7 +174,7 @@ namespace Syntax_Pars_Tests
         {
             try
             {
-                "()".ParseInputString(culture: new CultureInfo("en-US"));
+                CalculationDecimalChecker.CheckInput(input: "()", culture: new CultureInfo("en-US"));
             }
             catch (ParsingException exception)
             {
@@ -178,7 +186,7 @@ namespace Syntax_Pars_Tests
         {
             try
             {
-                ".(2+4)".ParseInputString(culture: new CultureInfo("uk-UA"));
+                CalculationDecimalChecker.CheckInput(input: ".(2+4)", culture: new CultureInfo("uk-UA"));
             }
             catch (ParsingException exception)
             {
@@ -190,7 +198,7 @@ namespace Syntax_Pars_Tests
         {
             try
             {
-                ")(2+4)".ParseInputString(culture: new CultureInfo("en-US"));
+                CalculationDecimalChecker.CheckInput(input: ")(2+4)", culture: new CultureInfo("en-US"));
             }
             catch (ParsingException exception)
             {
@@ -202,7 +210,7 @@ namespace Syntax_Pars_Tests
         {
             try
             {
-                "-((2)+4),".ParseInputString(culture: new CultureInfo("ru-RU"));
+                CalculationDecimalChecker.CheckInput(input: "-((2)+4),", culture: new CultureInfo("ru-RU"));
             }
             catch (ParsingException exception)
             {
@@ -214,7 +222,7 @@ namespace Syntax_Pars_Tests
         {
             try
             {
-                "(9+0)(2-4)".ParseInputString(culture: new CultureInfo("ru-RU"));
+                CalculationDecimalChecker.CheckInput(input: "(9+0)(2-4)", culture: new CultureInfo("ru-RU"));
             }
             catch (ParsingException exception)
             {
@@ -226,7 +234,7 @@ namespace Syntax_Pars_Tests
         {
             try
             {
-                "((9+0)+(2-4)(".ParseInputString(culture: new CultureInfo("ru-RU"));
+                CalculationDecimalChecker.CheckInput(input: "((9+0)+(2-4)(", culture: new CultureInfo("ru-RU"));
             }
             catch (ParsingException exception)
             {
@@ -236,15 +244,15 @@ namespace Syntax_Pars_Tests
         [TestMethod]
         public void ParseInputStringTest15()
         {
-            Assert.AreEqual("0-(6)", StringExtension.ParseInputString("-(6)", culture: new CultureInfo("ru-RU")));
-            Assert.AreEqual("(0-6)-(0+7)+(0-(0-8))", StringExtension.ParseInputString("(-6)-(+7)+(-(-8))", culture: new CultureInfo("ru-RU")));
+            Assert.AreEqual("0-(6)", CalculationDecimalChecker.CheckInput("-(6)", culture: new CultureInfo("ru-RU")));
+            Assert.AreEqual("(0-6)-(0+7)+(0-(0-8))", CalculationDecimalChecker.CheckInput("(-6)-(+7)+(-(-8))", culture: new CultureInfo("ru-RU")));
         }
         [TestMethod]
         public void ParseInputStringTest16()
         {
             try
             {
-                StringExtension.ParseInputString("a&#######89+0b0", culture: new CultureInfo("ru-RU"));
+                CalculationDecimalChecker.CheckInput("a&#######89+0b0", culture: new CultureInfo("ru-RU"));
             }
             catch (ParsingException exception)
             {

@@ -4,8 +4,10 @@ using System.Globalization;
 
 namespace Syntax_Pars
 {
-    class Convertions
+    internal class Convertions
     {
+        private static char Separator(CultureInfo culture) => Convert.ToChar(culture.NumberFormat.NumberDecimalSeparator);
+
         internal static string ConvertDecimalToBinaryString(decimal input, int roundingPrecisionForBinary, CultureInfo culture)
         {
             try
@@ -16,13 +18,14 @@ namespace Syntax_Pars
                 decimal fractionalPart = absoultinput - integerPart;
                 string binaryResult = null;
                 string integerPartString = null;
+
                 if (integerPart == 0)
                 {
                     integerPartString = "0";
                 }
                 else
                 {
-                    List<string> integerPartlist = new List<string>();
+                    var integerPartlist = new List<string>();
                     while (integerPart > 0)
                     {
                         decimal remainder = integerPart - (Math.Truncate(integerPart / 2) * 2);
@@ -32,14 +35,16 @@ namespace Syntax_Pars
                     integerPartlist.Reverse();
                     integerPartString = String.Join(String.Empty, integerPartlist.ToArray());
                 }
+
                 string fractionalPartString = null;
+
                 if (fractionalPart == 0)
                 {
                     fractionalPartString = "0";
                 }
                 else
                 {
-                    List<string> fractionalPartlist = new List<string>();
+                    var fractionalPartlist = new List<string>();
                     for (int index = 0; index < roundingPrecisionForBinary; index++)
                     {
                         fractionalPart *= 2;
@@ -48,8 +53,10 @@ namespace Syntax_Pars
                     }
                     fractionalPartString = String.Join(String.Empty, fractionalPartlist.ToArray());
                 }
-                binaryResult = integerPartString + StringExtension.Separator(culture: culture) + fractionalPartString.ToString();
-                binaryResult = binaryResult.TrimEnd('0').TrimEnd(StringExtension.Separator(culture: culture));
+
+                binaryResult = integerPartString + Separator(culture: culture) + fractionalPartString.ToString();
+                binaryResult = binaryResult.TrimEnd('0').TrimEnd(Separator(culture: culture));
+
                 return isPositive ? binaryResult : "-" + binaryResult;
             }
             catch (Exception)
