@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Syntax_Pars
+namespace CalculationLibrary
 {
     internal static class CalculationConstants
     {

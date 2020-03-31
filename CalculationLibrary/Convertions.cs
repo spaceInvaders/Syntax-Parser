@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 
-namespace Syntax_Pars
+namespace CalculationLibrary
 {
     internal class Convertions
     {

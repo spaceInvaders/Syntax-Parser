@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace Syntax_Pars
+namespace CalculationLibrary
 {
     internal static class BracketsHelper
     {

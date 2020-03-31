@@ -1,8 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Globalization;
-using Syntax_Pars;
+using ConsoleCalculator;
 
-namespace Syntax_Tests
+namespace CalculatorCoreTests
 {
     [TestClass]
     public class ProgramTests

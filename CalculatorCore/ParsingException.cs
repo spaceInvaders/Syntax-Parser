@@ -1,15 +1,15 @@
 ﻿using System;
 
-namespace Syntax_Pars
+namespace CalculatorCore
 {
-    class ParsingException : Exception
+    public class ParsingException : Exception
     {
         internal ParsingException(string message)
             : base(message)
         { }
     }
 
-    class ParsingInvalidFragmentException : ParsingException
+    public class ParsingInvalidFragmentException : ParsingException
     {
         internal ParsingInvalidFragmentException(string fragment, int firstEntry, int lastEntry)
             : base($"Invalid fragment '{fragment}' at indexes: {firstEntry}-{lastEntry}")
@@ -28,7 +28,7 @@ namespace Syntax_Pars
         internal int LastEntry { get; private set; }
     }
 
-    class ParsingJustAnElementException : ParsingException
+    public class ParsingJustAnElementException : ParsingException
     {
         internal ParsingJustAnElementException(string input)
             : base($"Just a '{input}'?")
@@ -38,7 +38,7 @@ namespace Syntax_Pars
         internal string Input { get; private set; }
     }
 
-    class ParsingMissedElementException : ParsingException
+    public class ParsingMissedElementException : ParsingException
     {
         internal ParsingMissedElementException(char element, int number)
             : base($"Missed {number} '{element}' ?")
@@ -50,7 +50,7 @@ namespace Syntax_Pars
         internal char Element { get; private set; }
     }
 
-    class ParsingInvalidFirstElementException : ParsingException
+    public class ParsingInvalidFirstElementException : ParsingException
     {
         internal ParsingInvalidFirstElementException(char element)
             : base($"Invalid first element '{element}'")
@@ -60,7 +60,7 @@ namespace Syntax_Pars
         internal char Element { get; private set; }
     }
 
-    class ParsingInvalidLastElementException : ParsingException
+    public class ParsingInvalidLastElementException : ParsingException
     {
         internal ParsingInvalidLastElementException(char element, int location)
             : base($"Invalid last element '{element}' at index {location}")
@@ -72,7 +72,7 @@ namespace Syntax_Pars
         internal int Location { get; private set; }
     }
 
-    class ParsingInvalidElemenstException : ParsingException
+    public class ParsingInvalidElemenstException : ParsingException
     {
         internal ParsingInvalidElemenstException(string invalidElements)
             : base($"Invalid elements: '{invalidElements}'")

@@ -12,7 +12,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentAssertions" Version="5.10.2" />
+    <ProjectReference Include="..\CalculatorCore\CalculatorCore.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="CalculationLibrary">
+      <HintPath>..\CalculationLibrary\obj\Debug\netcoreapp3.1\CalculationLibrary.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

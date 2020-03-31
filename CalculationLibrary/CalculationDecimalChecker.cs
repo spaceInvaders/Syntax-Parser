@@ -3,7 +3,7 @@ using System;
 using System.Linq;
 using System.Globalization;
 
-namespace Syntax_Pars
+namespace CalculationLibrary
 {
     static class CalculationDecimalChecker
     {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Syntax_Pars;
+using CalculatorCore;
 
-namespace Syntax_Pars_Tests
+namespace CalculatorCoreTests
 {
     [TestClass]
     public class CalculationNodeExtensionTests

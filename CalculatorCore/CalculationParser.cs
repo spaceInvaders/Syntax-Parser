@@ -2,11 +2,11 @@
 using System.Globalization;
 using System.Linq;
 
-namespace Syntax_Pars
+namespace CalculatorCore
 {
-    static class CalculationParser
+    public static class CalculationParser
     {
-        internal static ICalculationOperation GrowNodeTree(string input, CultureInfo culture)
+        public static ICalculationOperation GrowNodeTree(string input, CultureInfo culture)
         {
             string editedInput = CalculationDecimalChecker.CheckInput(input: input, culture: culture);
             

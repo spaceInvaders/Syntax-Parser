@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Globalization;
+using CalculatorCore;
 
-namespace Syntax_Pars
+namespace ConsoleCalculator
 {
     internal class Program
     {
@@ -13,6 +14,7 @@ namespace Syntax_Pars
         private static char Separator(CultureInfo culture) => Convert.ToChar(culture.NumberFormat.NumberDecimalSeparator);
 
         private static void Main(string[] args)
+
         {
             DisplayStartInfo();
 
@@ -23,12 +25,9 @@ namespace Syntax_Pars
                 while (String.IsNullOrWhiteSpace(input))
                 {
                     Console.WriteLine();
-
                     Console.ForegroundColor = ConsoleColor.DarkGray;
-
-                    Console.Write("Cont this: ");
-
-                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.Write("Calculate this: ");
+                    Console.ForegroundColor = ConsoleColor.White;
 
                     input = Console.ReadLine();
                 }
@@ -97,7 +96,7 @@ namespace Syntax_Pars
 
             Console.WriteLine($"Hi, here u can count smth like this:");
 
-            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.ForegroundColor = ConsoleColor.White;
 
             Console.WriteLine($"-4{separator}01*p^(((32^1/2)))-(22{separator}5/5-1{separator}2^3)");
 
