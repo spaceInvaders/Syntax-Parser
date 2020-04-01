@@ -88,22 +88,18 @@ namespace ConsoleCalculator
             return decimalResult;
         }
 
+        #region PrivateMethods
+
         private static void DisplayStartInfo()
         {
             char separator = Separator(culture: CultureInfo.CurrentCulture);
 
             ConsoleColor color = Console.ForegroundColor;
-
-            Console.WriteLine($"Hi, here u can count smth like this:");
-
+            Console.WriteLine($"Hi, u can calculate smth like this:");
             Console.ForegroundColor = ConsoleColor.White;
-
             Console.WriteLine($"-4{separator}01*p^(((32^1/2)))-(22{separator}5/5-1{separator}2^3)");
-
             Console.ForegroundColor = color;
-
             Console.WriteLine($"Note, your decimal separator is '{separator}'");
-
             Console.WriteLine("Result - press 'enter', leave - press 'q'");
         }
 
@@ -115,11 +111,8 @@ namespace ConsoleCalculator
             decimalResult = decimalResult.TrimEnd('0').TrimEnd(Separator(culture: culture));
 
             Console.ForegroundColor = ConsoleColor.DarkGray;
-
             Console.Write("decimal: ");
-
             Console.ForegroundColor = ConsoleColor.Cyan;
-
             Console.WriteLine(decimalResult);
 
             int separatorIndex = result.ToString().IndexOf(Separator(culture: culture));
@@ -136,12 +129,12 @@ namespace ConsoleCalculator
                         (input: input, roundingPrecisionForBinary: PrecisionForBinaryResult, culture: culture);
 
             Console.ForegroundColor = ConsoleColor.DarkGray;
-
             Console.Write("binary: ");
-
             Console.ForegroundColor = ConsoleColor.Cyan;
-
             Console.WriteLine(binaryResult);
         }
+
+        #endregion
+
     }
 }

@@ -5,7 +5,7 @@ namespace CalculatorCore
 {
     internal static class BracketsHelper
     {
-        internal static string TrimBrackets(string input)
+        internal static string TrimBrackets(string input) 
         {
             if (input.StartsWith(CalculationConstants.OpeningBracket) &&
                 input.EndsWith(CalculationConstants.ClosingBracket))
@@ -42,13 +42,11 @@ namespace CalculatorCore
             {
                 bracketsLevel[0] = 1;
             }
-            //*** check via tests if code block bellow is needed till now
             else if (input.StartsWith(CalculationConstants.ClosingBracket))
             {
                 bracketsLevel[0] = -1;
             }
-            //***
-    
+
             for (int index = 1; index < input.Length; index++)
             {
                 if (input[index] == CalculationConstants.OpeningBracket)

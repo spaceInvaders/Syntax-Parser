@@ -74,7 +74,7 @@ namespace CalculatorCoreTests
             }
         }
         [TestMethod]
-        public void ParseInputTest1()
+        public void CheckInputTest7()
         {
             try
             {
@@ -86,7 +86,7 @@ namespace CalculatorCoreTests
             }
         }
         [TestMethod]
-        public void ParseInputStringTest2()
+        public void CheckInputTest8()
         {
             try
             {
@@ -98,7 +98,7 @@ namespace CalculatorCoreTests
             }
         }
         [TestMethod]
-        public void ParseInputStringTest3()
+        public void CheckInputTest9()
         {
             try
             {
@@ -110,7 +110,7 @@ namespace CalculatorCoreTests
             }
         }
         [TestMethod]
-        public void ParseInputStringTest4()
+        public void CheckInputTest10()
         {
             try
             {
@@ -122,7 +122,7 @@ namespace CalculatorCoreTests
             }
         }
         [TestMethod]
-        public void ParseInputStringTest5()
+        public void CheckInputTest11()
         {
             try
             {
@@ -134,7 +134,7 @@ namespace CalculatorCoreTests
             }
         }
         [TestMethod]
-        public void ParseInputStringTest6()
+        public void CheckInputTest12()
         {
             try
             {
@@ -146,7 +146,7 @@ namespace CalculatorCoreTests
             }
         }
         [TestMethod]
-        public void ParseInputStringTest7()
+        public void CheckInputTest13()
         {
             try
             {
@@ -158,7 +158,7 @@ namespace CalculatorCoreTests
             }
         }
         [TestMethod]
-        public void ParseInputStringTest8()
+        public void CheckInputTest14()
         {
             try
             {
@@ -170,7 +170,7 @@ namespace CalculatorCoreTests
             }
         }
         [TestMethod]
-        public void ParseInputStringTest9()
+        public void CheckInputTest15()
         {
             try
             {
@@ -182,7 +182,7 @@ namespace CalculatorCoreTests
             }
         }
         [TestMethod]
-        public void ParseInputStringTest10()
+        public void CheckInputTest16()
         {
             try
             {
@@ -194,7 +194,7 @@ namespace CalculatorCoreTests
             }
         }
         [TestMethod]
-        public void ParseInputStringTest11()
+        public void CheckInputTest17()
         {
             try
             {
@@ -206,7 +206,7 @@ namespace CalculatorCoreTests
             }
         }
         [TestMethod]
-        public void ParseInputStringTest12()
+        public void CheckInputTest18()
         {
             try
             {
@@ -218,7 +218,7 @@ namespace CalculatorCoreTests
             }
         }
         [TestMethod]
-        public void ParseInputStringTest13()
+        public void CheckInputTest19()
         {
             try
             {
@@ -230,7 +230,7 @@ namespace CalculatorCoreTests
             }
         }
         [TestMethod]
-        public void ParseInputStringTest14()
+        public void CheckInputTest20()
         {
             try
             {
@@ -242,13 +242,13 @@ namespace CalculatorCoreTests
             }
         }
         [TestMethod]
-        public void ParseInputStringTest15()
+        public void CheckInputTest21()
         {
             Assert.AreEqual("0-(6)", CalculationDecimalChecker.CheckInput("-(6)", culture: new CultureInfo("ru-RU")));
             Assert.AreEqual("(0-6)-(0+7)+(0-(0-8))", CalculationDecimalChecker.CheckInput("(-6)-(+7)+(-(-8))", culture: new CultureInfo("ru-RU")));
         }
         [TestMethod]
-        public void ParseInputStringTest16()
+        public void CheckInputTest22()
         {
             try
             {

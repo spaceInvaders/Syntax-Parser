@@ -23,14 +23,17 @@ namespace CalculatorCore
         internal ICalculationOperation Left { get; private set; }
         internal ICalculationOperation Right { get; private set; }
 
-        override public bool Equals(object? obj)
+        override public bool Equals(object obj)
         {
             if (obj == null) { return false; }
-            if (!(obj.GetType() == this.GetType())) { return false; }
-            var calculationOperationObj = (CalculationOperation)obj;
-            return (calculationOperationObj.Left.Equals(Left)) && (calculationOperationObj.Right.Equals(Right));
+            if (obj is CalculationOperation calculationOperationObj)
+                return (calculationOperationObj.Left.Equals(Left)) && (calculationOperationObj.Right.Equals(Right));
+            else
+                return false;
         }
     }
+
+    #region ChildsOfCalculationOperation
 
     internal class ToThePower : CalculationOperation, ICalculationOperation
     {
@@ -82,6 +85,8 @@ namespace CalculatorCore
         }
     }
 
+    #endregion
+
     internal class Number: ICalculationOperation
     {
         internal Number(decimal value)
@@ -96,7 +101,7 @@ namespace CalculatorCore
             return Value;
         }
 
-        override public bool Equals(object? obj)
+        override public bool Equals(object obj)
         {
             if (obj == null) { return false; }
             if (!(obj is Number)) { return false; }

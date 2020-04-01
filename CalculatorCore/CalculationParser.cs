@@ -13,7 +13,8 @@ namespace CalculatorCore
             return MakeNode(input: editedInput, culture: culture);
         }
 
-        
+        #region PrivateMethods
+
         private static ICalculationOperation MakeNode(string input, CultureInfo culture)
         {
             ICalculationOperation node = null;
@@ -87,18 +88,22 @@ namespace CalculatorCore
                 }
                 else if ((input[index] == CalculationConstants.Multiply || input[index] == CalculationConstants.Divide)
                         && bracketsLevel[index] == 0 && !multDivOperationHasBeenFound)
-                     {
-                         lastOperationIndex = index;
-                         multDivOperationHasBeenFound = true;
-                     }
-                     else if (input[index] == CalculationConstants.Power && bracketsLevel[index] == 0 && !multDivOperationHasBeenFound && !powerOperationHasBeenFound)
-                     {
-                         lastOperationIndex = index;
-                         powerOperationHasBeenFound = true;
-                     }
+                {
+                    lastOperationIndex = index;
+                    multDivOperationHasBeenFound = true;
+                }
+                else if (input[index] == CalculationConstants.Power 
+                        && bracketsLevel[index] == 0 && !multDivOperationHasBeenFound && !powerOperationHasBeenFound)
+                {
+                    lastOperationIndex = index;
+                    powerOperationHasBeenFound = true;
+                }
             }
 
             return lastOperationIndex;
         }
+
+        #endregion
+
     }
 }

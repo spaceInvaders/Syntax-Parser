@@ -5,6 +5,8 @@ namespace CalculatorCoreTests
 {
     class BracketsHelperTests
     {
+        #region BracketsLevelTests
+
         [TestMethod]
         public void BracketsLevelTest1()
         {
@@ -41,6 +43,11 @@ namespace CalculatorCoreTests
                 Assert.AreEqual(exception.Message, "Missed 5 '(' ?");
             }
         }
+
+        #endregion
+
+        #region TrimBracketsTests
+
         [TestMethod]
         public void TrimBracketsTest1()
         {
@@ -55,5 +62,8 @@ namespace CalculatorCoreTests
             Assert.AreEqual("7+5)", BracketsHelper.TrimBrackets("7+5)"));
             Assert.AreEqual("(7+5)+(3-4)", BracketsHelper.TrimBrackets("(7+5)+(3-4)"));
         }
+
+        #endregion
+
     }
 }
