@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CalculatorCore
 {
@@ -14,7 +12,7 @@ namespace CalculatorCore
         protected CalculationOperation(ICalculationOperation left, ICalculationOperation right)
         {
             if (left == null || right == null)
-                throw new ParsingException(message: "Calculation failed");
+                throw new CheckingException(message: "Calculation failed");
 
             Left = left;
             Right = right;

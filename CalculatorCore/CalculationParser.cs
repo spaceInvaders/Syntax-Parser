@@ -8,7 +8,7 @@ namespace CalculatorCore
     {
         public static ICalculationOperation GrowNodeTree(string input, CultureInfo culture)
         {
-            string editedInput = CalculationDecimalChecker.CheckInput(input: input, culture: culture);
+            string editedInput = CalculationDecimalChecker.VerifyInput(input: input, culture: culture);
             
             return MakeNode(input: editedInput, culture: culture);
         }
@@ -92,7 +92,7 @@ namespace CalculatorCore
                     lastOperationIndex = index;
                     multDivOperationHasBeenFound = true;
                 }
-                else if (input[index] == CalculationConstants.Power 
+                else if (input[index] == CalculationConstants.Power
                         && bracketsLevel[index] == 0 && !multDivOperationHasBeenFound && !powerOperationHasBeenFound)
                 {
                     lastOperationIndex = index;

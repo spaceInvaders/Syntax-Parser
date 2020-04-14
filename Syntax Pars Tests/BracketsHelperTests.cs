@@ -38,7 +38,7 @@ namespace CalculatorCoreTests
             {
                 BracketsHelper.BracketsLevel("(1))))))");
             }
-            catch (ParsingException exception)
+            catch (CheckingException exception)
             {
                 Assert.AreEqual(exception.Message, "Missed 5 '(' ?");
             }

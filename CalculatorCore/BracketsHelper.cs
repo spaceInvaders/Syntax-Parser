@@ -5,6 +5,9 @@ namespace CalculatorCore
 {
     internal static class BracketsHelper
     {
+        /// <summary>
+        /// Removes the outer brackets
+        /// </summary>
         internal static string TrimBrackets(string input) 
         {
             if (input.StartsWith(CalculationConstants.OpeningBracket) &&
@@ -34,6 +37,10 @@ namespace CalculatorCore
             return input;
         }
 
+        /// <summary>
+        /// Returns an array.
+        /// Case '0' - char is outside brackets, case '1' - in first level of brackets...
+        /// </summary>
         internal static int[] BracketsLevel(string input)
         {
             var bracketsLevel = new int[input.Length];
@@ -65,11 +72,11 @@ namespace CalculatorCore
 
             if (bracketsLevel.Last() > 0)
             {
-                throw new ParsingMissedElementException(element: CalculationConstants.ClosingBracket, number: bracketsLevel.Last());
+                throw new CheckingMissedElementException(element: CalculationConstants.ClosingBracket, number: bracketsLevel.Last());
             }
             else if (bracketsLevel.Last() < 0)
             {
-                throw new ParsingMissedElementException(element: CalculationConstants.OpeningBracket, number: Math.Abs(bracketsLevel.Last()));
+                throw new CheckingMissedElementException(element: CalculationConstants.OpeningBracket, number: Math.Abs(bracketsLevel.Last()));
             }
 
             return bracketsLevel;

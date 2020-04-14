@@ -2,23 +2,23 @@
 
 namespace CalculatorCore
 {
-    public class ParsingException : Exception
+    public class CheckingException : Exception
     {
-        internal ParsingException(string message)
+        internal CheckingException(string message)
             : base(message)
         { }
     }
 
-    public class ParsingInvalidFragmentException : ParsingException
+    public class CheckingInvalidFragmentException : CheckingException
     {
-        internal ParsingInvalidFragmentException(string fragment, int firstEntry, int lastEntry)
+        internal CheckingInvalidFragmentException(string fragment, int firstEntry, int lastEntry)
             : base($"Invalid fragment '{fragment}' at indexes: {firstEntry}-{lastEntry}")
         {
             Fragment = fragment;
             FirstEntry = firstEntry;
             LastEntry = lastEntry;
         }
-        internal ParsingInvalidFragmentException(string fragment)
+        internal CheckingInvalidFragmentException(string fragment)
             : base($"Invalid fragment '{fragment}'")
         {
             Fragment = fragment;
@@ -28,9 +28,9 @@ namespace CalculatorCore
         internal int LastEntry { get; private set; }
     }
 
-    public class ParsingJustAnElementException : ParsingException
+    public class CheckingJustAnElementException : CheckingException
     {
-        internal ParsingJustAnElementException(string input)
+        internal CheckingJustAnElementException(string input)
             : base($"Just a '{input}'?")
         {
             Input = input;
@@ -38,9 +38,9 @@ namespace CalculatorCore
         internal string Input { get; private set; }
     }
 
-    public class ParsingMissedElementException : ParsingException
+    public class CheckingMissedElementException : CheckingException
     {
-        internal ParsingMissedElementException(char element, int number)
+        internal CheckingMissedElementException(char element, int number)
             : base($"Missed {number} '{element}' ?")
         {
             Element = element;
@@ -50,9 +50,9 @@ namespace CalculatorCore
         internal char Element { get; private set; }
     }
 
-    public class ParsingInvalidFirstElementException : ParsingException
+    public class CheckingInvalidFirstElementException : CheckingException
     {
-        internal ParsingInvalidFirstElementException(char element)
+        internal CheckingInvalidFirstElementException(char element)
             : base($"Invalid first element '{element}'")
         {
             Element = element;
@@ -60,9 +60,9 @@ namespace CalculatorCore
         internal char Element { get; private set; }
     }
 
-    public class ParsingInvalidLastElementException : ParsingException
+    public class CheckingInvalidLastElementException : CheckingException
     {
-        internal ParsingInvalidLastElementException(char element, int location)
+        internal CheckingInvalidLastElementException(char element, int location)
             : base($"Invalid last element '{element}' at index {location}")
         {
             Element = element;
@@ -72,9 +72,9 @@ namespace CalculatorCore
         internal int Location { get; private set; }
     }
 
-    public class ParsingInvalidElemenstException : ParsingException
+    public class CheckingInvalidElemenstException : CheckingException
     {
-        internal ParsingInvalidElemenstException(string invalidElements)
+        internal CheckingInvalidElemenstException(string invalidElements)
             : base($"Invalid elements: '{invalidElements}'")
         {
             InvalidElements = invalidElements;

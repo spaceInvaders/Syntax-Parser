@@ -7,10 +7,14 @@ namespace CalculatorCore
 {
     static class CalculationDecimalChecker
     {
-        internal static string CheckInput(string input, CultureInfo culture)
+        /// <summary>
+        /// Returnes an edited input for separation into nodes. 
+        /// If input isn't valid to make a node tree, throws appropriate exception
+        /// </summary>
+        internal static string VerifyInput(string input, CultureInfo culture)
         {
             var editedInput = RemoveWhiteSpaces(input: input);
-            editedInput = ParseInput(input: editedInput, culture: culture);
+            editedInput = CheckInput(input: editedInput, culture: culture);
             editedInput = RemoveGroupSeparator(input: editedInput, culture: culture);
             editedInput = BracketsHelper.TrimBrackets(input: editedInput);
             editedInput = editedInput.Replace(CalculationConstants.PiChar.ToString(), Math.PI.ToString(culture));
@@ -48,7 +52,7 @@ namespace CalculatorCore
             return input;
         }
 
-        private static string ParseInput(string input, CultureInfo culture)
+        private static string CheckInput(string input, CultureInfo culture)
         {
             string editedInput = input;
 
@@ -109,7 +113,7 @@ namespace CalculatorCore
 
                     var invalidFigures = new string(elements.ToArray());
 
-                    throw new ParsingInvalidElemenstException(invalidElements: invalidFigures);
+                    throw new CheckingInvalidElemenstException(invalidElements: invalidFigures);
 
                 }
             }
@@ -119,7 +123,7 @@ namespace CalculatorCore
         {
             if (input.Length == 1)
 
-                throw new ParsingJustAnElementException(input: input[index].ToString());
+                throw new CheckingJustAnElementException(input: input[index].ToString());
 
             else if (input.StartsWith(CalculationConstants.Minus) || input.StartsWith(CalculationConstants.Plus))
 
@@ -140,8 +144,7 @@ namespace CalculatorCore
 
             if (bracketsLevel.Last() == 0 && input.All(character => "()".Contains(character)))
             {
-                //event
-                throw new ParsingInvalidFragmentException(fragment: input);
+                throw new CheckingInvalidFragmentException(fragment: input);
             }
 
             switch (bracket)
@@ -150,17 +153,17 @@ namespace CalculatorCore
 
                     if (index > 0 && !CalculationConstants.PlusMinMultDivPowOpenBrack.Contains(input[index - 1]))
                     {
-                        throw new ParsingInvalidFragmentException
+                        throw new CheckingInvalidFragmentException
                             (fragment: input[index - 1].ToString() + input[index], firstEntry: index - 1, lastEntry: index);
                     }
                     else if (index == input.Length - 1)
                     {
-                        throw new ParsingInvalidLastElementException
+                        throw new CheckingInvalidLastElementException
                             (element: CalculationConstants.OpeningBracket, location: index);
                     }
                     else if (("*/^" + Separator(culture: culture).ToString()).Contains(input[index + 1]))
                     {
-                        throw new ParsingInvalidFragmentException
+                        throw new CheckingInvalidFragmentException
                             (fragment: input[index].ToString() + input[index + 1], firstEntry: index, lastEntry: index + 1);
                     }
                     break;
@@ -169,13 +172,13 @@ namespace CalculatorCore
 
                     if (index > 0 && ("(+-*/^" + Separator(culture: culture).ToString()).Contains(input[index - 1]))
                     {
-                        throw new ParsingInvalidFragmentException
+                        throw new CheckingInvalidFragmentException
                             (fragment: input[index - 1].ToString() + input[index], firstEntry: index - 1, lastEntry: index);
                     }
                     else if (index != input.Length - 1 &&
                             !CalculationConstants.PlusMinMultDivPowClosBrack.Contains(input[index + 1]))
                          {
-                            throw new ParsingInvalidFragmentException
+                            throw new CheckingInvalidFragmentException
                             (fragment: input[index].ToString() + input[index + 1], firstEntry: index, lastEntry: index + 1);
                          }
                     break;
@@ -186,24 +189,24 @@ namespace CalculatorCore
         {
             if (input.Length == 1)
             {
-                throw new ParsingJustAnElementException(input: input);
+                throw new CheckingJustAnElementException(input: input);
             }
             else if ("*/^".Contains(input.First()))
             {
-                throw new ParsingInvalidFirstElementException(element: input.First());
+                throw new CheckingInvalidFirstElementException(element: input.First());
             }
             else if (index == input.Length - 1)
             {
-                throw new ParsingInvalidLastElementException(element: input[index], location: index);
+                throw new CheckingInvalidLastElementException(element: input[index], location: index);
             }
             else if (PlusMinMultDivPowSep(culture: culture).Contains(input[index - 1]))
             {
-                throw new ParsingInvalidFragmentException
+                throw new CheckingInvalidFragmentException
                     (fragment: input[index - 1].ToString() + input[index], firstEntry: index - 1, lastEntry: index);
             }
             else if (PlusMinMultDivPowSep(culture: culture).Contains(input[index + 1]))
             {
-                throw new ParsingInvalidFragmentException
+                throw new CheckingInvalidFragmentException
                     (fragment: input[index].ToString() + input[index + 1], firstEntry: index, lastEntry: index + 1);
             }
         }
@@ -212,19 +215,19 @@ namespace CalculatorCore
         {
             if (input.Length == 1)
             {
-                throw new ParsingJustAnElementException(input: input);
+                throw new CheckingJustAnElementException(input: input);
             }
             else if (index == 0)
             {
-                throw new ParsingInvalidFirstElementException(element: input[index]);
+                throw new CheckingInvalidFirstElementException(element: input[index]);
             }
             else if (index == input.Length - 1)
             {
-                throw new ParsingInvalidLastElementException(element: input[index], location: index);
+                throw new CheckingInvalidLastElementException(element: input[index], location: index);
             }
             else if (CalculationConstants.PlusMinMultDivPowBrackets.Contains(input[index - 1]))
             {
-                throw new ParsingInvalidFragmentException
+                throw new CheckingInvalidFragmentException
                     (fragment: input[index - 1].ToString() + input[index], firstEntry: index - 1, lastEntry: index);
             }
 
@@ -235,14 +238,14 @@ namespace CalculatorCore
                     var editedInput = input.Substring(index + 1, secondIndex - index - 1);
                     if (!editedInput.Any(character => CalculationConstants.PlusMinMultDivPow.Contains(character)))
 
-                        throw new ParsingInvalidFragmentException
+                        throw new CheckingInvalidFragmentException
                             (fragment: Separator(culture: culture) + editedInput + Separator(culture: culture),
                             firstEntry: index, lastEntry: secondIndex);
                 }
                 if (((input[index] == GroupSeparator(culture: culture) || input[index] == Separator(culture: culture))
                         && input[secondIndex] == GroupSeparator(culture: culture)) && (secondIndex == index + 1))
                 {
-                        throw new ParsingInvalidFragmentException
+                        throw new CheckingInvalidFragmentException
                         (fragment: input[index].ToString() + input[index + 1], firstEntry: index, lastEntry: secondIndex);
                 }
             }
@@ -252,12 +255,12 @@ namespace CalculatorCore
         {
             if (index > 0 && !CalculationConstants.PlusMinMultDivPowOpenBrack.Contains(input[index - 1]))
             {
-                throw new ParsingInvalidFragmentException
+                throw new CheckingInvalidFragmentException
                     (fragment: input[index - 1].ToString() + input[index], firstEntry: index - 1, lastEntry: index);
             }
             else if (index != input.Length - 1 && !CalculationConstants.PlusMinMultDivPowClosBrack.Contains(input[index + 1]))
             {
-                throw new ParsingInvalidFragmentException
+                throw new CheckingInvalidFragmentException
                     (fragment: input[index].ToString() + input[index + 1], firstEntry: index, lastEntry: index + 1);
             }
         }

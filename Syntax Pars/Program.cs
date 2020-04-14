@@ -64,7 +64,7 @@ namespace ConsoleCalculator
                     Notify = null;
                 }
             }
-            catch (ParsingException exception)
+            catch (CheckingException exception)
             {
                 Console.ForegroundColor = ConsoleColor.Magenta;
                 Console.WriteLine("Error: " + exception.Message);

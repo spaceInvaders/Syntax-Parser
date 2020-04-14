@@ -4,6 +4,9 @@ using System.Text;
 
 namespace CalculatorCore
 {
+    /// <summary>
+    /// Contains all constants and readonly fields
+    /// </summary>
     internal static class CalculationConstants
     {
         internal const char Zero = '0';
