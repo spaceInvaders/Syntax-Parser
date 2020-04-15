@@ -1,10 +1,50 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "CalcSpace";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome Sviat</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<div class="empty_1 designUI"></div>
+
+<section class="vbox designUI">
+
+    <div class="block__item designUI">
+        <form oninput="">
+            <textarea class="textinput" placeholder="Calculate me" spellcheck="false"></textarea>
+        </form>
+    </div>
+
+
+    <div class="block__item designUI">
+        <form oninput="">
+            <output class="textoutput_2" id="result_notifier">note, your decimal separator is ','</output>
+        </form>
+    </div>
+
+
+    <div class="hbox">
+
+        <div class="block__item designUI">
+            <form oninput="">
+                <output class="textoutput_1" id="result">decimal: </output>
+            </form>
+        </div>
+
+        <div class="block__item designUI">
+            <form oninput="">
+                <output class="textoutput_1" id="result">binary: </output>
+            </form>
+        </div>
+
+    </div>
+
+
+    <div class="block__item designUI">
+        <form oninput="">
+            <output class="textoutput_2" id="result">hexadecimal: </output>
+        </form>
+    </div>
+
+</section>
+
+<div class="empty_2 designUI"></div>

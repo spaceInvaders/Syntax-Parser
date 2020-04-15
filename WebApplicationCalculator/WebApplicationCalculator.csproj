@@ -13,4 +13,8 @@
     <ProjectReference Include="..\CalculatorCore\CalculatorCore.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\lib\" />
+  </ItemGroup>
+
 </Project>

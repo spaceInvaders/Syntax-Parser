@@ -1,71 +1,266 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
 
-a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
-}
-
-/* Provide sufficient contrast against white background */
-a {
-  color: #0366d6;
-}
-
-.btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
-}
-
-.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
-}
-
-/* Sticky footer styles
--------------------------------------------------- */
-html {
-  font-size: 14px;
-}
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.border-top {
-  border-top: 1px solid #e5e5e5;
-}
-.border-bottom {
-  border-bottom: 1px solid #e5e5e5;
-}
-
-.box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
-}
-
-button.accept-policy {
-  font-size: 1rem;
-  line-height: inherit;
-}
-
-/* Sticky footer styles
--------------------------------------------------- */
-html {
-  position: relative;
-  min-height: 100%;
+html, body, .viewport {
+    width: 100%;
+    height: 100%;
+    margin: 0;
 }
 
 body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background: linear-gradient(45deg, #051937, #004d7a, #008793, #00bf72, #a8eb12);
+    font-family: arial, helvetica, sans-serif;
+    margin: 0;
 }
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  line-height: 60px; /* Vertically center the text there */
+
+/*---------------------------white greed to improve design process*/
+
+.designUI {
+    /*border: 1px solid white;*/
+}
+
+/*----------------------------------------------------------------*/
+
+header, footer, section {
+    padding: 0.25em;
+}
+
+header {
+    width: 160px;
+    height: 10%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.empty_1 {
+    height: 15%;
+}
+
+section {
+    width: 700px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.empty_2 {
+    height: 25%;
+}
+
+footer {
+    width: 400px;
+    height: 5%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    font-family: sans-serif;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.title {
+    width: 160px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+h1 {
+    font-family: sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    color: white;
+}
+
+h6 {
+    font-family: sans-serif;
+    font-size: 13px;
+    font-weight: 800;
+    color: white;
+    background-color: magenta;
+    border-radius: 5px;
+    padding: 1px;
+}
+
+.block__column {
+    width: inherit;
+}
+
+.block__item {
+    display: flex;
+}
+
+/*---------------------------------------------texarea form*/
+
+textarea {
+    height: 100px;
+    box-sizing: border-box;
+    padding: 20px;
+    background-color: white;
+    outline-color: transparent;
+    outline-style: none;
+    outline: none;
+    overflow: auto;
+    border: none;
+    border-radius: 30px;
+    border-color: white;
+    font-size: 25px;
+}
+
+.textinput {
+    float: left;
+    width: 100%;
+    min-height: 75px;
+    outline: none;
+    resize: none;
+    color: black;
+    font-family: sans-serif;
+}
+
+/*--------------------------------------------------------*/
+
+#result_notifier {
+    box-sizing: border-box;
+    text-align: center;
+    font-family: sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.5);
+    color: white;
+    padding-top: 5px;
+    padding-bottom: 25px;
+    border: none;
+    cursor: default;
+    float: left;
+}
+
+#result {
+    box-sizing: border-box;
+    text-align: left;
+    font-size: 15px;
+    text-transform: uppercase;
+    background-color: #008793;
+    color: white;
+    padding: 17px;
+    border: none;
+    border-radius: 30px;
+    cursor: text;
+    float: left;
+    box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034), 0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06), 0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086), 0 100px 80px rgba(0, 0, 0, 0.12);
+}
+
+::selection {
+    background-color: #8CC410;
+    color: white;
+}
+
+.hbox {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.vbox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-grow: 1;
+}
+
+.textinput {
+    width: 660px;
+}
+
+.textoutput_1, .textoutput_2 {
+    width: 330px;
+    margin: 1px;
+}
+
+form {
+    width: 100%;
+}
+
+a {
+    color: rgba(255, 255, 255, 0.50);
+}
+
+p {
+    font-family: sans-serif;
+    font-size: 14px;
+    font-weight: 800;
+    color: white;
+    background-color: #008793;
+    border-radius: 24px;
+    padding: 16px;
+    box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034), 0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06), 0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086), 0 100px 80px rgba(0, 0, 0, 0.12);
+}
+
+/*---------------------------------------------responsive design*/
+
+@media (max-width: 700px) {
+
+    header {
+        width: 110px;
+    }
+
+    footer, .block__item {
+        width: inherit;
+    }
+
+    .empty_1 {
+        height: 0%;
+    }
+
+    section {
+        width: 98%;
+    }
+
+    .empty_2 {
+        height: 70%;
+    }
+
+    .hbox {
+        width: 99%;
+        flex-wrap: wrap;
+        margin: 0px;
+        align-items: center;
+        justify-content: center;
+    }
+
+    textarea {
+        height: 50px;
+        font-size: 15px;
+    }
+
+    .textinput, .textoutput_1, .textoutput_2 {
+        width: 100%;
+    }
+
+    #result_notifier {
+        font-size: 10px;
+        font-weight: 600;
+        padding-top: 2px;
+        padding-bottom: 2px;
+    }
+
+    #result {
+        font-size: 10px;
+        font-weight: 600;
+        padding: 5px;
+    }
+
+    h1 {
+        font-size: 15px;
+    }
+
+    h6 {
+        font-size: 8px;
+    }
 }
