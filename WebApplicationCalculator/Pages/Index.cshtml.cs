@@ -17,9 +17,16 @@ namespace WebApplicationCalculator.Pages
             _logger = logger;
         }
 
+        public string OutputResponse { get; set; }
+
         public void OnGet()
         {
 
+        }
+
+        public void OnPost(string input)
+        {
+            OutputResponse = $"{input}";
         }
     }
 }

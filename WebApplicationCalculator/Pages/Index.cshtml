@@ -9,11 +9,11 @@
 <section class="vbox designUI">
 
     <div class="block__item designUI">
-        <form oninput="">
-            <textarea class="textinput" placeholder="Calculate me" spellcheck="false"></textarea>
+        <form oninput="" method="post">
+            <textarea class="textinput" name="input" id = "01" placeholder="Calculate me"
+                      spellcheck="false" autofocus oninput="ExecutePhrase()"></textarea>
         </form>
     </div>
-
 
     <div class="block__item designUI">
         <form oninput="">
@@ -26,13 +26,13 @@
 
         <div class="block__item designUI">
             <form oninput="">
-                <output class="textoutput_1" id="result">decimal: </output>
+                <output class="textoutput_1" id="result_decimal">decimal: </output>
             </form>
         </div>
 
         <div class="block__item designUI">
             <form oninput="">
-                <output class="textoutput_1" id="result">binary: </output>
+                <output class="textoutput_1" id="result_binary">binary: </output>
             </form>
         </div>
 
@@ -41,7 +41,7 @@
 
     <div class="block__item designUI">
         <form oninput="">
-            <output class="textoutput_2" id="result">hexadecimal: </output>
+            <output class="textoutput_2" id="result_hexadecimal">hexadecimal: </output>
         </form>
     </div>
 

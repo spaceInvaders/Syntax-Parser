@@ -125,13 +125,12 @@ textarea {
 
 /*--------------------------------------------------------*/
 
-#result_notifier {
+/**/#result_notifier {
     box-sizing: border-box;
     text-align: center;
     font-family: sans-serif;
     font-size: 13px;
     font-weight: 700;
-    color: rgba(255, 255, 255, 0.5);
     color: white;
     padding-top: 5px;
     padding-bottom: 25px;
@@ -140,7 +139,7 @@ textarea {
     float: left;
 }
 
-#result {
+#result_decimal, #result_binary, #result_hexadecimal {
     box-sizing: border-box;
     text-align: left;
     font-size: 15px;
@@ -181,6 +180,7 @@ textarea {
 .textoutput_1, .textoutput_2 {
     width: 330px;
     margin: 1px;
+
 }
 
 form {
@@ -250,8 +250,8 @@ p {
         padding-bottom: 2px;
     }
 
-    #result {
-        font-size: 10px;
+    #result_decimal, #result_binary, #result_hexadecimal {
+        font-size: 12px;
         font-weight: 600;
         padding: 5px;
     }
