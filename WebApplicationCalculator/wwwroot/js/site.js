@@ -5,7 +5,7 @@
 
 function ExecutePhrase() {
 
-    var inputPhrase = document.getElementById("01").value;
+    var inputPhrase = document.getElementById("textinput").value;
 
     var request = new XMLHttpRequest();
     
@@ -28,7 +28,7 @@ function ExecutePhrase() {
         }
     }
 
-    request.open("GET", "https://localhost:44372/ExecutePhrase/Calc?input=" + inputPhrase, true);
+    request.open("GET", "https://localhost:44372/ExecutePhrase/Calc?input=" + encodeURIComponent(inputPhrase), true);
     request.onreadystatechange = reqReadyStateChange;
     request.send();
 }

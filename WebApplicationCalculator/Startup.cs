@@ -53,7 +53,6 @@ namespace WebApplicationCalculator
                 endpoints.MapRazorPages();
             });
 
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
