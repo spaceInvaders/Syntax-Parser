@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -51,6 +52,26 @@ namespace WebApplicationCalculator
             {
                 endpoints.MapRazorPages();
             });
+
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                        name: "default",
+                        pattern: "{controller=ExecutePhrase}/{action=Calc}/{id?}");
+            });
+
+            /* 
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapGet("/ExecutePhrase", async context =>
+                {
+                    string input = context.Request.Query.FirstOrDefault(p => p.Key == "input").Value;
+                    await context.Response.WriteAsync(input);
+
+                });
+            });
+            */
         }
     }
 }
