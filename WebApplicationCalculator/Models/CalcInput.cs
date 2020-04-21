@@ -28,10 +28,14 @@ namespace WebApplicationCalculator.Models
 
         internal CalcResult ExecuteExpression()
         {
-            string decimalResult = null;
-            string binaryResult = null;
-            string hexadecimalResult = null;
-            string message = null;
+            string decimalResult = String.Empty;
+            string binaryResult = String.Empty;
+            string hexadecimalResult = String.Empty;
+            string message = $"note, your decimal separator is a ' {Separator(culture: Culture)} '";
+
+            if(String.IsNullOrWhiteSpace(Expression))
+                return new CalcResult
+                (decResult: decimalResult, binResult: binaryResult, hexResult: hexadecimalResult, message: message);
 
             try
             {
@@ -44,9 +48,7 @@ namespace WebApplicationCalculator.Models
                     int separatorIndex = result.ToString().IndexOf(Separator(culture: Culture));
 
                     if (separatorIndex > 0 && result.ToString().Length - separatorIndex > PrecisionForDecimalResult)
-                    {
-                        message = "decimal result is rounded, precision is" + PrecisionForDecimalResult;
-                    }
+                        message = "decimal result is rounded, precision is " + PrecisionForDecimalResult;
 
                     decimalResult = result.ToString($"n{PrecisionForDecimalResult}", Culture).
                     TrimEnd('0').TrimEnd(Separator(culture: Culture));
