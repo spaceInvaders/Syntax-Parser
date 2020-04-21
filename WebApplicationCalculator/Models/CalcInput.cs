@@ -31,11 +31,12 @@ namespace WebApplicationCalculator.Models
             string decimalResult = String.Empty;
             string binaryResult = String.Empty;
             string hexadecimalResult = String.Empty;
-            string message = $"note, your decimal separator is a ' {Separator(culture: Culture)} '";
+            string decimalSeparator = $"{Separator(culture: Culture)}";
+            string message = $"note, your decimal separator is a ' " + decimalSeparator + " '";
 
             if(String.IsNullOrWhiteSpace(Expression))
-                return new CalcResult
-                (decResult: decimalResult, binResult: binaryResult, hexResult: hexadecimalResult, message: message);
+                return new CalcResult (decResult: decimalResult, binResult: binaryResult,
+                hexResult: hexadecimalResult, message: message, separator: decimalSeparator);
 
             try
             {
@@ -45,14 +46,14 @@ namespace WebApplicationCalculator.Models
                 {
                     decimal result = myNode.Calculate();
 
-                    int separatorIndex = result.ToString().IndexOf(Separator(culture: Culture));
-
-                    if (separatorIndex > 0 && result.ToString().Length - separatorIndex > PrecisionForDecimalResult)
-                        message = "decimal result is rounded, precision is " + PrecisionForDecimalResult;
-
                     decimalResult = result.ToString($"n{PrecisionForDecimalResult}", Culture).
                     TrimEnd('0').TrimEnd(Separator(culture: Culture));
 
+                    int separatorIndex = result.ToString().IndexOf(decimalSeparator);
+
+                    if (result.ToString().Length - separatorIndex > PrecisionForDecimalResult)
+                        message = "decimal result is rounded, precision is " + PrecisionForDecimalResult;
+                    
                     binaryResult = Convertions.ConvertDecimalToBinaryString
                         (input: result, roundingPrecisionForBinary: PrecisionForBinaryResult, culture: Culture);
                 }
@@ -74,8 +75,8 @@ namespace WebApplicationCalculator.Models
                 message = "Calculation failed";
             }
 
-            return new CalcResult
-                (decResult: decimalResult, binResult: binaryResult, hexResult: hexadecimalResult, message: message);
+            return new CalcResult (decResult: decimalResult, binResult: binaryResult,
+                hexResult: hexadecimalResult, message: message, separator: decimalSeparator);
         }
     }
 }

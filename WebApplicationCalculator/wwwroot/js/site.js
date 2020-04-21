@@ -3,8 +3,8 @@
 
 // Write your Javascript code.
 
-function ExecutePhrase() {
-
+function ExecutePhrase()
+{
     var language;
 
     if (window.navigator.languages)

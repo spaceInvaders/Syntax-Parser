@@ -4,23 +4,27 @@
     ViewData["Title"] = "CalcSpace";
 }
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="~/js/test.js" asp-append-version="true"></script>
+
 <div class="empty_1 designUI"></div>
 
 <section class="vbox designUI">
 
     <div class="block__item designUI">
-        <form oninput="" method="post">
-            <textarea class="textinput" name="input" id = "textinput" placeholder="Calculate me"
-                      spellcheck="false" autofocus oninput="ExecutePhrase()"></textarea>
+        <form oninput="ExecutePhrase()" method="post">
+            <textarea class="textinput" name="input" id="textinput" placeholder="Calculate me"
+                      spellcheck="false" autofocus></textarea>
         </form>
     </div>
 
     <div class="block__item designUI">
         <form oninput="">
-            <output class="textoutput_2" id="result_notifier">note, your decimal separator is ','</output>
+            <output class="textoutput_2" id="result_notifier"></output>
         </form>
     </div>
 
+    <script>StartMessage()</script>
 
     <div class="hbox">
 
@@ -38,7 +42,6 @@
 
     </div>
 
-
     <div class="block__item designUI">
         <form oninput="">
             <output class="textoutput_2" id="result_hexadecimal">hexadecimal: </output>
@@ -48,3 +51,6 @@
 </section>
 
 <div class="empty_2 designUI"></div>
+
+
+

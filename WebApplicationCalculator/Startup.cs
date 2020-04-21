@@ -58,19 +58,11 @@ namespace WebApplicationCalculator
                 endpoints.MapControllerRoute(
                         name: "default",
                         pattern: "{controller=ExecutePhrase}/{action=Calc}/{id?}");
-            });            
 
-            /* 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapGet("/ExecutePhrase", async context =>
-                {
-                    string input = context.Request.Query.FirstOrDefault(p => p.Key == "input").Value;
-                    await context.Response.WriteAsync(input);
-
-                });
+                endpoints.MapControllerRoute(
+                        name: "default",
+                        pattern: "{controller=ExecutePhrase}/{action=GetMessage}/{id?}");
             });
-            */
         }
     }
 }
