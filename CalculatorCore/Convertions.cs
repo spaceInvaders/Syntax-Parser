@@ -4,7 +4,7 @@ using System.Globalization;
 
 namespace CalculatorCore
 {
-    public class Convertions
+    public static class Convertions
     {
         private static char Separator(CultureInfo culture) => Convert.ToChar(culture.NumberFormat.NumberDecimalSeparator);
 
@@ -63,6 +63,25 @@ namespace CalculatorCore
             {
                 return "Convertion to binary failed";
             }
+        }
+
+
+        // need to finalize
+        public static string ConvertDecimalToHexadecimalString(decimal input, CultureInfo culture)
+        {
+            string hexadecimal;
+
+            try
+            {
+                int number = Decimal.ToInt32(input);
+                hexadecimal = Convert.ToString(number, 16);
+            }
+            catch (OverflowException)
+            {
+                return string.Empty;
+            }
+
+            return hexadecimal;
         }
     }
 }

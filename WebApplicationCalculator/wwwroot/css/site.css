@@ -121,6 +121,7 @@ textarea {
     resize: none;
     color: black;
     font-family: sans-serif;
+    overflow: hidden;
 }
 
 /*--------------------------------------------------------*/
@@ -180,7 +181,13 @@ textarea {
 .textoutput_1, .textoutput_2 {
     width: 330px;
     margin: 1px;
+    overflow: hidden;
+}
 
+.textoutput_3 {
+    width: 500px;
+    margin: 1px;
+    overflow: hidden;
 }
 
 form {
@@ -239,7 +246,7 @@ p {
         font-size: 15px;
     }
 
-    .textinput, .textoutput_1, .textoutput_2 {
+    .textinput, .textoutput_1, .textoutput_2, .textoutput_3 {
         width: 100%;
     }
 

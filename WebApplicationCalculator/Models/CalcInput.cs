@@ -49,13 +49,24 @@ namespace WebApplicationCalculator.Models
                     decimalResult = result.ToString($"n{PrecisionForDecimalResult}", Culture).
                     TrimEnd('0').TrimEnd(Separator(culture: Culture));
 
-                    int separatorIndex = result.ToString().IndexOf(decimalSeparator);
+                    int decSeparatorIndex = result.ToString().IndexOf(decimalSeparator);
 
-                    if (result.ToString().Length - separatorIndex > PrecisionForDecimalResult)
+                    if (decSeparatorIndex > 0 &&
+                        result.ToString().Length - decSeparatorIndex > PrecisionForDecimalResult)
+
                         message = "decimal result is rounded, precision is " + PrecisionForDecimalResult;
                     
                     binaryResult = Convertions.ConvertDecimalToBinaryString
                         (input: result, roundingPrecisionForBinary: PrecisionForBinaryResult, culture: Culture);
+
+                    int binSeparatorIndex = binaryResult.ToString().IndexOf(decimalSeparator);
+
+                    if (binSeparatorIndex > 0 &&
+                        binaryResult.ToString().Length - binSeparatorIndex > PrecisionForBinaryResult)
+
+                        message = "binary result is rounded, precision is " + PrecisionForBinaryResult;
+
+                    hexadecimalResult = Convertions.ConvertDecimalToHexadecimalString(input: result, culture: Culture);
                 }
             }
             catch (CheckingException exception)

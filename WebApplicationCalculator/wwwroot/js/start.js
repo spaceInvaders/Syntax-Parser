@@ -16,7 +16,7 @@
         data: "culture=" + culture,
         success: function (data)
         {
-            document.getElementById("result_notifier").innerHTML = data
+            document.getElementById("result_notifier").innerHTML = data;
         },
         dataType: "text"
     });
