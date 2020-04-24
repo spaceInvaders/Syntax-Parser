@@ -54,7 +54,7 @@ namespace ConsoleCalculator
                     decimalResult = decimalResult.TrimEnd('0').TrimEnd(Separator(culture: culture));
 
                     string binaryResult = Convertions.ConvertDecimalToBinaryString
-                        (input: result, roundingPrecisionForBinary: PrecisionForBinaryResult, culture: culture);
+                        (input: result, precisionForBinary: PrecisionForBinaryResult, culture: culture);
 
                     DisplayBinaryResult(input: result, culture: culture);
 
@@ -126,7 +126,7 @@ namespace ConsoleCalculator
         private static void DisplayBinaryResult(decimal input, CultureInfo culture)
         {
             string binaryResult = Convertions.ConvertDecimalToBinaryString
-                        (input: input, roundingPrecisionForBinary: PrecisionForBinaryResult, culture: culture);
+                        (input: input, precisionForBinary: PrecisionForBinaryResult, culture: culture);
 
             Console.ForegroundColor = ConsoleColor.DarkGray;
             Console.Write("binary: ");

@@ -12,7 +12,7 @@ namespace WebApplicationCalculator.Models
     public class CalcInput
     {
         private const int PrecisionForDecimalResult = 15;
-        private const int PrecisionForBinaryResult = 15;
+        private const int PrecisionForBinaryResult = 30;
 
         [JsonConstructor]
         internal CalcInput(string expression, CultureInfo culture)
@@ -24,8 +24,6 @@ namespace WebApplicationCalculator.Models
         internal string Expression { get; private set; }
         internal CultureInfo Culture { get; private set; }
 
-        private char Separator(CultureInfo culture) => Convert.ToChar(culture.NumberFormat.NumberDecimalSeparator);
-
         internal CalcResult ExecuteExpression()
         {
             string decimalResult = String.Empty;
@@ -35,8 +33,9 @@ namespace WebApplicationCalculator.Models
             string message = $"note, your decimal separator is a ' " + decimalSeparator + " '";
 
             if(String.IsNullOrWhiteSpace(Expression))
+
                 return new CalcResult (decResult: decimalResult, binResult: binaryResult,
-                hexResult: hexadecimalResult, message: message, separator: decimalSeparator);
+                                       hexResult: hexadecimalResult, message: message, separator: decimalSeparator);
 
             try
             {
@@ -47,26 +46,16 @@ namespace WebApplicationCalculator.Models
                     decimal result = myNode.Calculate();
 
                     decimalResult = result.ToString($"n{PrecisionForDecimalResult}", Culture).
-                    TrimEnd('0').TrimEnd(Separator(culture: Culture));
+                                           TrimEnd('0').TrimEnd(Separator(culture: Culture));
 
-                    int decSeparatorIndex = result.ToString().IndexOf(decimalSeparator);
-
-                    if (decSeparatorIndex > 0 &&
-                        result.ToString().Length - decSeparatorIndex > PrecisionForDecimalResult)
-
-                        message = "decimal result is rounded, precision is " + PrecisionForDecimalResult;
-                    
                     binaryResult = Convertions.ConvertDecimalToBinaryString
-                        (input: result, roundingPrecisionForBinary: PrecisionForBinaryResult, culture: Culture);
+                        (input: Decimal.Parse(decimalResult), precisionForBinary: PrecisionForBinaryResult, culture: Culture);
 
-                    int binSeparatorIndex = binaryResult.ToString().IndexOf(decimalSeparator);
+                    hexadecimalResult = Convertions.ConvertDecimalToHexadecimalString
+                        (input: Decimal.Parse(decimalResult), culture: Culture);
 
-                    if (binSeparatorIndex > 0 &&
-                        binaryResult.ToString().Length - binSeparatorIndex > PrecisionForBinaryResult)
-
-                        message = "binary result is rounded, precision is " + PrecisionForBinaryResult;
-
-                    hexadecimalResult = Convertions.ConvertDecimalToHexadecimalString(input: result, culture: Culture);
+                    message = CheckOnFractionalRounding(afterRounding: decimalResult, 
+                        precision: PrecisionForDecimalResult, message: message, beforeRounding: result.ToString());
                 }
             }
             catch (CheckingException exception)
@@ -87,7 +76,23 @@ namespace WebApplicationCalculator.Models
             }
 
             return new CalcResult (decResult: decimalResult, binResult: binaryResult,
-                hexResult: hexadecimalResult, message: message, separator: decimalSeparator);
+                                   hexResult: hexadecimalResult, message: message, separator: decimalSeparator);
         }
+
+        #region PrivateMethods
+
+        private char Separator(CultureInfo culture) => Convert.ToChar(culture.NumberFormat.NumberDecimalSeparator);
+
+        private string CheckOnFractionalRounding
+            (string message, string beforeRounding, string afterRounding, int precision)
+        {
+            if (beforeRounding != afterRounding)
+                
+                return "result is rounded, precision is " + precision + " signs after decimal separator" ;
+            else
+                return message;
+        }
+
+        #endregion
     }
 }

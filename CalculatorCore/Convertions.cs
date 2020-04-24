@@ -8,7 +8,7 @@ namespace CalculatorCore
     {
         private static char Separator(CultureInfo culture) => Convert.ToChar(culture.NumberFormat.NumberDecimalSeparator);
 
-        public static string ConvertDecimalToBinaryString(decimal input, int roundingPrecisionForBinary, CultureInfo culture)
+        public static string ConvertDecimalToBinaryString(decimal input, int precisionForBinary, CultureInfo culture)
         {
             try
             {
@@ -26,12 +26,14 @@ namespace CalculatorCore
                 else
                 {
                     var integerPartlist = new List<string>();
+
                     while (integerPart > 0)
                     {
                         decimal remainder = integerPart - (Math.Truncate(integerPart / 2) * 2);
                         integerPartlist.Add(remainder.ToString());
                         integerPart = Math.Truncate(integerPart / 2);
                     }
+
                     integerPartlist.Reverse();
                     integerPartString = String.Join(String.Empty, integerPartlist.ToArray());
                 }
@@ -45,12 +47,14 @@ namespace CalculatorCore
                 else
                 {
                     var fractionalPartlist = new List<string>();
-                    for (int index = 0; index < roundingPrecisionForBinary; index++)
+
+                    for (int index = 0; index < precisionForBinary; index++)
                     {
                         fractionalPart *= 2;
                         fractionalPartlist.Add(Math.Truncate(fractionalPart).ToString());
                         fractionalPart -= Math.Truncate(fractionalPart);
                     }
+
                     fractionalPartString = String.Join(String.Empty, fractionalPartlist.ToArray());
                 }
 
@@ -65,23 +69,23 @@ namespace CalculatorCore
             }
         }
 
-
-        // need to finalize
         public static string ConvertDecimalToHexadecimalString(decimal input, CultureInfo culture)
         {
             string hexadecimal;
 
             try
             {
-                int number = Decimal.ToInt32(input);
+                bool isPositive = input >= 0;
+                decimal absoultinput = Math.Abs(input);
+                int number = Decimal.ToInt32(absoultinput);
                 hexadecimal = Convert.ToString(number, 16);
+
+                return isPositive ? hexadecimal : "-" + hexadecimal;
             }
-            catch (OverflowException)
+            catch (Exception)
             {
                 return string.Empty;
             }
-
-            return hexadecimal;
         }
     }
 }
