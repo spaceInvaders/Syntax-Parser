@@ -5,6 +5,7 @@
 
 function ExecutePhrase()
 {
+
     var language;
 
     if (window.navigator.languages)
@@ -22,6 +23,10 @@ function ExecutePhrase()
         culture: language,
 
     };
+
+    console.log(outputObject.expression);
+    console.log(outputObject.culture);
+
 
     //Создаем объект запроса
     let xhr = new XMLHttpRequest();

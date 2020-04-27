@@ -14,6 +14,7 @@ namespace WebApplicationCalculator.Controllers
 {
     public class ExecutePhraseController : Controller
     {
+        [HttpGet]
         public ActionResult GetResult(string serializedInput)
         {
             var inputObject = JsonConvert.DeserializeObject<CalcInput>(serializedInput);

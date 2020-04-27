@@ -51,13 +51,10 @@ namespace WebApplicationCalculator
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
-            });
 
-            app.UseEndpoints(endpoints =>
-            {
                 endpoints.MapControllerRoute(
-                        name: "default",
-                        pattern: "{controller=ExecutePhrase}/{action=Calc}/{id?}");
+                       name: "default",
+                       pattern: "{controller=ExecutePhrase}/{action=Calc}/{id?}");
 
                 endpoints.MapControllerRoute(
                         name: "default",

@@ -50,9 +50,11 @@ namespace WebApplicationCalculator.Models
                                            TrimEnd('0').TrimEnd(Separator(culture: Culture));
 
                     binaryResult = Convertions.ConvertDecimalToBinaryString
-                        (input: Decimal.Parse(decimalResult), precisionForBinary: PrecisionForBinaryResult, culture: Culture);
+                        (input: Decimal.Parse(decimalResult, Culture), precisionForBinary: PrecisionForBinaryResult,
+                        culture: Culture);
 
-                    hexadecimalResult = Convertions.ConvertDecimalToHexadecimalString(input: Decimal.Parse(decimalResult));
+                    hexadecimalResult = Convertions.ConvertDecimalToHexadecimalString
+                        (input: Decimal.Parse(decimalResult, Culture));
 
                     int signsAfterSeparator = SignsAfterSeparator(number: result, separator: decimalSeparator);
 
