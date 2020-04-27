@@ -11,8 +11,9 @@ namespace WebApplicationCalculator.Models
 {
     public class CalcInput
     {
-        private const int PrecisionForDecimalResult = 15;
+        private const int PrecisionForDecimalResult = 10;
         private const int PrecisionForBinaryResult = 30;
+        private const string Infinity = "\u221E";
 
         [JsonConstructor]
         internal CalcInput(string expression, CultureInfo culture)
@@ -51,11 +52,13 @@ namespace WebApplicationCalculator.Models
                     binaryResult = Convertions.ConvertDecimalToBinaryString
                         (input: Decimal.Parse(decimalResult), precisionForBinary: PrecisionForBinaryResult, culture: Culture);
 
-                    hexadecimalResult = Convertions.ConvertDecimalToHexadecimalString
-                        (input: Decimal.Parse(decimalResult), culture: Culture);
+                    hexadecimalResult = Convertions.ConvertDecimalToHexadecimalString(input: Decimal.Parse(decimalResult));
 
-                    message = CheckOnFractionalRounding(afterRounding: decimalResult, 
-                        precision: PrecisionForDecimalResult, message: message, beforeRounding: result.ToString());
+                    int signsAfterSeparator = SignsAfterSeparator(number: result, separator: decimalSeparator);
+
+                    message = CheckOnFractionalRounding(afterRounding: decimalResult, precision: PrecisionForDecimalResult,
+                        message: message, beforeRounding: result.ToString($"n{signsAfterSeparator}", Culture).
+                        TrimEnd('0').TrimEnd(Separator(culture: Culture)));
                 }
             }
             catch (CheckingException exception)
@@ -65,6 +68,9 @@ namespace WebApplicationCalculator.Models
             catch (DivideByZeroException)
             {
                 message = "Divide by Zero gives you infinity";
+                decimalResult = Infinity;
+                binaryResult = Infinity;
+                hexadecimalResult = Infinity;
             }
             catch (OverflowException)
             {
@@ -88,9 +94,16 @@ namespace WebApplicationCalculator.Models
         {
             if (beforeRounding != afterRounding)
                 
-                return "result is rounded, precision is " + precision + " signs after decimal separator" ;
+                return "result is rounded, precision is " + precision + " signs after decimal separator";
             else
                 return message;
+        }
+
+        private int SignsAfterSeparator(decimal number, string separator)
+        {
+            int separatorIndex = number.ToString().IndexOf(separator);
+
+            return number.ToString().Length - separatorIndex;
         }
 
         #endregion

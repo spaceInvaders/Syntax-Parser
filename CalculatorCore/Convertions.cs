@@ -69,7 +69,7 @@ namespace CalculatorCore
             }
         }
 
-        public static string ConvertDecimalToHexadecimalString(decimal input, CultureInfo culture)
+        public static string ConvertDecimalToHexadecimalString(decimal input)
         {
             string hexadecimal;
 
@@ -77,8 +77,8 @@ namespace CalculatorCore
             {
                 bool isPositive = input >= 0;
                 decimal absoultinput = Math.Abs(input);
-                int number = Decimal.ToInt32(absoultinput);
-                hexadecimal = Convert.ToString(number, 16);
+                long number = Decimal.ToInt64(absoultinput);
+                hexadecimal = number.ToString($"X");
 
                 return isPositive ? hexadecimal : "-" + hexadecimal;
             }
