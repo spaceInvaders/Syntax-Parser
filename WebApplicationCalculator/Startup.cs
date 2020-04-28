@@ -54,7 +54,7 @@ namespace WebApplicationCalculator
 
                 endpoints.MapControllerRoute(
                        name: "default",
-                       pattern: "{controller=ExecutePhrase}/{action=Calc}/{id?}");
+                       pattern: "{controller=ExecutePhrase}/{action=GetResult}/{id?}");
 
                 endpoints.MapControllerRoute(
                         name: "default",

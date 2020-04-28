@@ -30,7 +30,10 @@ header, footer, section {
 header {
     width: 160px;
     height: 10%;
+
     display: flex;
+    display:-webkit-flex;
+
     flex-direction: row;
     align-items: center;
     justify-content: center;
@@ -42,7 +45,10 @@ header {
 
 section {
     width: 700px;
+
     display: flex;
+    display: -webkit-flex;
+
     flex-direction: column;
     justify-content: space-around;
 }
@@ -54,7 +60,10 @@ section {
 footer {
     width: 400px;
     height: 5%;
+
     display: flex;
+    display: -webkit-flex;
+
     flex-direction: row;
     align-items: center;
     justify-content: space-around;
@@ -65,7 +74,10 @@ footer {
 
 .title {
     width: 160px;
+
     display: flex;
+    display: -webkit-flex;
+
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
@@ -94,6 +106,7 @@ h6 {
 
 .block__item {
     display: flex;
+    display: -webkit-flex;
 }
 
 /*---------------------------------------------texarea form*/
@@ -162,7 +175,10 @@ textarea {
 
 .hbox {
     width: 100%;
+
     display: flex;
+    display: -webkit-flex;
+
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
@@ -170,6 +186,8 @@ textarea {
 
 .vbox {
     display: flex;
+    display: -webkit-flex;
+
     flex-direction: column;
     align-items: center;
     flex-grow: 1;
