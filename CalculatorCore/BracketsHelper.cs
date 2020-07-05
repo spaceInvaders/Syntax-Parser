@@ -15,7 +15,7 @@ namespace CalculatorCore
             {
                 var bracketsLevel = BracketsLevel(input: input);
 
-                for (int index = 1; index < input.Length - 1; index++)
+                for (var index = 1; index < input.Length - 1; index++)
                 {
                     if (bracketsLevel[index] == 0)
                     {
@@ -54,7 +54,7 @@ namespace CalculatorCore
                 bracketsLevel[0] = -1;
             }
 
-            for (int index = 1; index < input.Length; index++)
+            for (var index = 1; index < input.Length; index++)
             {
                 if (input[index] == CalculationConstants.OpeningBracket)
                 {

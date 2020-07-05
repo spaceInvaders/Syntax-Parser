@@ -1,7 +1,7 @@
 ﻿function StartMessage()
 {
     const localURL = "https://localhost:44372";
-    const aplicationURLforIOS = "https://localhost:5001";
+    const applicationURLforIOS = "https://localhost:5001";
     const deployedURL = "https://calcspace.azurewebsites.net";
 
     var culture;

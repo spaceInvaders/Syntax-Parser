@@ -36,9 +36,9 @@ namespace CalculatorCore
         {
             input = BracketsHelper.TrimBrackets(input);
 
-            /* Since people read from left to right, to ensure the correct order of operations,
-             * node tree should be built from right to left with priority of operations outside brackets:
-             * plus or minus, multply or divide, power */
+            // Since people read from left to right, to ensure the correct order of operations,
+            // node tree should be built from right to left with priority of operations outside brackets:
+            // plus or minus, multply or divide, power.
 
             int lastOperationIndex = FindLastOerationWithPriorityPlusMinus(input: input);
             var rightString = input.Substring(lastOperationIndex + 1);
@@ -78,7 +78,7 @@ namespace CalculatorCore
             bool multDivOperationHasBeenFound = false;
             bool powerOperationHasBeenFound = false;
 
-            for (int index = input.Length - 1; index >= 0; index--)
+            for (var index = input.Length - 1; index >= 0; index--)
             {
                 if ((input[index] == CalculationConstants.Plus || input[index] == CalculationConstants.Minus)
                     && bracketsLevel[index] == 0)

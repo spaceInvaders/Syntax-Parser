@@ -21,15 +21,15 @@ namespace WebApplicationCalculator.Models
         internal string DecimalResult { get; private set; }
 
         [JsonProperty]
-        public string BinaryResult { get; private set; }
+        internal string BinaryResult { get; private set; }
 
         [JsonProperty]
-        public string HexadecimalResult { get; private set; }
+        internal string HexadecimalResult { get; private set; }
 
         [JsonProperty]
-        public string Message { get; private set; }
+        internal string Message { get; private set; }
 
         [JsonProperty]
-        public string Separator { get; private set; }
+        internal string Separator { get; private set; }
     }
 }

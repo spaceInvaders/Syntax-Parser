@@ -6,7 +6,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-
 namespace WebApplicationCalculator.Models
 {
     public class CalcInput
@@ -27,11 +26,11 @@ namespace WebApplicationCalculator.Models
 
         internal CalcResult ExecuteExpression()
         {
-            string decimalResult = String.Empty;
-            string binaryResult = String.Empty;
-            string hexadecimalResult = String.Empty;
-            string decimalSeparator = $"{Separator(culture: Culture)}";
-            string message = $"note, your decimal separator is a ' " + decimalSeparator + " '";
+            var decimalResult = String.Empty;
+            var binaryResult = String.Empty;
+            var hexadecimalResult = String.Empty;
+            var decimalSeparator = $"{Separator(culture: Culture)}";
+            var message = $"note, your decimal separator is a ' " + decimalSeparator + " '";
 
             if(String.IsNullOrWhiteSpace(Expression))
 
@@ -95,7 +94,7 @@ namespace WebApplicationCalculator.Models
             (string message, string beforeRounding, string afterRounding, int precision)
         {
             if (beforeRounding != afterRounding)
-                
+
                 return "result is rounded, precision is " + precision + " signs after decimal separator";
             else
                 return message;

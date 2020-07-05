@@ -56,7 +56,7 @@ namespace CalculatorCore
         {
             string editedInput = input;
 
-            for (int parseIndex = 0; parseIndex < input.Length; parseIndex++)
+            for (var parseIndex = 0; parseIndex < input.Length; parseIndex++)
             {
                 int editedInputParseIndex = parseIndex - (input.Length - editedInput.Length);
 

@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
-using CalculatorCore;
-using Microsoft.AspNetCore.Http;
+﻿using System.Globalization;
 using Microsoft.AspNetCore.Mvc;
 using WebApplicationCalculator.Models;
 using Newtonsoft.Json;
-using System.Net.Http;
 
 namespace WebApplicationCalculator.Controllers
 {

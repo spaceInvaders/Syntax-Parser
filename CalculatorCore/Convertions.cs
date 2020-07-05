@@ -48,7 +48,7 @@ namespace CalculatorCore
                 {
                     var fractionalPartlist = new List<string>();
 
-                    for (int index = 0; index < precisionForBinary; index++)
+                    for (var index = 0; index < precisionForBinary; index++)
                     {
                         fractionalPart *= 2;
                         fractionalPartlist.Add(Math.Truncate(fractionalPart).ToString());
