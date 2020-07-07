@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" dir="ltr">
+
+<head>
+
+    <meta charset=utf-8>
+    <meta name="viewport" content="width=device-width">
+    <title>@ViewData["Title"]</title>
+
+    <link rel="stylesheet" href="~/css/site.css">
+
+</head>
+
+<body class="vbox viewport">
+
+    <header class="designUI">
+
+        <div class="title">
+
+            <div class="title__main designUI">
+                <a style="text-decoration: none;" asp-area="" asp-controller="Home" asp-action="Index"><h1>calcspace&nbsp;</h1></a>
+            </div>
+
+            <div class="title__label designUI"><h6>beta</h6></div>
+
+        </div>
+
+    </header>
+
+    @RenderBody()
+
+    <footer class="designUI">
+
+        <a style="text-decoration: none;" asp-area="" asp-controller="Home" asp-action="Contact">&copy spaceinvaders</a>
+
+    </footer>
+
+
+    @RenderSection("Scripts", required: false)
+
+</body>
+
+</html>
