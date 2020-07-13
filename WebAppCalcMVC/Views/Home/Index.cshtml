@@ -6,21 +6,21 @@
 <script src="~/js/executePhrase.js" asp-append-version="true"></script>
 <script src="~/js/startMessage.js" asp-append-version="true"></script>
 
-@if (User.Identity.IsAuthenticated)
- {
-    <p>@User.Identity.Name</p>
+<section class="title designUI">
+    @if (User.Identity.IsAuthenticated)
+     {
+    <p>@User.Identity.Name&nbsp;</p>
 
-    <form method="post" asp-controller="Account" asp-action="Logout">
-        <input type="submit" value="Log out" />
-    </form>
- }
-else
-{
-    <div class="hbox designUI">
-        <a style="text-decoration: none;" asp-controller="Account" asp-action="Login">Log in</a>
-        <a style="text-decoration: none;" asp-controller="Account" asp-action="Register">Sign up</a>
-    </div>
-}
+        <form method="post" asp-controller="Account" asp-action="Logout">
+            <input type="submit" value="Log out" />
+        </form>
+     }
+     else
+     {
+        <a style="text-decoration: none;" asp-controller="Account" asp-action="Login">LOGIN</a>
+        <a style="text-decoration: none;" asp-controller="Account" asp-action="Register">SIGNUP</a>
+     }
+</section>
 
 <div class="empty_1 designUI"></div>
 

@@ -36,6 +36,10 @@ header {
     justify-content: center;
 }
 
+.login {
+    width: 150px;
+}
+
 .empty_1 {
     height: 15%;
 }
@@ -49,6 +53,10 @@ section {
 
 .empty_2 {
     height: 25%;
+}
+
+.empty_3 {
+    height: 35%;
 }
 
 footer {
@@ -72,6 +80,13 @@ footer {
 }
 
 h1 {
+    font-family: helvetica;
+    font-size: 22px;
+    font-weight: 800;
+    color: white;
+}
+
+h2 {
     font-family: helvetica;
     font-size: 22px;
     font-weight: 800;
@@ -113,6 +128,31 @@ textarea {
     border-radius: 30px;
     border-color: white;
     font-size: 25px;
+}
+
+input {
+    height: 60px;
+    box-sizing: border-box;
+    padding: 20px;
+    background-color: white;
+    outline-color: transparent;
+    outline-style: none;
+    outline: none;
+    overflow: auto;
+    border: none;
+    border-radius: 30px;
+    border-color: white;
+}
+
+pointer {
+    cursor: pointer;
+}
+
+label {
+    font-family: helvetica;
+    font-size: 12px;
+    font-weight: 800;
+    color: white;
 }
 
 .textinput {
@@ -166,7 +206,15 @@ textarea {
     width: 100%;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.hbox_center {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
     align-items: center;
 }
 
@@ -175,6 +223,14 @@ textarea {
     flex-direction: column;
     align-items: center;
     flex-grow: 1;
+}
+
+.vbox_login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-grow: 1;
+    margin-top: 20px;
 }
 
 .vbox_section {
@@ -208,7 +264,7 @@ a {
     color: rgba(255, 255, 255, 0.50);
 }
 
-.mail {
+.button {
     font-family: sans-serif;
     font-size: 14px;
     font-weight: 800;

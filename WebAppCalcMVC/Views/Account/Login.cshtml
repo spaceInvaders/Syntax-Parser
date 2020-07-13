@@ -2,25 +2,33 @@
 @{
     ViewData["Title"] = "Login";
 }
-<h2>Login</h2>
-<form method="post" asp-controller="Account" asp-action="Login"
-      asp-route-returnUrl="@Model.ReturnUrl">
-    <div asp-validation-summary="ModelOnly"></div>
-    <div>
-        <label asp-for="Email"></label><br />
-        <input asp-for="Email" />
-        <span asp-validation-for="Email"></span>
-    </div>
-    <div>
-        <label asp-for="Password"></label><br />
-        <input asp-for="Password" />
-        <span asp-validation-for="Password"></span>
-    </div>
-    <div>
-        <label asp-for="RememberMe"></label><br />
-        <input asp-for="RememberMe" />
-    </div>
-    <div>
-        <input type="submit" value="Enter" />
-    </div>
-</form>
+    <section class="vbox_section designUI">
+        <div class="hbox_center designUI">
+            <h2>login</h2>
+        </div>
+        <div class="block__item designUI">
+            <form method="post" asp-controller="Account" asp-action="Login"
+                  asp-route-returnUrl="@Model.ReturnUrl">
+                <div asp-validation-summary="ModelOnly"></div>
+                <div class="vbox_login designUI">
+                    <label asp-for="Email"></label><br />
+                    <input asp-for="Email" />
+                    <span asp-validation-for="Email"></span>
+                </div>
+                <div class="vbox_login designUI">
+                    <label asp-for="Password"></label><br />
+                    <input asp-for="Password" />
+                    <span asp-validation-for="Password"></span>
+                </div>
+                <div class="hbox_center designUI">
+                    <label asp-for="RememberMe"></label><br />
+                    <input asp-for="RememberMe" />
+                </div>
+                <div class="hbox_center designUI">
+                    <input type="submit" class="button" value="Complete" />
+                </div>
+            </form>
+        </div>
+    </section>
+<div class="empty_3 designUI"></div>
+
