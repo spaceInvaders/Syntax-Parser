@@ -5,9 +5,13 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
+using WebAppCalcMVC.Models;
 
 namespace WebAppCalcMVC
 {
@@ -23,6 +27,14 @@ namespace WebAppCalcMVC
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Add services for EF Core
+            services.AddDbContext<ApplicationContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            // Add services for Identity start initialization, instal type of Db - ApplicationContext
+            services.AddIdentity<User, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationContext>();
+
             services.AddControllersWithViews();
         }
 
@@ -43,6 +55,9 @@ namespace WebAppCalcMVC
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            // to use Identity - middeware component installed - UseAuthentication
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
