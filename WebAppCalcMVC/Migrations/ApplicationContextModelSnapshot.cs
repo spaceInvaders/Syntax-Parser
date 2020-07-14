@@ -150,6 +150,30 @@ namespace WebAppCalcMVC.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("WebAppCalcMVC.Models.Saving", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CalculationValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Savings");
+                });
+
             modelBuilder.Entity("WebAppCalcMVC.Models.User", b =>
                 {
                     b.Property<string>("Id")
@@ -261,6 +285,15 @@ namespace WebAppCalcMVC.Migrations
                 {
                     b.HasOne("WebAppCalcMVC.Models.User", null)
                         .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("WebAppCalcMVC.Models.Saving", b =>
+                {
+                    b.HasOne("WebAppCalcMVC.Models.User", "User")
+                        .WithMany("Savings")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

@@ -8,5 +8,10 @@ namespace WebAppCalcMVC.Models
 {
     public class User : IdentityUser
     {
+        public List<Saving> Savings { get; set; }
+        public User()
+        {
+            Savings = new List<Saving>();
+        }
     }
 }

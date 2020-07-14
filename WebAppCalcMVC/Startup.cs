@@ -74,6 +74,10 @@ namespace WebAppCalcMVC
                 endpoints.MapControllerRoute(
                         name: "default",
                         pattern: "{controller=ExecutePhrase}/{action=GetMessage}/{id?}");
+
+                endpoints.MapControllerRoute(
+                        name: "default",
+                        pattern: "{controller=Save}/{action=SaveToDb}/{id?}");
             });
         }
     }

@@ -10,5 +10,7 @@ namespace WebAppCalcMVC.Models
         {
             // Database.EnsureCreated();
         }
+
+        public DbSet<Saving> Savings { get; set; }
     }
 }
