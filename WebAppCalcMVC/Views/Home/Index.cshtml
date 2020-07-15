@@ -8,22 +8,20 @@
 
 <section class="title designUI">
     @if (User.Identity.IsAuthenticated)
-    {
+     {
         <form>
             <output class="" id="User_Identity_Name">@User.Identity.Name</output>
         </form>
         <form method="post" asp-controller="Account" asp-action="Logout">
             <input type="submit" value="Log out" />
         </form>
-        <form method="post">
-            <input type="submit" value="Save" id="saveButton" />
-        </form>
-    }
-    else
-    {
+        <input onclick="Save()" type="button" name="send" value="Отправить" id="saveButton" />
+     }
+     else
+     {
         <a style="text-decoration: none;" asp-controller="Account" asp-action="Login">LOGIN</a>
         <a style="text-decoration: none;" asp-controller="Account" asp-action="Register">SIGNUP</a>
-    }
+     }
 </section>
 
 <div class="empty_1 designUI"></div>

@@ -17,7 +17,7 @@ namespace WebAppCalcMVC.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SaveToDb(string serializedInput)
+        public ActionResult SaveToDb(string serializedInput)
         {
             var inputObject = JsonConvert
                 .DeserializeObject<PhraseWithMailToSave>(serializedInput);
@@ -36,7 +36,7 @@ namespace WebAppCalcMVC.Controllers
             };
 
             db.Savings.Add(saving);
-            await db.SaveChangesAsync();
+            db.SaveChanges();
 
             var phraseFromDb = db.Savings
                 .FirstOrDefault(p => p.DateOnServer == dateOfSave && p.UserId == user.Id)
