@@ -10,7 +10,7 @@ using WebAppCalcMVC.Models;
 namespace WebAppCalcMVC.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20200714161552_InitialCreate")]
+    [Migration("20200715101839_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -162,7 +162,11 @@ namespace WebAppCalcMVC.Migrations
                     b.Property<string>("CalculationValue")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("Date")
+                    b.Property<string>("DateOnClient")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateOnServer")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UserId")

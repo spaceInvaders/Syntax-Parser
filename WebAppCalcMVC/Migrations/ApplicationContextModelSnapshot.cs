@@ -160,7 +160,11 @@ namespace WebAppCalcMVC.Migrations
                     b.Property<string>("CalculationValue")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("Date")
+                    b.Property<string>("DateOnClient")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateOnServer")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UserId")

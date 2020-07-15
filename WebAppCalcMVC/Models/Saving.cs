@@ -9,7 +9,9 @@ namespace WebAppCalcMVC.Models
         public int Id { get; set; }
         public string CalculationValue { get; set; }
         [Required]
-        public DateTime Date { get; set; }
+        public DateTime DateOnServer { get; set; }
+        [Required]
+        public string DateOnClient { get; set; }
 
         [Required]
         public string UserId { get; set; }

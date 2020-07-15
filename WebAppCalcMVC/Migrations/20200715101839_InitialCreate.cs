@@ -159,7 +159,8 @@ namespace WebAppCalcMVC.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CalculationValue = table.Column<string>(nullable: true),
-                    Date = table.Column<DateTime>(nullable: false),
+                    DateOnServer = table.Column<DateTime>(nullable: false),
+                    DateOnClient = table.Column<string>(nullable: false),
                     UserId = table.Column<string>(nullable: false)
                 },
                 constraints: table =>

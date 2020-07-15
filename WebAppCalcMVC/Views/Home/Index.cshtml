@@ -15,8 +15,8 @@
         <form method="post" asp-controller="Account" asp-action="Logout">
             <input type="submit" value="Log out" />
         </form>
-        <form onclick="Save()" method="post">
-            <input type="submit" value="Save" />
+        <form method="post">
+            <input type="submit" value="Save" id="saveButton" />
         </form>
     }
     else
@@ -70,4 +70,7 @@
 </section>
 
 <div class="empty_2 designUI"></div>
+
+<script src="~/js/save.js" asp-append-version="true"></script>
+
 

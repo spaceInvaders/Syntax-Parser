@@ -6,10 +6,13 @@
     var phraseToSaveWithMailObject = {
         phraseToSave: encodeURIComponent(document.getElementById("textinput").value),
         mail: encodeURIComponent(document.getElementById("User_Identity_Name").value),
+        dateOnClient: new Date(),
     };
 
     console.log(phraseToSaveWithMailObject.phraseToSave);
     console.log(phraseToSaveWithMailObject.mail);
+    console.log(phraseToSaveWithMailObject.dateOnClient);
+
 
     $.ajax({
         url: localURL + "/Save/SaveToDb",
@@ -21,3 +24,6 @@
         dataType: "text"
     });
 }
+
+var el = document.getElementById("saveButton");
+el.addEventListener("click", Save, false);
