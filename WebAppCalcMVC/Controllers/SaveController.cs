@@ -22,8 +22,30 @@ namespace WebAppCalcMVC.Controllers
             var inputObject = JsonConvert
                 .DeserializeObject<PhraseWithMailToSave>(serializedInput);
 
+            // get (Read) current user from db
+
             var user = db.Users
                 .FirstOrDefault(u => u.Email == inputObject.Mail);
+
+            // if User has 5 savings, remove the oldest one from db 
+
+            var quantityOfSavesOfCurrentUser = db.Savings
+                .Where(s => s.UserId == user.Id)
+                .Count();
+            
+            if (quantityOfSavesOfCurrentUser >= 5)
+            {
+                var minId = db.Savings
+                    .Where(s => s.User == user)
+                    .Min(s => s.Id);
+
+                var oldestSave = db.Savings.Find(minId);
+
+                db.Savings.Remove(oldestSave);
+                db.SaveChanges();
+            }
+
+            // create new saving and push it to db
 
             var dateOfSave = DateTime.Now;
 
@@ -37,6 +59,8 @@ namespace WebAppCalcMVC.Controllers
 
             db.Savings.Add(saving);
             db.SaveChanges();
+
+            // get recently saved culcation phrase from db and send it to client
 
             var phraseFromDb = db.Savings
                 .FirstOrDefault(p => p.DateOnServer == dateOfSave && p.UserId == user.Id)
