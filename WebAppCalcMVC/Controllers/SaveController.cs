@@ -51,7 +51,7 @@ namespace WebAppCalcMVC.Controllers
 
             var saving = new Saving()
             {
-                CalculationValue = inputObject.PhraseToSave,
+                CalculationValue = RemoveWhiteSpaces(input: inputObject.PhraseToSave),
                 DateOnServer = dateOfSave,
                 DateOnClient = inputObject.DateOnClient,
                 UserId = user.Id
@@ -68,5 +68,12 @@ namespace WebAppCalcMVC.Controllers
 
             return Content($"Your phrase '{phraseFromDb}' was successfully saved!");
         }
+
+        #region private methods
+        private static string RemoveWhiteSpaces(string input)
+        {
+            return new string(input.ToCharArray().Where(character => !Char.IsWhiteSpace(character)).ToArray());
+        }
+        #endregion
     }
 }

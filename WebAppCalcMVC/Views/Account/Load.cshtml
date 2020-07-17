@@ -1,0 +1,39 @@
+﻿@{
+    ViewData["Title"] = "Load";
+}
+<section class="title designUI">
+    <form>
+        <output class="" id="User_Identity_Name">@User.Identity.Name</output>
+    </form>
+    <form method="post" asp-controller="Account" asp-action="Logout">
+        <input type="submit" value="Log out" />
+    </form>
+</section>
+<section class="vbox_section designUI">
+    <div class="hbox_center designUI">
+        <h2>load</h2>
+    </div>
+    <div class="block__item designUI">
+        <div class="hbox_center designUI">
+            <input type="submit" class="button" 
+                   value=@await Component.InvokeAsync("NameOfSave_1", @User.Identity.Name) />
+        </div>
+        <div class="hbox_center designUI">
+            <input type="submit" class="button"
+                   value=@await Component.InvokeAsync("NameOfSave_2", @User.Identity.Name) />
+        </div>
+        <div class="hbox_center designUI">
+            <input type="submit" class="button" 
+                   value=@await Component.InvokeAsync("NameOfSave_3", @User.Identity.Name) />
+        </div>
+        <div class="hbox_center designUI">
+            <input type="submit" class="button" 
+                   value=@await Component.InvokeAsync("NameOfSave_4", @User.Identity.Name) />
+        </div>
+        <div class="hbox_center designUI">
+            <input type="submit" class="button" 
+                   value=@await Component.InvokeAsync("NameOfSave_5", @User.Identity.Name) />
+        </div>
+    </div>
+</section>
+<div class="empty_3 designUI"></div>

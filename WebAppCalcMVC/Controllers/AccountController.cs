@@ -106,5 +106,12 @@ namespace WebAppCalcMVC.Controllers
 
             return RedirectToAction("Index", "Home");
         }
+
+        // Load
+
+        public IActionResult Load()
+        {
+            return View();
+        }
     }
 }
