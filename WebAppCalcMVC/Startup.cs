@@ -1,16 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
 using WebAppCalcMVC.Models;
 
 namespace WebAppCalcMVC
@@ -66,18 +60,6 @@ namespace WebAppCalcMVC
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
-
-                endpoints.MapControllerRoute(
-                       name: "default",
-                       pattern: "{controller=ExecutePhrase}/{action=GetResult}/{id?}");
-
-                endpoints.MapControllerRoute(
-                        name: "default",
-                        pattern: "{controller=ExecutePhrase}/{action=GetMessage}/{id?}");
-
-                endpoints.MapControllerRoute(
-                        name: "default",
-                        pattern: "{controller=Save}/{action=SaveToDb}/{id?}");
             });
         }
     }

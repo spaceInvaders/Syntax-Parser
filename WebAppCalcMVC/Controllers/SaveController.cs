@@ -69,7 +69,7 @@ namespace WebAppCalcMVC.Controllers
             return Content($"Your phrase '{phraseFromDb}' was successfully saved!");
         }
 
-        #region private methods
+        #region PrivateMethods
         private static string RemoveWhiteSpaces(string input)
         {
             return new string(input.ToCharArray().Where(character => !Char.IsWhiteSpace(character)).ToArray());
