@@ -1,4 +1,5 @@
 ﻿function Save() {
+
     const localURL = "https://localhost:44365";
     const applicationURLforIOS = "https://localhost:5001";
     const deployedURL = "https://calcspace.azurewebsites.net";
@@ -20,6 +21,7 @@
         console.log(phraseToSaveWithMailObject.dateOnClient);
 
         $.ajax({
+
             url: localURL + "/Save/SaveToDb",
             type: "POST",
             data: "serializedInput=" + JSON.stringify(phraseToSaveWithMailObject),

@@ -1,14 +1,12 @@
 ﻿@{
     ViewData["Title"] = "CalcSpace";
 }
-
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="~/js/executePhrase.js" asp-append-version="true"></script>
 <script src="~/js/startMessage.js" asp-append-version="true"></script>
-<script src="~/js/SetNameForLoadButton.js" asp-append-version="true"></script>
+<script src="~/js/setNameForLoadButton.js" asp-append-version="true"></script>
 <script src="~/js/save.js" asp-append-version="true"></script>
-
-
+<script src="~/js/load.js" asp-append-version="true"></script>
 <section class="title designUI">
     @if (User.Identity.IsAuthenticated)
     {
@@ -22,21 +20,21 @@
             <input onclick="Save()" type="button" name="send" value="Save" id="saveButton" />
         </form>
         <div class="block__item designUI">
-            <form >
+            <form>
                 <div class="hbox_center designUI">
-                    <input type="button" class="button" id="saving_1" />
+                    <input onclick="Load(1)" type="button" class="button" id="saving_1" />
                 </div>
                 <div class="hbox_center designUI">
-                    <input type="button" class="button" id="saving_2" />
+                    <input onclick="Load(2)" type="button" class="button" id="saving_2" />
                 </div>
                 <div class="hbox_center designUI">
-                    <input type="button" class="button" id="saving_3" />
+                    <input onclick="Load(3)" type="button" class="button" id="saving_3" />
                 </div>
                 <div class="hbox_center designUI">
-                    <input type="button" class="button" id="saving_4" />
+                    <input onclick="Load(4)" type="button" class="button" id="saving_4" />
                 </div>
                 <div class="hbox_center designUI">
-                    <input type="button" class="button" id="saving_5" />
+                    <input onclick="Load(5)" type="button" class="button" id="saving_5" />
                 </div>
             </form>
         </div>
@@ -48,50 +46,38 @@
         <a style="text-decoration: none;" asp-controller="Account" asp-action="Register">SIGNUP</a>
     }
 </section>
-
 <div class="empty_1 designUI"></div>
-
 <section class="vbox_section designUI">
-
     <div class="block__item designUI">
         <form oninput="ExecutePhrase()" method="post">
             <textarea class="textinput" name="input" id="textinput" placeholder="Calculate me"
                       spellcheck="false" autofocus></textarea>
         </form>
     </div>
-
     <div class="block__item designUI">
         <form>
             <output class="textoutput_2" id="result_notifier"></output>
         </form>
     </div>
-
     <script>StartMessage()</script>
-
     <div class="hbox">
-
         <div class="block__item designUI">
             <form>
                 <output class="textoutput_1" id="result_decimal">decimal:</output>
             </form>
         </div>
-
         <div class="block__item designUI">
             <form>
                 <output class="textoutput_1" id="result_hexadecimal">hexadecimal:</output>
             </form>
         </div>
-
     </div>
-
     <div class="block__item designUI">
         <form>
             <output class="textoutput_3" id="result_binary">binary:</output>
         </form>
     </div>
-
 </section>
-
 <div class="empty_2 designUI"></div>
 
 

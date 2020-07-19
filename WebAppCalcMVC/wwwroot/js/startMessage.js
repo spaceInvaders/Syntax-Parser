@@ -1,4 +1,5 @@
 ﻿function StartMessage() {
+
     const localURL = "https://localhost:44365";
     const applicationURLforIOS = "https://localhost:5001";
     const deployedURL = "https://calcspace.azurewebsites.net";
@@ -15,12 +16,15 @@
     console.log(culture);
 
     $.ajax({
+
         url: localURL + "/ExecutePhrase/GetMessage",
         type: "POST",
         data: "culture=" + culture,
+
         success: function (data) {
             document.getElementById("result_notifier").innerHTML = data;
         },
+
         dataType: "text"
     });
 }
