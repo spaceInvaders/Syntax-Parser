@@ -22,17 +22,17 @@ namespace WebAppCalcMVC.Controllers
             var inputObject = JsonConvert
                 .DeserializeObject<PhraseWithMailToSave>(serializedInput);
 
-            // get (Read) current user from db
+            // get current user from db
 
             var user = db.Users
                 .FirstOrDefault(u => u.Email == inputObject.Mail);
 
-            // if User has 5 savings, remove the oldest one from db 
+            // if user has 5 savings, remove the oldest one from db 
 
             var quantityOfSavesOfCurrentUser = db.Savings
                 .Where(s => s.UserId == user.Id)
                 .Count();
-            
+
             if (quantityOfSavesOfCurrentUser >= 5)
             {
                 var minId = db.Savings
@@ -60,19 +60,46 @@ namespace WebAppCalcMVC.Controllers
             db.Savings.Add(saving);
             db.SaveChanges();
 
-            // get recently saved culcation phrase from db and send it to client
+            // get all savings
 
-            var phraseFromDb = db.Savings
-                .FirstOrDefault(p => p.DateOnServer == dateOfSave && p.UserId == user.Id)
-                .CalculationValue;
+            var savings = db.Savings
+                .Where(s => s.User.Email == inputObject.Mail)
+                .ToList();
 
-            return Content($"Your phrase '{phraseFromDb}' was successfully saved!");
+            // get last saving
+
+            var phraseFromDb = savings.Last().CalculationValue;
+
+            var message = $"Your phrase '{phraseFromDb}' was successfully saved!";
+
+            var resultObject = new LoadButtonNameSetter
+                (
+                value_1: GetValue(identifier: 1, list: savings),
+                value_2: GetValue(identifier: 2, list: savings),
+                value_3: GetValue(identifier: 3, list: savings),
+                value_4: GetValue(identifier: 4, list: savings),
+                value_5: GetValue(identifier: 5, list: savings),
+                message: message
+                );
+
+            var serializedOutput = JsonConvert.SerializeObject(resultObject);
+
+            return Content(serializedOutput);
         }
 
         #region PrivateMethods
         private static string RemoveWhiteSpaces(string input)
         {
             return new string(input.ToCharArray().Where(character => !Char.IsWhiteSpace(character)).ToArray());
+        }
+
+        private string GetValue(int identifier, List<Saving> list)
+        {
+            if (list.Count() < identifier || String.IsNullOrWhiteSpace(list[identifier - 1].CalculationValue))
+
+                return "empty";
+            else
+                return list[identifier - 1].CalculationValue;
         }
         #endregion
     }

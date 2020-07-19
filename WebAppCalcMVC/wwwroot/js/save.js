@@ -23,9 +23,20 @@
             url: localURL + "/Save/SaveToDb",
             type: "POST",
             data: "serializedInput=" + JSON.stringify(phraseToSaveWithMailObject),
+
             success: function (data) {
-                document.getElementById("result_notifier").innerHTML = data;
+
+                var result = JSON.parse(data);
+
+                document.getElementById("result_notifier").innerHTML = result.Message;
+
+                document.getElementById("saving_1").setAttribute("value", result.Value_1);
+                document.getElementById("saving_2").setAttribute("value", result.Value_2);
+                document.getElementById("saving_3").setAttribute("value", result.Value_3);
+                document.getElementById("saving_4").setAttribute("value", result.Value_4);
+                document.getElementById("saving_5").setAttribute("value", result.Value_5);
             },
+
             dataType: "text"
         });
     }

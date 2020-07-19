@@ -10,10 +10,12 @@ namespace WebAppCalcMVC.Controllers
     public class SetNameForLoadButtonController : Controller
     {
         private ApplicationContext db;
+
         public SetNameForLoadButtonController(ApplicationContext context)
         {
             db = context;
         }
+
         [HttpPost]
         public ActionResult GetPhraseFromDb(string email)
         {
@@ -23,11 +25,12 @@ namespace WebAppCalcMVC.Controllers
 
             var resultObject = new LoadButtonNameSetter
                 (
-                value_1: GetValue(identifier: 1, email: email, list: savings),
-                value_2: GetValue(identifier: 2, email: email, list: savings),
-                value_3: GetValue(identifier: 3, email: email, list: savings),
-                value_4: GetValue(identifier: 4, email: email, list: savings),
-                value_5: GetValue(identifier: 5, email: email, list: savings)
+                value_1: GetValue(identifier: 1, list: savings),
+                value_2: GetValue(identifier: 2, list: savings),
+                value_3: GetValue(identifier: 3, list: savings),
+                value_4: GetValue(identifier: 4, list: savings),
+                value_5: GetValue(identifier: 5, list: savings),
+                message: null
                 );
 
             var serializedOutput = JsonConvert.SerializeObject(resultObject);
@@ -35,8 +38,8 @@ namespace WebAppCalcMVC.Controllers
             return Content(serializedOutput);
         }
 
-        #region PrivateMethods
-        private string GetValue(int identifier, string email, List<Saving> list)
+        #region PrivateMethods 
+        private string GetValue(int identifier, List<Saving> list)
         {
             if (list.Count() < identifier || String.IsNullOrWhiteSpace(list[identifier - 1].CalculationValue))
 
