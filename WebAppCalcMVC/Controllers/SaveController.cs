@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using WebAppCalcMVC.Models;
 
@@ -23,13 +23,11 @@ namespace WebAppCalcMVC.Controllers
                 .DeserializeObject<PhraseWithMailToSave>(serializedInput);
 
             // get current user from db
-
             var user = db.Users
                 .FirstOrDefault(u => u.Email == inputObject.Mail);
 
             // if user has 5 savings, remove the oldest one from db 
-
-            var quantityOfSavesOfCurrentUser = db.Savings
+            var quantityOfSavesOfCurrentUser = db.Savings                
                 .Where(s => s.UserId == user.Id)
                 .Count();
 
@@ -44,7 +42,7 @@ namespace WebAppCalcMVC.Controllers
                 db.Savings.Remove(oldestSave);
                 db.SaveChanges();
             }
-
+          
             // create new saving and push it to db
 
             var dateOfSave = DateTime.Now;
@@ -60,7 +58,7 @@ namespace WebAppCalcMVC.Controllers
             db.Savings.Add(saving);
             db.SaveChanges();
 
-            // get all savings
+            // get all savings of current user from db
 
             var savings = db.Savings
                 .Where(s => s.User.Email == inputObject.Mail)

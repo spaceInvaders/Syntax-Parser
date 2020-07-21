@@ -97,6 +97,8 @@ namespace WebAppCalcMVC.Controllers
             return View(model);
         }
 
+        // Log out
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
@@ -105,13 +107,6 @@ namespace WebAppCalcMVC.Controllers
             await _signInManager.SignOutAsync();
 
             return RedirectToAction("Index", "Home");
-        }
-
-        // Load
-
-        public IActionResult Load()
-        {
-            return View();
         }
     }
 }

@@ -7,34 +7,45 @@
 <script src="~/js/setNameForLoadButton.js" asp-append-version="true"></script>
 <script src="~/js/save.js" asp-append-version="true"></script>
 <script src="~/js/load.js" asp-append-version="true"></script>
-<section class="title designUI">
+<section class="vbox_section designUI">
     @if (User.Identity.IsAuthenticated)
     {
-        <form>
-            <output class="" id="User_Identity_Name">@User.Identity.Name</output>
-        </form>
-        <form method="post" asp-controller="Account" asp-action="Logout">
-            <input type="submit" value="Log out" />
-        </form>
-        <form>
-            <input onclick="Save()" type="button" name="send" value="Save" id="saveButton" />
-        </form>
-        <div class="block__item designUI">
+        <div class="designUI">
             <form>
+                <output id="User_Identity_Name">@User.Identity.Name</output>
+            </form>
+        </div>
+        <div class="hbox_width160px designUI">
+            <form method="post" asp-controller="Account" asp-action="Logout" class="designUI">
                 <div class="hbox_center designUI">
-                    <input onclick="Load(1)" type="button" class="button" id="saving_1" />
+                    <input type="submit" value="LOG OUT" id="logOutButton" />
                 </div>
+            </form>
+            <form class="block__item designUI">
                 <div class="hbox_center designUI">
-                    <input onclick="Load(2)" type="button" class="button" id="saving_2" />
+                    <input onclick="Save()" type="button" name="send" value="SAVE" id="saveButton" />
                 </div>
-                <div class="hbox_center designUI">
-                    <input onclick="Load(3)" type="button" class="button" id="saving_3" />
-                </div>
-                <div class="hbox_center designUI">
-                    <input onclick="Load(4)" type="button" class="button" id="saving_4" />
-                </div>
-                <div class="hbox_center designUI">
-                    <input onclick="Load(5)" type="button" class="button" id="saving_5" />
+            </form>
+        </div>
+        <div class="empty_1 designUI"></div>
+        <div class="hbox designUI">
+            <form>
+                <div class="hbox">
+                    <div class="block__item hbox_center designUI">
+                        <input onclick="Load(1), ExecutePhrase()" type="button" class="button" id="saving_1" />
+                    </div>
+                    <div class="block__item hbox_center designUI">
+                        <input onclick="Load(2), ExecutePhrase()" type="button" class="button" id="saving_2" />
+                    </div>
+                    <div class="block__item hbox_center designUI">
+                        <input onclick="Load(3), ExecutePhrase()" type="button" class="button" id="saving_3" />
+                    </div>
+                    <div class="block__item hbox_center designUI">
+                        <input onclick="Load(4), ExecutePhrase()" type="button" class="button" id="saving_4" />
+                    </div>
+                    <div class="block__item hbox_center designUI">
+                        <input onclick="Load(5), ExecutePhrase()" type="button" class="button" id="saving_5" />
+                    </div>
                 </div>
             </form>
         </div>
@@ -42,12 +53,16 @@
     }
     else
     {
-        <a style="text-decoration: none;" asp-controller="Account" asp-action="Login">LOGIN</a>
-        <a style="text-decoration: none;" asp-controller="Account" asp-action="Register">SIGNUP</a>
+        <div class="hbox_width160px designUI">
+            <div class="hbox_center designUI">
+                <a style="text-decoration: none;" asp-controller="Account" asp-action="Login" id="loginButton">LOGIN</a>
+            </div>
+            <div class="hbox_width160px designUI">
+                <a style="text-decoration: none;" asp-controller="Account" asp-action="Register" id="registerButton">SIGNUP</a>
+            </div>
+        </div>
+        <div class="empty_1 designUI"></div>
     }
-</section>
-<div class="empty_1 designUI"></div>
-<section class="vbox_section designUI">
     <div class="block__item designUI">
         <form oninput="ExecutePhrase()" method="post">
             <textarea class="textinput" name="input" id="textinput" placeholder="Calculate me"
