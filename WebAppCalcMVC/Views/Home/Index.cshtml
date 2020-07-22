@@ -1,4 +1,5 @@
-﻿@{
+﻿@model int
+@{
     ViewData["Title"] = "CalcSpace";
 }
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -31,21 +32,15 @@
         <div class="hbox designUI">
             <form>
                 <div class="hbox">
-                    <div class="block__item hbox_center designUI">
-                        <input onclick="Load(1), ExecutePhrase()" type="button" class="button" id="saving_1" />
-                    </div>
-                    <div class="block__item hbox_center designUI">
-                        <input onclick="Load(2), ExecutePhrase()" type="button" class="button" id="saving_2" />
-                    </div>
-                    <div class="block__item hbox_center designUI">
-                        <input onclick="Load(3), ExecutePhrase()" type="button" class="button" id="saving_3" />
-                    </div>
-                    <div class="block__item hbox_center designUI">
-                        <input onclick="Load(4), ExecutePhrase()" type="button" class="button" id="saving_4" />
-                    </div>
-                    <div class="block__item hbox_center designUI">
-                        <input onclick="Load(5), ExecutePhrase()" type="button" class="button" id="saving_5" />
-                    </div>
+                    <!--Display quantity of saves slots (set in HomeController)-->
+                    @for (int numberOfSaves = 1; numberOfSaves <= Model; numberOfSaves++)
+                    {
+                        string saving = "saving_" + numberOfSaves;
+                        <div class="block__item hbox_center designUI">
+                            <input onclick="Load(@numberOfSaves), ExecutePhrase()"
+                                   type="button" class="button" id=@saving />
+                        </div>
+                    }
                 </div>
             </form>
         </div>

@@ -22,16 +22,9 @@ namespace WebAppCalcMVC.Controllers
             var inputObject = JsonConvert
                 .DeserializeObject<PhraseWithMailToSave>(serializedInput);
 
-            // get current user from db
-            var user = db.Users
-                .FirstOrDefault(u => u.Email == inputObject.Mail);
+            var user = GetCurrentUserFromb(input: inputObject);
 
-            // if user has 5 savings, remove the oldest one from db 
-            var quantityOfSavesOfCurrentUser = db.Savings                
-                .Where(s => s.UserId == user.Id)
-                .Count();
-
-            if (quantityOfSavesOfCurrentUser >= 5)
+            if (CheckIfSavingSlotsAreFinallyFilled(user: user))
             {
                 var minId = db.Savings
                     .Where(s => s.User == user)
@@ -42,20 +35,10 @@ namespace WebAppCalcMVC.Controllers
                 db.Savings.Remove(oldestSave);
                 db.SaveChanges();
             }
-          
-            // create new saving and push it to db
 
-            var dateOfSave = DateTime.Now;
+            var newSaving = CreateNewSaving(user: user, inputObject: inputObject);
 
-            var saving = new Saving()
-            {
-                CalculationValue = RemoveWhiteSpaces(input: inputObject.PhraseToSave),
-                DateOnServer = dateOfSave,
-                DateOnClient = inputObject.DateOnClient,
-                UserId = user.Id
-            };
-
-            db.Savings.Add(saving);
+            db.Savings.Add(newSaving);
             db.SaveChanges();
 
             // get all savings of current user from db
@@ -70,6 +53,7 @@ namespace WebAppCalcMVC.Controllers
 
             var message = $"Your phrase '{phraseFromDb}' was successfully saved!";
 
+            // initializing an object with all savings and message for output with id 'result_notifier'
             var resultObject = new LoadButtonNameSetter
                 (
                 value_1: GetValue(identifier: 1, list: savings),
@@ -86,6 +70,36 @@ namespace WebAppCalcMVC.Controllers
         }
 
         #region PrivateMethods
+        private User GetCurrentUserFromb(PhraseWithMailToSave input)
+        {
+            return db.Users
+                .FirstOrDefault(u => u.Email == input.Mail);
+        }
+
+        private bool CheckIfSavingSlotsAreFinallyFilled(User user)
+        {
+            var quantityOfSavesOfCurrentUser = db.Savings
+                .Where(s => s.UserId == user.Id)
+                .Count();
+
+            return quantityOfSavesOfCurrentUser >= HomeController.NumberOfSaves;
+        }
+
+        private Saving CreateNewSaving(User user, PhraseWithMailToSave inputObject)
+        {
+            var dateOfSave = DateTime.Now;
+
+            var saving = new Saving()
+            {
+                CalculationValue = RemoveWhiteSpaces(input: inputObject.PhraseToSave),
+                DateOnServer = dateOfSave,
+                DateOnClient = inputObject.DateOnClient,
+                UserId = user.Id
+            };
+
+            return saving;
+        }
+
         private static string RemoveWhiteSpaces(string input)
         {
             return new string(input.ToCharArray().Where(character => !Char.IsWhiteSpace(character)).ToArray());
