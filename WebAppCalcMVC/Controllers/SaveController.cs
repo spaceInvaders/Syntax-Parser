@@ -24,15 +24,13 @@ namespace WebAppCalcMVC.Controllers
 
             var user = GetCurrentUserFromb(input: inputObject);
 
-            if (CheckIfSavingSlotsAreFinallyFilled(user: user))
+            if (CheckIfSavingSlotsAreFinallyFilled(user: user, out int numberOfRowsToRemove))
             {
-                var minId = db.Savings
+                var savingsToRemove = db.Savings
                     .Where(s => s.User == user)
-                    .Min(s => s.Id);
+                    .Take(numberOfRowsToRemove);
 
-                var oldestSave = db.Savings.Find(minId);
-
-                db.Savings.Remove(oldestSave);
+                db.Savings.RemoveRange(savingsToRemove);
                 db.SaveChanges();
             }
 
@@ -76,11 +74,13 @@ namespace WebAppCalcMVC.Controllers
                 .FirstOrDefault(u => u.Email == input.Mail);
         }
 
-        private bool CheckIfSavingSlotsAreFinallyFilled(User user)
+        private bool CheckIfSavingSlotsAreFinallyFilled(User user, out int numberOfRowsToRemove)
         {
             var quantityOfSavesOfCurrentUser = db.Savings
                 .Where(s => s.UserId == user.Id)
                 .Count();
+
+            numberOfRowsToRemove = quantityOfSavesOfCurrentUser - HomeController.NumberOfSaves + 1;
 
             return quantityOfSavesOfCurrentUser >= HomeController.NumberOfSaves;
         }

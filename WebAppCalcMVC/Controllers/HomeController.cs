@@ -12,7 +12,7 @@ namespace WebAppCalcMVC.Controllers
     public class HomeController : Controller
     {
         // number of saving slots for each logined user
-        public static int NumberOfSaves { get; private set; } = 5;
+        public static int NumberOfSaves { get; private set; } = 3;
 
         public IActionResult Index()
         {

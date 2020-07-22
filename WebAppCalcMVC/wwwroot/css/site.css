@@ -151,6 +151,8 @@ input {
     border: none;
     border-radius: 30px;
     border-color: white;
+    margin-left: 5px;
+    margin-right: 5px;
 }
 
 #logOutButton, #saveButton {
@@ -169,6 +171,11 @@ input {
     font-weight: 800;
     color: white;
     cursor: pointer;
+    text-transform: uppercase;
+}
+
+#textinput {
+    margin-top: 10px;
 }
 
 pointer {
@@ -222,6 +229,11 @@ label {
     cursor: text;
     float: left;
     box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034), 0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06), 0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086), 0 100px 80px rgba(0, 0, 0, 0.12);
+}
+
+#saving_1, #saving_2, #saving_3, #saving_4, #saving_5, #saving_6 {
+    background-color: #00c9b7;
+    color: white;
 }
 
 #User_Identity_Name {
