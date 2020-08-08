@@ -5,7 +5,7 @@ using System.Globalization;
 
 namespace CalculatorCore
 {
-    static class CalculationDecimalChecker
+    internal static class CalculationDecimalChecker
     {
         /// <summary>
         /// Returnes an edited input for separation into nodes. 
@@ -44,8 +44,8 @@ namespace CalculatorCore
 
                 input = input.Replace(CalculationConstants.Dot.ToString(), String.Empty);
 
-            else if (Separator(culture: culture) == CalculationConstants.Dot
-                && Convert.ToChar(GroupSeparator(culture: culture)) == CalculationConstants.Comma)
+            else if (Separator(culture: culture) == CalculationConstants.Dot && 
+                Convert.ToChar(GroupSeparator(culture: culture)) == CalculationConstants.Comma)
 
                 input = input.Replace(CalculationConstants.Comma.ToString(), String.Empty);
 
@@ -93,7 +93,7 @@ namespace CalculatorCore
             return editedInput;
         }
 
-        #region PrivateParseInputMethods
+        #region PrivateCheckInputMethods
 
         private static void CheckOnValidatedFigures(string input, int index, CultureInfo culture)
         {

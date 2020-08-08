@@ -4,9 +4,6 @@
 // Write your Javascript code.
 
 function ExecutePhrase() {
-    const localURL = "https://localhost:44365";
-    const aplicationURLforIOS = "https://localhost:5001";
-    const deployedURL = "https://calcspace.azurewebsites.net";
 
     var language;
 
@@ -26,7 +23,7 @@ function ExecutePhrase() {
     console.log(outputObject.culture);
 
     $.ajax({
-        url: localURL + "/ExecutePhrase/GetResult",
+        url: window.location.protocol + "//" + window.location.host + "/ExecutePhrase/GetResult",
         type: "POST",
         data: "serializedInput=" + JSON.stringify(outputObject),
         success: function (data) {

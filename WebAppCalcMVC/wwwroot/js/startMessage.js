@@ -1,9 +1,5 @@
 ﻿function StartMessage() {
 
-    const localURL = "https://localhost:44365";
-    const applicationURLforIOS = "https://localhost:5001";
-    const deployedURL = "https://calcspace.azurewebsites.net";
-
     var culture;
 
     if (window.navigator.languages) {
@@ -17,7 +13,7 @@
 
     $.ajax({
 
-        url: localURL + "/ExecutePhrase/GetMessage",
+        url: window.location.protocol + "//" + window.location.host + "/ExecutePhrase/GetMessage",
         type: "POST",
         data: "culture=" + culture,
 

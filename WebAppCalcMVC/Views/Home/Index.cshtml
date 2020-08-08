@@ -24,7 +24,7 @@
             </form>
             <form class="block__item designUI">
                 <div class="hbox_center designUI">
-                    <input onclick="Save()" type="button" name="send" value="save" id="saveButton" />
+                    <input onclick="Save(@Model)" type="button" name="send" value="save" id="saveButton" />
                 </div>
             </form>
         </div>
@@ -33,11 +33,11 @@
             <form>
                 <div class="hbox">
                     <!--Display quantity of saves slots (set in HomeController)-->
-                    @for (int numberOfSaves = 1; numberOfSaves <= Model; numberOfSaves++)
+                    @for (int saveIndex = 1; saveIndex <= Model; saveIndex++)
                     {
-                        string saving = "saving_" + numberOfSaves;
+                        string saving = "saving_" + saveIndex;
                         <div class="block__item hbox_center designUI">
-                            <input onclick="Load(@numberOfSaves), ExecutePhrase()"
+                            <input onclick="Load(@saveIndex), ExecutePhrase()"
                                    type="button" class="button" id=@saving />
                         </div>
                     }

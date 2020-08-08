@@ -1,14 +1,10 @@
 ﻿function SetNameForLoadButton() {
 
-    const localURL = "https://localhost:44365";
-    const aplicationURLforIOS = "https://localhost:5001";
-    const deployedURL = "https://calcspace.azurewebsites.net";
-
     var textEmail = document.getElementById("User_Identity_Name").value;
 
     $.ajax({
 
-        url: localURL + "/SetNameForLoadButton/GetPhraseFromDb",
+        url: window.location.protocol + "//" + window.location.host + "/SetNameForLoadButton/GetPhraseFromDb",
         type: "POST",
         data: "email=" + textEmail,
 

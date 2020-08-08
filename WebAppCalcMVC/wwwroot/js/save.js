@@ -1,48 +1,50 @@
-﻿function Save() {
+﻿function Save(saveIndex) {
 
-    const localURL = "https://localhost:44365";
-    const applicationURLforIOS = "https://localhost:5001";
-    const deployedURL = "https://calcspace.azurewebsites.net";
+    var inputWithoutWhiteSpaces = document.getElementById("textinput").value.split(/\s+/).join('');
 
-    var textInput = document.getElementById("textinput").value;
-
-    if (textInput == null || textInput.trim().length === 0) {
-        document.getElementById("result_notifier").innerHTML = "Nothing to save :( Type something";
+    if (inputWithoutWhiteSpaces == null || inputWithoutWhiteSpaces.length === 0) {
+        document.getElementById("result_notifier").innerHTML = "nothing to save :( Type something";
     }
     else {
-        var phraseToSaveWithMailObject = {
-            phraseToSave: encodeURIComponent(document.getElementById("textinput").value),
-            mail: encodeURIComponent(document.getElementById("User_Identity_Name").value),
-            dateOnClient: new Date(),
-        };
 
-        console.log(phraseToSaveWithMailObject.phraseToSave);
-        console.log(phraseToSaveWithMailObject.mail);
-        console.log(phraseToSaveWithMailObject.dateOnClient);
+        for (var index = 1; index <= saveIndex; index++) {
+            if (document.getElementById("saving_" + index).value === inputWithoutWhiteSpaces) {
 
-        $.ajax({
+                document.getElementById("result_notifier")
+                    .innerHTML = `'${inputWithoutWhiteSpaces}' already exists in database :)`;
 
-            url: localURL + "/Save/SaveToDb",
-            type: "POST",
-            data: "serializedInput=" + JSON.stringify(phraseToSaveWithMailObject),
+                return;
+            }
+        }
 
-            success: function (data) {
-
-                var result = JSON.parse(data);
-
-                document.getElementById("result_notifier").innerHTML = result.Message;
-
-                document.getElementById("saving_1").setAttribute("value", result.Value_1);
-                document.getElementById("saving_2").setAttribute("value", result.Value_2);
-                document.getElementById("saving_3").setAttribute("value", result.Value_3);
-                document.getElementById("saving_4").setAttribute("value", result.Value_4);
-                document.getElementById("saving_5").setAttribute("value", result.Value_5);
-            },
-
-            dataType: "text"
-        });
+         var phraseToSaveWithMailObject = {
+             phraseToSave: encodeURIComponent(document.getElementById("textinput").value),
+             mail: encodeURIComponent(document.getElementById("User_Identity_Name").value),
+             dateOnClient: new Date(),
+         };
+         
+         console.log(phraseToSaveWithMailObject.phraseToSave);
+         console.log(phraseToSaveWithMailObject.mail);
+         console.log(phraseToSaveWithMailObject.dateOnClient);
+         
+         $.ajax({
+         
+             url: window.location.protocol + "//" + window.location.host + "/Save/SaveToDb",
+             type: "POST",
+             data: "serializedInput=" + JSON.stringify(phraseToSaveWithMailObject),
+         
+             success: function (data) {
+         
+                 var result = JSON.parse(data);
+         
+                 document.getElementById("result_notifier").innerHTML = result.Message;
+         
+                 document.getElementById("saving_1").setAttribute("value", result.Value_1);
+                 document.getElementById("saving_2").setAttribute("value", result.Value_2);
+                 document.getElementById("saving_3").setAttribute("value", result.Value_3);
+             },
+         
+             dataType: "text"
+         });
     }
 }
-
-// var el = document.getElementById("saveButton");
-// el.addEventListener("click", Save, false);

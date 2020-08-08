@@ -2,25 +2,33 @@
 @{
     ViewData["Title"] = "Register";
 }
-<h2>New user registration</h2>
-<form method="post" asp-controller="Account" asp-action="Register">
-    <div asp-validation-summary="ModelOnly"></div>
-    <div>
-        <label asp-for="Email"></label><br />
-        <input asp-for="Email" />
-        <span asp-validation-for="Email"></span>
+<section class="vbox_section designUI">
+    <div class="vbox block__item designUI">
+        <h2>fill registration:</h2>
     </div>
-    <div>
-        <label asp-for="Password"></label><br />
-        <input asp-for="Password" />
-        <span asp-validation-for="Password"></span>
+    <div class="block__item designUI">
+        <form method="post" asp-controller="Account" asp-action="Register">
+            <div asp-validation-summary="ModelOnly" class="block__item designUI"></div>
+            <div class="vbox block__item designUI">
+                <label asp-for="Email"></label><br />
+                <input asp-for="Email" />
+                <span asp-validation-for="Email"></span>
+            </div>
+            <div class="vbox block__item designUI">
+                <label asp-for="Password"></label><br />
+                <input asp-for="Password" />
+                <span asp-validation-for="Password"></span>
+            </div>
+            <div class="vbox block__item designUI">
+                <label asp-for="PasswordConfirm"></label><br />
+                <input asp-for="PasswordConfirm" />
+                <span asp-validation-for="PasswordConfirm"></span>
+            </div>
+            <div class="hbox_center designUI">
+                <input type="submit" value="register me" class="button"/>
+            </div>
+        </form>
     </div>
-    <div>
-        <label asp-for="PasswordConfirm"></label><br />
-        <input asp-for="PasswordConfirm" />
-        <span asp-validation-for="PasswordConfirm"></span>
-    </div>
-    <div>
-        <input type="submit" value="Registration" />
-    </div>
-</form>
+</section>
+<div class="empty_2 designUI"></div>
+

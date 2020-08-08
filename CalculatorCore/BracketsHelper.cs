@@ -5,9 +5,7 @@ namespace CalculatorCore
 {
     internal static class BracketsHelper
     {
-        /// <summary>
-        /// Removes the outer brackets
-        /// </summary>
+        /// <summary> Removes the outer brackets </summary>
         internal static string TrimBrackets(string input) 
         {
             if (input.StartsWith(CalculationConstants.OpeningBracket) &&
@@ -72,11 +70,13 @@ namespace CalculatorCore
 
             if (bracketsLevel.Last() > 0)
             {
-                throw new CheckingMissedElementException(element: CalculationConstants.ClosingBracket, number: bracketsLevel.Last());
+                throw new CheckingMissedElementException
+                    (element: CalculationConstants.ClosingBracket, number: bracketsLevel.Last());
             }
             else if (bracketsLevel.Last() < 0)
             {
-                throw new CheckingMissedElementException(element: CalculationConstants.OpeningBracket, number: Math.Abs(bracketsLevel.Last()));
+                throw new CheckingMissedElementException
+                    (element: CalculationConstants.OpeningBracket, number: Math.Abs(bracketsLevel.Last()));
             }
 
             return bracketsLevel;

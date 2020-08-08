@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using WebAppCalcMVC.Models;
 
@@ -10,15 +11,20 @@ namespace WebAppCalcMVC.Controllers
     public class SetNameForLoadButtonController : Controller
     {
         private ApplicationContext db;
+        private ILogger Log { get; }
 
-        public SetNameForLoadButtonController(ApplicationContext context)
+        public SetNameForLoadButtonController(ApplicationContext context, ILogger<SetNameForLoadButtonController> logger)
         {
             db = context;
+            Log = logger;
         }
 
         [HttpPost]
         public ActionResult GetPhraseFromDb(string email)
         {
+            Log.LogInformation("\nGetPhraseFromDb method was called:\n");
+            Log.LogInformation("\nGet all savings of current user from db:\n");
+
             var savings = db.Savings
                 .Where(s => s.User.Email == email)
                 .ToList();
@@ -34,6 +40,8 @@ namespace WebAppCalcMVC.Controllers
                 );
 
             var serializedOutput = JsonConvert.SerializeObject(resultObject);
+
+            Log.LogInformation("\nGetPhraseFromDb method was completed\n");
 
             return Content(serializedOutput);
         }

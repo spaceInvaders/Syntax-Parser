@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using WebAppCalcMVC.Models;
 using WebAppCalcMVC.ViewModels;
 
@@ -10,15 +11,18 @@ namespace WebAppCalcMVC.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
+        private ILogger Log { get; }
 
         // get services via constructor
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, ILogger<AccountController> log)
         {
             // user management service (installed in Startup)
             _userManager = userManager;
 
             // signInManager service allows to authenticate the user and install or remove his cookies
             _signInManager = signInManager;
+
+            Log = log;
         }
 
 
@@ -34,11 +38,15 @@ namespace WebAppCalcMVC.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
+            Log.LogInformation("\nRegister method was called:\n");
+
             if (ModelState.IsValid)
             {
                 var user = new User { Email = model.Email, UserName = model.Email};
 
                 // add user to Db
+                Log.LogInformation("\nAdd user to db:\n");
+
                 var result = await _userManager.CreateAsync(user, model.Password);
 
                 if (result.Succeeded)
@@ -57,6 +65,8 @@ namespace WebAppCalcMVC.Controllers
                 }
             }
 
+            Log.LogInformation("\nRegister method was completed:\n");
+
             return View(model);
         }
 
@@ -72,10 +82,12 @@ namespace WebAppCalcMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
+            Log.LogInformation("\nLogin method was called:\n");
+
             if (ModelState.IsValid)
             {
-                var result =
-                    await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
+                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
+
                 if (result.Succeeded)
                 {
                     // check if the URL belongs to the application
@@ -94,6 +106,8 @@ namespace WebAppCalcMVC.Controllers
                 }
             }
 
+            Log.LogInformation("\nLogin method was completed:\n");
+
             return View(model);
         }
 
@@ -105,6 +119,8 @@ namespace WebAppCalcMVC.Controllers
         {
             // delete authentication cookies
             await _signInManager.SignOutAsync();
+
+            Log.LogInformation("\nLogout method was called:\n");
 
             return RedirectToAction("Index", "Home");
         }

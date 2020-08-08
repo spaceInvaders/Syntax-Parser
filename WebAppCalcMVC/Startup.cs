@@ -19,9 +19,10 @@ namespace WebAppCalcMVC
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
+        // Add dependencies (services) to Inversion of Control (IoC) DI container
         public void ConfigureServices(IServiceCollection services)
         {
-            // Add services for EF Core
+            // Add services for EF Core (Inject dependency to work with Db)
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
@@ -50,7 +51,7 @@ namespace WebAppCalcMVC
 
             app.UseRouting();
 
-            // to use Identity - middeware component installed - UseAuthentication
+            // to use Identity - middeware component UseAuthentication is used 
             app.UseAuthentication();
 
             app.UseAuthorization();

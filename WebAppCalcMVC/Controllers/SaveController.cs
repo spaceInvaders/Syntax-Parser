@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using WebAppCalcMVC.Models;
 
@@ -11,14 +12,18 @@ namespace WebAppCalcMVC.Controllers
     public class SaveController : Controller
     {
         private ApplicationContext db;
-        public SaveController(ApplicationContext context)
+        private ILogger Log { get; }
+        public SaveController(ApplicationContext context, ILogger<SaveController> log)
         {
             db = context;
+            Log = log;
         }
 
         [HttpPost]
         public ActionResult SaveToDb(string serializedInput)
         {
+            Log.LogInformation("\nSaveToDb method was called:\n");
+
             var inputObject = JsonConvert
                 .DeserializeObject<PhraseWithMailToSave>(serializedInput);
 
@@ -26,9 +31,13 @@ namespace WebAppCalcMVC.Controllers
 
             if (CheckIfSavingSlotsAreFinallyFilled(user: user, out int numberOfRowsToRemove))
             {
+                Log.LogInformation("\nSavings to remove:\n");
+
                 var savingsToRemove = db.Savings
                     .Where(s => s.User == user)
                     .Take(numberOfRowsToRemove);
+
+                Log.LogInformation("\nRemove savings:\n");
 
                 db.Savings.RemoveRange(savingsToRemove);
                 db.SaveChanges();
@@ -36,20 +45,23 @@ namespace WebAppCalcMVC.Controllers
 
             var newSaving = CreateNewSaving(user: user, inputObject: inputObject);
 
+            Log.LogInformation("\nAdd new saving:\n");
+
             db.Savings.Add(newSaving);
             db.SaveChanges();
 
-            // get all savings of current user from db
+            Log.LogInformation("\nGet all savings of current user from db:\n");
 
             var savings = db.Savings
                 .Where(s => s.User.Email == inputObject.Mail)
                 .ToList();
 
             // get last saving
+            Log.LogInformation("\nGet last saving:\n");
 
             var phraseFromDb = savings.Last().CalculationValue;
 
-            var message = $"Your phrase '{phraseFromDb}' was successfully saved!";
+            var message = $"'{phraseFromDb}' was successfully saved!";
 
             // initializing an object with all savings and message for output with id 'result_notifier'
             var resultObject = new LoadButtonNameSetter
@@ -64,18 +76,24 @@ namespace WebAppCalcMVC.Controllers
 
             var serializedOutput = JsonConvert.SerializeObject(resultObject);
 
+            Log.LogInformation("\nSaveToDb method was completed\n");
+
             return Content(serializedOutput);
         }
 
         #region PrivateMethods
         private User GetCurrentUserFromb(PhraseWithMailToSave input)
         {
+            Log.LogInformation("\nGet current user from db:\n");
+
             return db.Users
                 .FirstOrDefault(u => u.Email == input.Mail);
         }
 
         private bool CheckIfSavingSlotsAreFinallyFilled(User user, out int numberOfRowsToRemove)
         {
+            Log.LogInformation("\nCheck if saving slots are finally filled:\n");
+
             var quantityOfSavesOfCurrentUser = db.Savings
                 .Where(s => s.UserId == user.Id)
                 .Count();
